@@ -1,5 +1,8 @@
 # План вычислительных экспериментов и визуализаций для simple_model_full
 
+> **Архив:** план выполнен и больше не является оперативным. Текущий статус и
+> следующие шаги: `tmp_docs/ACTIVE_PREPRINT_PLAN.md`.
+
 Дата: 2026-08-06. Последнее обновление статуса: 2026-08-09.
 
 Статус: **основная вычислительная серия завершена и перенесена в статью**.
@@ -12,11 +15,11 @@ examples и варианта 1 остаётся необязательным т�
 
 Связанные документы:
 
-- tmp_docs/simple_model_full_post_experiments_revision_plan.md --- актуальный
+- tmp_docs/archive/plans/simple_model_full_post_experiments_revision_plan.md --- завершённый
   порядок доработки статьи;
-- tmp_docs/simple_model_full_revision_backlog.md --- исторический backlog пути
+- tmp_docs/archive/plans/simple_model_full_revision_backlog.md --- исторический backlog пути
   к расчётному ядру;
-- tmp_docs/simple_model_full_visualizations_plan.md --- содержательные идеи
+- tmp_docs/archive/plans/simple_model_full_visualizations_plan.md --- содержательные идеи
   отдельных рисунков;
 - decomposition_theory/notes/dynamic_graph_adaptive_decomposition.md ---
   постановка будущих экспериментов с динамическим графом.
@@ -1052,7 +1055,7 @@ C1 не переносится как вывод о синхронизации: 
 согласованных блока Future Work и завершить редакционный проход по уже
 подготовленному Related Work: язык, семантика и citations closest-prior-work
 table, финальная табличная часть claim--citation audit. Актуальный статус см. в
-`tmp_docs/simple_model_full_post_experiments_revision_plan.md`.
+`tmp_docs/archive/plans/simple_model_full_post_experiments_revision_plan.md`.
 
 Возможные последующие вычислительные задачи:
 
