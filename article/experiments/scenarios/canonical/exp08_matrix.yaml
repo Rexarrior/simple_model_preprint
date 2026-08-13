@@ -1,0 +1,131 @@
+schema_version: 1
+experiment_id: EXP-08
+frozen: true
+frozen_at: "2026-08-08"
+
+design:
+  task_counts: [8, 16, 32, 64]
+  topology_families: [wide_layered, mixed, chain_like]
+  weight_types: [homogeneous, lognormal]
+  expected_cells: 24
+  streams:
+    development:
+      namespace: EXP-08-development-v1
+      observation_indices: {start: 0, stop: 9}
+      expected_graphs: 240
+      outcome_use: forbidden
+    confirmatory:
+      namespace: EXP-08-confirmatory-v1
+      observation_indices: {start: 0, stop: 19}
+      expected_graphs: 480
+      generate_only_after_development_freeze: true
+
+generator:
+  seed_derivation: sha256_first_64_bits_of_namespace_cell_observation_attempt
+  max_attempts_per_observation: 200
+  time_unit: "0.0001"
+  allocation_tick: "0.001"
+  tolerance: "0.000001"
+  base_effort: "12"
+  topology:
+    wide_layered:
+      target_rho_l_bin: low
+      layer_fraction: "0.20"
+      adjacent_edge_probability: "0.30"
+      skip_edge_probability: "0.00"
+    mixed:
+      target_rho_l_bin: medium
+      layer_fraction: "0.45"
+      adjacent_edge_probability: "0.25"
+      skip_edge_probability: "0.04"
+    chain_like:
+      target_rho_l_bin: high
+      layer_fraction: "0.75"
+      adjacent_edge_probability: "0.15"
+      skip_edge_probability: "0.00"
+  weights:
+    homogeneous: {integer_multiplier: 1}
+    lognormal:
+      mu: "0"
+      sigma: "0.55"
+      integer_multiplier_scale: "2"
+      minimum_multiplier: 1
+      maximum_multiplier: 6
+  rho_l_bins:
+    low: {lower: "0.10", upper: "0.30", upper_inclusive: false}
+    medium: {lower: "0.30", upper: "0.60", upper_inclusive: false}
+    high: {lower: "0.60", upper: "0.90", upper_inclusive: true}
+  graph_checks:
+    - acyclic
+    - weakly_connected
+    - every_task_reachable_from_source
+    - rho_l_in_target_bin
+    - paired_allocator_feasible
+
+allocation:
+  total_human_share: "0.12"
+  reference_path_concentrations: {low: "0.30", high: "0.70"}
+  task_human_share_bounds: {lower: "0.025", upper: "0.85"}
+  concentration_tolerance: "0.000001"
+  rule: proportional_to_structural_weight_within_reference_path_and_off_path
+  rounding: bounded_largest_remainder_with_seeded_ties
+  reference_path:
+    weights: structural_C1_gamma1
+    tie_break: seeded_rank_independent_of_task_id
+    tied_paths_reported_separately: true
+
+schedule_effect:
+  phase_profiles: [io, equal_alternating]
+  agent_counts: [1, 4, 8]
+  primary_phase_profile: io
+  primary_agent_counts: [4, 8]
+  negative_control_agent_count: 1
+  c: "1"
+  gamma: "1"
+  equivalence_margin: "0.01"
+  sensitivity_margins: ["0.005", "0.02"]
+  policy_id: bottom_level_fcfs_v1
+
+differentiated_slowdown:
+  c: "1"
+  gamma: "1.3"
+  agent_count: 4
+  primary_metric: reference_path_length
+  global_l4_confirmatory_scope: path_stable_pairs_only
+
+development:
+  baseline_timing_scope: {phase_profile: io, agent_count: 8, allocations: [low, high]}
+  exact_benchmark:
+    task_counts: [8]
+    topology_families: [mixed, chain_like]
+    weight_types: [homogeneous]
+    observation_indices: [0]
+    phase_profile: io
+    agent_counts: [4, 8]
+    allocations: [low, high]
+    time_limit_seconds: 30
+    workers: 1
+    random_seed: 0
+    resource_amendment: >-
+      The first development-only timing screen used N in {8,16} and a common
+      five-second limit. It produced 16 OPTIMAL and 8 FEASIBLE statuses without
+      recording objectives; no confirmatory graph had been generated. The
+      exact scope was therefore globally restricted to N=8 and the development
+      and confirmatory limits were raised to 30 seconds. In the second timing
+      screen, both wide_layered P=4 allocations remained FEASIBLE at 30 seconds,
+      while all eight mixed/chain_like scenarios were OPTIMAL. Before any
+      confirmatory graph was generated, the exact audit was therefore globally
+      restricted to N=8 and topology in {mixed,chain_like}. Allocation and
+      policy scopes were not changed.
+  exact_freeze_rule:
+    include_task_count_if_all_optimal: true
+    maximum_p95_wall_time_seconds: "30"
+    confirmatory_observation_indices: [0, 1]
+    confirmatory_time_limit_seconds: 30
+
+reporting:
+  bootstrap_resamples: 2000
+  bootstrap_seed: 808071
+  bootstrap_unit: graph_base
+  strata: [task_count, topology_family, weight_type, path_multiplicity]
+  article_modified: false

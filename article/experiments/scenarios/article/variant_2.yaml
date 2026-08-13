@@ -1,0 +1,117 @@
+schema_version: 1
+scenario_id: practical_variant_2
+variant_id: "2"
+time_unit: "0.05"
+tolerance: "0.0001"
+x: "4"
+p: 2
+c: "1"
+gamma: "1"
+
+tasks:
+  - task_id: "1"
+    name: API contract and request validation
+    z: "2"
+    k: "0.75"
+    h: "0.75"
+    predecessors: []
+    phases:
+      - {phase_id: interactive, resource: human, base_duration: "6.0"}
+  - task_id: "2"
+    name: Storage layer
+    z: "3"
+    k: "0.75"
+    h: "0.20"
+    predecessors: ["1"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.2"}
+      - {phase_id: implementation, resource: agent, base_duration: "6.6"}
+      - {phase_id: review, resource: human, base_duration: "1.2"}
+  - task_id: "3"
+    name: Business logic
+    z: "4"
+    k: "0.85"
+    h: "0.85"
+    predecessors: ["1", "2"]
+    phases:
+      - {phase_id: interactive, resource: human, base_duration: "13.6"}
+  - task_id: "4"
+    name: Background processor
+    z: "3"
+    k: "0.90"
+    h: "0.90"
+    predecessors: ["2", "3"]
+    phases:
+      - {phase_id: interactive, resource: human, base_duration: "10.8"}
+  - task_id: "5"
+    name: Observability and configuration
+    z: "2"
+    k: "0.70"
+    h: "0.20"
+    predecessors: ["1"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "0.8"}
+      - {phase_id: implementation, resource: agent, base_duration: "4.0"}
+      - {phase_id: review, resource: human, base_duration: "0.8"}
+  - task_id: "6"
+    name: Tests
+    z: "3"
+    k: "0.70"
+    h: "0.20"
+    predecessors: ["3", "4"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.2"}
+      - {phase_id: implementation, resource: agent, base_duration: "6.0"}
+      - {phase_id: review, resource: human, base_duration: "1.2"}
+  - task_id: "7"
+    name: Packaging and deployment
+    z: "2"
+    k: "0.80"
+    h: "0.20"
+    predecessors: ["1", "5"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "0.8"}
+      - {phase_id: implementation, resource: agent, base_duration: "4.8"}
+      - {phase_id: review, resource: human, base_duration: "0.8"}
+
+schedules:
+  article_schedule:
+    expected_valid: true
+    expected_makespan: "47.8"
+    expected_queue: "22.2"
+    phases:
+      - {task_id: "1", phase_id: interactive, agent: 1, start: "0", end: "6.0"}
+      - {task_id: "2", phase_id: specification, agent: 1, start: "6.0", end: "7.2"}
+      - {task_id: "2", phase_id: implementation, agent: 1, start: "7.2", end: "13.8"}
+      - {task_id: "2", phase_id: review, agent: 1, start: "13.8", end: "15.0"}
+      - {task_id: "3", phase_id: interactive, agent: 1, start: "15.0", end: "28.6"}
+      - {task_id: "4", phase_id: interactive, agent: 1, start: "28.6", end: "39.4"}
+      - {task_id: "6", phase_id: specification, agent: 1, start: "39.4", end: "40.6"}
+      - {task_id: "6", phase_id: implementation, agent: 1, start: "40.6", end: "46.6"}
+      - {task_id: "6", phase_id: review, agent: 1, start: "46.6", end: "47.8"}
+      - {task_id: "5", phase_id: specification, agent: 2, start: "7.2", end: "8.0"}
+      - {task_id: "5", phase_id: implementation, agent: 2, start: "8.0", end: "12.0"}
+      - {task_id: "5", phase_id: review, agent: 2, start: "12.0", end: "12.8"}
+      - {task_id: "7", phase_id: specification, agent: 2, start: "12.8", end: "13.6"}
+      - {task_id: "7", phase_id: implementation, agent: 2, start: "13.6", end: "18.4"}
+      - {task_id: "7", phase_id: review, agent: 2, start: "40.6", end: "41.4"}
+
+  original_invalid_schedule:
+    expected_valid: false
+    expected_makespan: "47.8"
+    phases:
+      - {task_id: "1", phase_id: interactive, agent: 1, start: "0", end: "6.0"}
+      - {task_id: "3", phase_id: interactive, agent: 1, start: "15.0", end: "28.6"}
+      - {task_id: "4", phase_id: interactive, agent: 1, start: "28.6", end: "39.4"}
+      - {task_id: "2", phase_id: specification, agent: 2, start: "6.0", end: "7.2"}
+      - {task_id: "2", phase_id: implementation, agent: 2, start: "7.2", end: "13.8"}
+      - {task_id: "2", phase_id: review, agent: 2, start: "13.8", end: "15.0"}
+      - {task_id: "5", phase_id: specification, agent: 2, start: "15.0", end: "15.8"}
+      - {task_id: "5", phase_id: implementation, agent: 2, start: "15.8", end: "19.8"}
+      - {task_id: "5", phase_id: review, agent: 2, start: "19.8", end: "20.6"}
+      - {task_id: "7", phase_id: specification, agent: 2, start: "20.6", end: "21.4"}
+      - {task_id: "7", phase_id: implementation, agent: 2, start: "21.4", end: "26.2"}
+      - {task_id: "7", phase_id: review, agent: 2, start: "26.2", end: "27.0"}
+      - {task_id: "6", phase_id: specification, agent: 2, start: "39.4", end: "40.6"}
+      - {task_id: "6", phase_id: implementation, agent: 2, start: "40.6", end: "46.6"}
+      - {task_id: "6", phase_id: review, agent: 2, start: "46.6", end: "47.8"}

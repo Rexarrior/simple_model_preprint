@@ -1,0 +1,135 @@
+schema_version: 1
+scenario_id: practical_variant_4
+variant_id: "4"
+time_unit: "0.05"
+tolerance: "0.0001"
+x: "4"
+p: 4
+c: "1"
+gamma: "1"
+
+tasks:
+  - task_id: "1"
+    name: API contract and request validation
+    z: "2"
+    k: "0.65"
+    h: "0.25"
+    predecessors: []
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.0"}
+      - {phase_id: implementation, resource: agent, base_duration: "3.2"}
+      - {phase_id: review, resource: human, base_duration: "1.0"}
+  - task_id: "2"
+    name: Storage layer
+    z: "3"
+    k: "0.70"
+    h: "0.25"
+    predecessors: ["1"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.5"}
+      - {phase_id: implementation, resource: agent, base_duration: "5.4"}
+      - {phase_id: review, resource: human, base_duration: "1.5"}
+  - task_id: "3"
+    name: Business logic
+    z: "4"
+    k: "0.80"
+    h: "0.25"
+    predecessors: ["1", "2"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "2.0"}
+      - {phase_id: implementation, resource: agent, base_duration: "8.8"}
+      - {phase_id: review, resource: human, base_duration: "2.0"}
+  - task_id: "4"
+    name: Background processor
+    z: "3"
+    k: "0.75"
+    h: "0.25"
+    predecessors: ["2", "3"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.5"}
+      - {phase_id: implementation, resource: agent, base_duration: "6.0"}
+      - {phase_id: review, resource: human, base_duration: "1.5"}
+  - task_id: "5"
+    name: Observability and configuration
+    z: "2"
+    k: "0.60"
+    h: "0.25"
+    predecessors: ["1"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.0"}
+      - {phase_id: implementation, resource: agent, base_duration: "2.8"}
+      - {phase_id: review, resource: human, base_duration: "1.0"}
+  - task_id: "6a"
+    name: Unit tests for business logic
+    z: "1"
+    k: "0.65"
+    h: "0.25"
+    predecessors: ["3"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "0.5"}
+      - {phase_id: implementation, resource: agent, base_duration: "1.6"}
+      - {phase_id: review, resource: human, base_duration: "0.5"}
+  - task_id: "6b"
+    name: Integration tests for API and storage
+    z: "1.5"
+    k: "0.65"
+    h: "0.25"
+    predecessors: ["1", "2"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "0.75"}
+      - {phase_id: implementation, resource: agent, base_duration: "2.4"}
+      - {phase_id: review, resource: human, base_duration: "0.75"}
+  - task_id: "6c"
+    name: Background processing and retry tests
+    z: "0.5"
+    k: "0.65"
+    h: "0.25"
+    predecessors: ["4"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "0.25"}
+      - {phase_id: implementation, resource: agent, base_duration: "0.8"}
+      - {phase_id: review, resource: human, base_duration: "0.25"}
+  - task_id: "7"
+    name: Packaging and deployment
+    z: "2"
+    k: "0.70"
+    h: "0.25"
+    predecessors: ["1", "5"]
+    phases:
+      - {phase_id: specification, resource: human, base_duration: "1.0"}
+      - {phase_id: implementation, resource: agent, base_duration: "3.6"}
+      - {phase_id: review, resource: human, base_duration: "1.0"}
+
+schedules:
+  article_schedule:
+    expected_valid: true
+    expected_makespan: "36.7"
+    expected_queue: "4.3"
+    phases:
+      - {task_id: "1", phase_id: specification, agent: 1, start: "0", end: "1.0"}
+      - {task_id: "1", phase_id: implementation, agent: 1, start: "1.0", end: "4.2"}
+      - {task_id: "1", phase_id: review, agent: 1, start: "4.2", end: "5.2"}
+      - {task_id: "2", phase_id: specification, agent: 1, start: "5.2", end: "6.7"}
+      - {task_id: "2", phase_id: implementation, agent: 1, start: "6.7", end: "12.1"}
+      - {task_id: "2", phase_id: review, agent: 1, start: "12.1", end: "13.6"}
+      - {task_id: "3", phase_id: specification, agent: 1, start: "13.6", end: "15.6"}
+      - {task_id: "3", phase_id: implementation, agent: 1, start: "15.6", end: "24.4"}
+      - {task_id: "3", phase_id: review, agent: 1, start: "24.4", end: "26.4"}
+      - {task_id: "4", phase_id: specification, agent: 1, start: "26.4", end: "27.9"}
+      - {task_id: "4", phase_id: implementation, agent: 1, start: "27.9", end: "33.9"}
+      - {task_id: "4", phase_id: review, agent: 1, start: "33.9", end: "35.4"}
+      - {task_id: "6c", phase_id: specification, agent: 1, start: "35.4", end: "35.65"}
+      - {task_id: "6c", phase_id: implementation, agent: 1, start: "35.65", end: "36.45"}
+      - {task_id: "6c", phase_id: review, agent: 1, start: "36.45", end: "36.7"}
+      - {task_id: "5", phase_id: specification, agent: 2, start: "6.7", end: "7.7"}
+      - {task_id: "5", phase_id: implementation, agent: 2, start: "7.7", end: "10.5"}
+      - {task_id: "5", phase_id: review, agent: 2, start: "10.5", end: "11.5"}
+      - {task_id: "7", phase_id: specification, agent: 2, start: "19.5", end: "20.5"}
+      - {task_id: "7", phase_id: implementation, agent: 2, start: "20.5", end: "24.1"}
+      - {task_id: "7", phase_id: review, agent: 2, start: "28.4", end: "29.4"}
+      - {task_id: "6b", phase_id: specification, agent: 3, start: "15.6", end: "16.35"}
+      - {task_id: "6b", phase_id: implementation, agent: 3, start: "16.35", end: "18.75"}
+      - {task_id: "6b", phase_id: review, agent: 3, start: "18.75", end: "19.5"}
+      - {task_id: "6a", phase_id: specification, agent: 3, start: "27.9", end: "28.4"}
+      - {task_id: "6a", phase_id: implementation, agent: 3, start: "28.4", end: "30.0"}
+      - {task_id: "6a", phase_id: review, agent: 3, start: "30.0", end: "30.5"}

@@ -1,0 +1,57 @@
+schema_version: 1
+experiment_id: EXP-01
+frozen: true
+frozen_at: "2026-08-07"
+seed: 0
+
+# Full factorial: 5 * 3 * 2 * 3 * 3 = 270 exact points.
+topologies:
+  - chain
+  - independent
+  - fork_join
+  - diamond
+  - two_layer
+task_counts: [4, 8, 12]
+agent_counts: [2, 4]
+human_shares: ["0.10", "0.25", "0.50"]
+phase_profiles:
+  - io
+  - alternating_sync
+  - alternating_staggered
+
+time_unit: "0.025"
+tolerance: "0.0001"
+task_weight_cycle: ["6", "12", "18", "24"]
+c: "1"
+gamma: "1"
+
+profiles:
+  io:
+    sequence: [human, agent, human]
+    human_split: ["1/2", "1/2"]
+    agent_split: ["1"]
+  alternating_sync:
+    sequence: [human, agent, human, agent, human, agent, human]
+    human_split: ["1/4", "1/4", "1/4", "1/4"]
+    agent_split: ["1/3", "1/3", "1/3"]
+  alternating_staggered:
+    sequence: [human, agent, human, agent, human, agent, human]
+    human_split: ["1/4", "1/4", "1/4", "1/4"]
+    agent_split_cycle:
+      - ["1/6", "2/6", "3/6"]
+      - ["2/6", "3/6", "1/6"]
+      - ["3/6", "1/6", "2/6"]
+
+exact_solver:
+  time_limit_seconds: 60
+  random_seed: 0
+  workers: 1
+
+counterexample_selection:
+  predicate: "T_star > B4 + tolerance"
+  order: [task_count, total_work, scenario_id]
+
+hypotheses:
+  - "B4 is attained more often on chains and IO profiles."
+  - "Alternating synchronization can create T_star > B4."
+  - "The exact tightness gap and baseline heuristic gap are distinct outcomes."

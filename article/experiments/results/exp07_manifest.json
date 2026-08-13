@@ -1,0 +1,255 @@
+{
+  "experiment_id": "EXP-07",
+  "generated_at": "2026-08-09T21:11:35.726127+00:00",
+  "command": "uv run python -m experiments run --experiment EXP-07",
+  "git_commit": "9589381d951500704bcb3a54603d65b16b1adb1f",
+  "git_dirty": true,
+  "frozen_matrix": {
+    "path": "scenarios/canonical/exp07_matrix.yaml",
+    "sha256": "0a9e54e92dbe45c1005fd79de226627e6e6ca79f1fc83860426ce078044f15ab"
+  },
+  "design": {
+    "type": "stratified_pilot",
+    "cells": 72,
+    "accepted_dags": 1440,
+    "accepted_seeds_per_cell": 20,
+    "rejected_attempts": 405,
+    "limitation": "rho_L bin is stratified by topology family rather than crossed with it; topology-family and rho_L effects are therefore not separately identified."
+  },
+  "exact_audit": {
+    "dags": 12,
+    "expected_scenario_rows": 36,
+    "scenario_rows": 36,
+    "status_counts": {
+      "FEASIBLE": 18,
+      "OPTIMAL": 18
+    },
+    "time_limit_seconds": 10.0,
+    "random_seed": 0,
+    "workers": 1,
+    "resource_amendment": "Before any claim outcome was written or inspected, an aborted timing pass showed that 20 exact variants per selected DAG did not reach the first 120-DAG progress mark in 7m52s. The same 12 DAGs are retained, while the exact scope is globally restricted to baseline gap and C1 (36 scenarios) with a common 10-second limit. Generator-only files from the aborted pass are overwritten by the final run."
+  },
+  "claims": {
+    "C1": {
+      "description": "alternating-sync does not reduce median tightness relative to staggered",
+      "paired_contrast": "(T_sync/B4-1) - (T_staggered/B4-1), same DAG, P=4, C=gamma=1",
+      "primary_metric": "median_paired_delta_tightness",
+      "expected_sign": "nonnegative",
+      "confirmation_rule": "bootstrap_95_interval_median_upper_and_point_estimate_nonnegative",
+      "allowed_exceptions": "individual negative DAG contrasts are retained and reported"
+    },
+    "C2": {
+      "description": "increasing agent or human cost moves policy-optimal P down or leaves it unchanged",
+      "paired_contrast": "P_opt_cost_regime - P_opt_base, same DAG and P grid",
+      "primary_metric": "median_paired_delta_policy_optimal_p",
+      "expected_sign": "nonpositive",
+      "confirmation_rule": "median_nonpositive_and_reversal_rate_at_most_0.05",
+      "allowed_exceptions": "ties and up to five percent positive DAG contrasts"
+    },
+    "C3": {
+      "description": "decomposition benefits from P and is attenuated by overhead",
+      "paired_contrast": "interaction=[T(P=4,m=1)-T(P=4,m=3)]-[T(P=1,m=1)-T(P=1,m=3)]; attenuation=gain(r_o=0)-gain(r_o=0.10) at P=4",
+      "primary_metric": "median_interaction_and_attenuation",
+      "expected_sign": "nonnegative",
+      "confirmation_rule": "both_medians_nonnegative",
+      "allowed_exceptions": "individual negative DAG contrasts are retained and reported"
+    },
+    "C4": {
+      "description": "high rho_H_cp increases the human-active lower-bound branch frequency",
+      "paired_contrast": "I(human active | high)-I(human active | low), paired by N, topology, weight type and observation seed at P=4, C=gamma=1",
+      "primary_metric": "mean_paired_indicator_delta",
+      "expected_sign": "positive",
+      "confirmation_rule": "paired_mean_positive_and_high_frequency_above_low_frequency",
+      "allowed_exceptions": "zero and negative individual paired indicators"
+    }
+  },
+  "pilot_extension": {
+    "evaluate_after_accepted_seeds": 20,
+    "maximum_accepted_seeds": 50,
+    "predeclared_key_cells": [
+      {
+        "task_count": 16,
+        "topology_family": "mixed",
+        "weight_type": "lognormal",
+        "human_concentration_bin": "medium"
+      },
+      {
+        "task_count": 64,
+        "topology_family": "mixed",
+        "weight_type": "lognormal",
+        "human_concentration_bin": "high"
+      }
+    ],
+    "extend_if": "A primary paired median has a bootstrap interval crossing zero or the Monte Carlo standard error of a primary proportion exceeds 0.05.",
+    "current_run": "pilot_only",
+    "triggered_by_global_summary": false,
+    "executed": false
+  },
+  "dependencies": {
+    "matplotlib": "3.11.1",
+    "ortools": "9.15.6755",
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "outputs": [
+    {
+      "path": "results/exp07_generation_attempts.csv",
+      "sha256": "b9a92c99589775078c2999480e73dcddcaba026ad1aae302adc07b3ce1e686ab"
+    },
+    {
+      "path": "results/exp07_dags.csv",
+      "sha256": "79d80d64214282cd12cda69c9f7209f0aa064d8466402a8638a42d46aa088727"
+    },
+    {
+      "path": "results/exp07_runs.csv",
+      "sha256": "166ef262f73a8285105de6311655af01218321045b438758100a93ca3924d561"
+    },
+    {
+      "path": "results/exp07_exact.csv",
+      "sha256": "18831db33245165c2e232589718cb45d2c08edc86d49b7ce66f553721975ccdf"
+    },
+    {
+      "path": "results/exp07_claim_pairs.csv",
+      "sha256": "8ca1d00b79642ea03aeaf049d7af0a3f6fa5fc55d5278f08cb99218781348e9c"
+    },
+    {
+      "path": "results/exp07_claim_summary.csv",
+      "sha256": "d7ec7a83d96ffc6e8082f69dcd5656fc9a2d36cb194cbe476a5725f152f0d4ef"
+    },
+    {
+      "path": "results/exp07_report.md",
+      "sha256": "4fdca014bc2e2b59503d91ae4fe63bf8a8c2dd692be953edefda9352c8afe5b7"
+    },
+    {
+      "path": "figures/exp07_design_coverage.svg",
+      "sha256": "327482179813f371f2c6cf60f7996cb6fdba0241365a192074ed5d3e8ffc600f"
+    },
+    {
+      "path": "figures/exp07_design_coverage.png",
+      "sha256": "45c87038e46169c4f1ab4eb5aece1bb2f2c6cdff3c6790881ae84de0a760804a"
+    },
+    {
+      "path": "figures/exp07_claim_effects.svg",
+      "sha256": "e462c14a6cbc14ff94a75bb92b38cee168050e6afb96b288eb4be1b2601f0ddb"
+    },
+    {
+      "path": "figures/exp07_claim_effects.png",
+      "sha256": "ae61cc9c3257254953b9f5c4f1afe2d8959b4a0512126ea5841e86fea6c55751"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "src/experiments/__init__.py",
+      "sha256": "9a13c0738db91e8e7213df5033ad383582fbfb2cfb50a0fed2299096d882c9ad"
+    },
+    {
+      "path": "src/experiments/__main__.py",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    {
+      "path": "src/experiments/bounds.py",
+      "sha256": "06d7e485f6b132a53bade3edaf8f22781c6b8fa077193cb480ec1cd046f5e645"
+    },
+    {
+      "path": "src/experiments/candidate_figures.py",
+      "sha256": "4e96441a348ddb6a9a79539b1bd66fda7112b0e767a3a9da4bee4979aa521dbe"
+    },
+    {
+      "path": "src/experiments/cli.py",
+      "sha256": "c1249debcd15ebeb6bb78944200b1f744de1b7c2f6e8cb0b59bc188166183f51"
+    },
+    {
+      "path": "src/experiments/exact_solver.py",
+      "sha256": "382856a79fa280ac197e696171b9b418a71907fdd7d159f75514e1363acf7a35"
+    },
+    {
+      "path": "src/experiments/exp01.py",
+      "sha256": "02f1339eb4844dd9212f2ff899388f1a2feef8e46c61e04d05e1e2deee879611"
+    },
+    {
+      "path": "src/experiments/exp01_figures.py",
+      "sha256": "e8b767b4d80953cda373c8b889ee4a70bef9ff2b05e015222d4eabad7c9b2a55"
+    },
+    {
+      "path": "src/experiments/exp02.py",
+      "sha256": "3b9bb29ef0c30748a3aed23249210585b3c6c97080566647da3d7261b430f4a5"
+    },
+    {
+      "path": "src/experiments/exp02_figures.py",
+      "sha256": "095c889c2751d35ae91bd16a5a261950b7d61732315f50836de64367c54bca81"
+    },
+    {
+      "path": "src/experiments/exp03.py",
+      "sha256": "d9fc7819988dc9fa81562752898f15656ae120c116d7652a1a56eeb8ef377ece"
+    },
+    {
+      "path": "src/experiments/exp03_figures.py",
+      "sha256": "3ff324befa9e715081b0285604b152f75849b56e6099ab2fe8ed3814a87a5fdf"
+    },
+    {
+      "path": "src/experiments/exp04.py",
+      "sha256": "256ed936da7cd4f8ca725b756a019eec3f74069cba1868ef15557a1f3e6e2d89"
+    },
+    {
+      "path": "src/experiments/exp04_figures.py",
+      "sha256": "1a9a5b2b9bb562259a29448775303091aee1b5a51a32fb98f1fa02f8a5dbf377"
+    },
+    {
+      "path": "src/experiments/exp05.py",
+      "sha256": "9c547c47bd4fbc06a192823befe691d69affd6bac02ac943ae26fc824dee0dda"
+    },
+    {
+      "path": "src/experiments/exp05_figures.py",
+      "sha256": "8ff9560dc44244a657889e5f50458a73130582838147ba2292dc0eeae87aba4e"
+    },
+    {
+      "path": "src/experiments/exp06.py",
+      "sha256": "d7d32171aa2aa3c72476fc8fd8633eb171ea988308637135399f662378d438c5"
+    },
+    {
+      "path": "src/experiments/exp06_figures.py",
+      "sha256": "e55c3bfaa2b42259929d5769f88faa5250c7f006cf72fa0ddf8602a8eb9bd110"
+    },
+    {
+      "path": "src/experiments/exp07.py",
+      "sha256": "4e459c931911cbdc98d0908b9a285e33109a6344adcdf1feeea401aa3fabdeac"
+    },
+    {
+      "path": "src/experiments/exp07_figures.py",
+      "sha256": "bb9047d921a1d0416c8eae2a9812b829b6eb66fe65629767b8e87a4a95524b79"
+    },
+    {
+      "path": "src/experiments/exp08.py",
+      "sha256": "fb198e6d410497af0fc35d9737f7b4b5738576e28b660d27bb8cda08d3900ddf"
+    },
+    {
+      "path": "src/experiments/exp08_figures.py",
+      "sha256": "d20e23cbdeece09781f539dea748845ebabb935b16921819f6555fb6f840701a"
+    },
+    {
+      "path": "src/experiments/figures.py",
+      "sha256": "392e0620f320842247cfc57dac9481e379ed1c8aae8f7ad047c54b9f8ed59142"
+    },
+    {
+      "path": "src/experiments/generators.py",
+      "sha256": "d62a6adcae63484650a60b298544bf0f31c40898ca2952af1750be9d36cde932"
+    },
+    {
+      "path": "src/experiments/provenance.py",
+      "sha256": "600516cc047979a867191aeecf32273e03525aa70d95c1b79975886eeefd4a7f"
+    },
+    {
+      "path": "src/experiments/schema.py",
+      "sha256": "ac038ca2e653c4991ae2727b7c139a72de28e1a0b3dfedb2f80ea642a231cbdc"
+    },
+    {
+      "path": "src/experiments/simulator.py",
+      "sha256": "5aaa5e58d6c192feed0f5b56080c38f9dd58c57b1547c8c280d732624b0eb3ee"
+    },
+    {
+      "path": "src/experiments/validator.py",
+      "sha256": "f5a1c2caf12367fe8711266dfcd56cfcb103cc3dd016d10f67cc6bb617a5e0b5"
+    }
+  ],
+  "article_modified": false
+}

@@ -1,0 +1,36 @@
+.DS_Store
+
+# LaTeX intermediates
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+article/output/
+article/build/
+
+# Python
+article/experiments/.venv/
+article/experiments/.pytest_cache/
+**/__pycache__/
+*.pyc
+
+# Calculator dependencies and generated output
+article/calculator/node_modules/
+article/calculator/.next/
+article/calculator/.vinext/
+article/calculator/.wrangler/
+article/calculator/dist/
+article/calculator/coverage/
+article/calculator/outputs/
+article/calculator/work/
+article/calculator/.env*
+
+# Local databases and secrets
+*.sqlite
+*.sqlite3
+*.db
+*.pem

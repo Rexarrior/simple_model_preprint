@@ -1,0 +1,70 @@
+schema_version: 1
+experiment_id: EXP-03
+frozen: true
+frozen_at: "2026-08-07"
+
+# Two DAGs x two P values x two human shares x four phase profiles.
+expected_point_count: 32
+source_matrix: scenarios/canonical/exp01_matrix.yaml
+topologies:
+  - fork_join
+  - two_layer
+task_count: 4
+agent_counts: [2, 4]
+human_shares: ["0.25", "0.50"]
+phase_profiles:
+  - io
+  - front_loaded
+  - alternating_sync
+  - alternating_staggered
+reference_profile: io
+
+time_unit: "0.025"
+tolerance: "0.0001"
+task_weight_cycle: ["6", "12", "18", "24"]
+c: "1"
+gamma: "1"
+
+profiles:
+  io:
+    sequence: [human, agent, human]
+    human_split: ["0.50", "0.50"]
+    agent_split: ["1"]
+  front_loaded:
+    sequence: [human, agent, human]
+    human_split: ["0.90", "0.10"]
+    agent_split: ["1"]
+  alternating_sync:
+    sequence: [human, agent, human, agent, human, agent, human]
+    human_split: ["0.25", "0.25", "0.25", "0.25"]
+    agent_split: ["1/3", "1/3", "1/3"]
+  alternating_staggered:
+    sequence: [human, agent, human, agent, human, agent, human]
+    human_split: ["0.25", "0.25", "0.25", "0.25"]
+    agent_split_cycle:
+      - ["1/6", "2/6", "3/6"]
+      - ["2/6", "3/6", "1/6"]
+      - ["3/6", "1/6", "2/6"]
+
+baseline_policy:
+  policy_id: bottom_level_fcfs_v1
+  ready_tasks: bottom_level_desc,weight_desc,task_id
+  human_queue: request_time,bottom_level_desc,task_id,phase_index
+
+exact_solver:
+  time_limit_seconds: 60
+  random_seed: 0
+  workers: 1
+
+counterexample_selection:
+  predicate: "same B4 and abs(delta_T_star_to_IO) > tolerance"
+  order: "maximum abs(delta_T_star_to_IO), then scenario_id"
+
+full_agent_stop_definition: >-
+  Total duration of intervals in which all P agent slots are occupied by task
+  spans while zero agent phases are executing.
+
+hypotheses:
+  - "Equal A, H and B4 do not necessarily imply equal exact makespan."
+  - "Synchronized repeated human requests increase queues and full-agent-stop time."
+  - "Phase-profile effects on exact makespan and baseline performance are distinct."

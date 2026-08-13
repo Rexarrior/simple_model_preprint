@@ -1,0 +1,3 @@
+mode,grid_point_count,proven_pair_count,crossing_found,minimum_crossing_u,margin_at_crossing,margin_at_u0,margin_at_u_stop
+critical_task_agent,191,191,false,,,6.50,1.25
+test_human_phases,191,191,false,,,6.50,3.15

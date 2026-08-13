@@ -1,0 +1,17 @@
+dag_id,task_count,topology_family,observation_index,allocation,phase_profile,P,B4,solver_status,solver_objective,solver_best_bound,solver_gap,solver_wall_time_seconds
+exp08_confirmatory_n8_mixed_homogeneous_00,8,mixed,0,low,io,4,48.000,OPTIMAL,51.3120,51.31200,0.0,0.035282
+exp08_confirmatory_n8_mixed_homogeneous_00,8,mixed,0,high,io,4,48.000,OPTIMAL,50.5920,50.59200,0.0,0.014857
+exp08_confirmatory_n8_mixed_homogeneous_00,8,mixed,0,low,io,8,48.000,OPTIMAL,51.3120,51.31200,0.0,0.163151
+exp08_confirmatory_n8_mixed_homogeneous_00,8,mixed,0,high,io,8,48.000,OPTIMAL,50.5920,50.59200,0.0,0.019346
+exp08_confirmatory_n8_mixed_homogeneous_01,8,mixed,1,low,io,4,48.000,OPTIMAL,50.8800,50.88000,0.0,0.006420
+exp08_confirmatory_n8_mixed_homogeneous_01,8,mixed,1,high,io,4,48.000,OPTIMAL,50.5920,50.59200,0.0,0.270788
+exp08_confirmatory_n8_mixed_homogeneous_01,8,mixed,1,low,io,8,48.000,OPTIMAL,50.8800,50.88000,0.0,0.253245
+exp08_confirmatory_n8_mixed_homogeneous_01,8,mixed,1,high,io,8,48.000,OPTIMAL,50.5920,50.59200,0.0,0.023389
+exp08_confirmatory_n8_chain_like_homogeneous_00,8,chain_like,0,low,io,4,72.000,OPTIMAL,73.1520,73.15200,0.0,0.008425
+exp08_confirmatory_n8_chain_like_homogeneous_00,8,chain_like,0,high,io,4,72.000,OPTIMAL,73.7280,73.72800,0.0,0.022261
+exp08_confirmatory_n8_chain_like_homogeneous_00,8,chain_like,0,low,io,8,72.000,OPTIMAL,73.1520,73.15200,0.0,0.006268
+exp08_confirmatory_n8_chain_like_homogeneous_00,8,chain_like,0,high,io,8,72.000,OPTIMAL,73.7280,73.72800,0.0,0.023161
+exp08_confirmatory_n8_chain_like_homogeneous_01,8,chain_like,1,low,io,4,72.000,OPTIMAL,73.1520,73.15200,0.0,0.007981
+exp08_confirmatory_n8_chain_like_homogeneous_01,8,chain_like,1,high,io,4,72.000,OPTIMAL,73.7280,73.72800,0.0,0.018719
+exp08_confirmatory_n8_chain_like_homogeneous_01,8,chain_like,1,low,io,8,72.000,OPTIMAL,73.1520,73.15200,0.0,0.005133
+exp08_confirmatory_n8_chain_like_homogeneous_01,8,chain_like,1,high,io,8,72.000,OPTIMAL,73.7280,73.72800,0.0,0.023696

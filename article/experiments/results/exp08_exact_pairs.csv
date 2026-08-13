@@ -1,0 +1,9 @@
+dag_id,task_count,topology_family,observation_index,phase_profile,P,low_T_star,high_T_star,B4,delta_T_star,delta_T_star_normalized
+exp08_confirmatory_n8_chain_like_homogeneous_00,8,chain_like,0,io,4,73.1520,73.7280,72.000,0.5760,0.008
+exp08_confirmatory_n8_chain_like_homogeneous_00,8,chain_like,0,io,8,73.1520,73.7280,72.000,0.5760,0.008
+exp08_confirmatory_n8_chain_like_homogeneous_01,8,chain_like,1,io,4,73.1520,73.7280,72.000,0.5760,0.008
+exp08_confirmatory_n8_chain_like_homogeneous_01,8,chain_like,1,io,8,73.1520,73.7280,72.000,0.5760,0.008
+exp08_confirmatory_n8_mixed_homogeneous_00,8,mixed,0,io,4,51.3120,50.5920,48.000,-0.7200,-0.015
+exp08_confirmatory_n8_mixed_homogeneous_00,8,mixed,0,io,8,51.3120,50.5920,48.000,-0.7200,-0.015
+exp08_confirmatory_n8_mixed_homogeneous_01,8,mixed,1,io,4,50.8800,50.5920,48.000,-0.2880,-0.006
+exp08_confirmatory_n8_mixed_homogeneous_01,8,mixed,1,io,8,50.8800,50.5920,48.000,-0.2880,-0.006

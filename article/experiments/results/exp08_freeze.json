@@ -1,0 +1,60 @@
+{
+  "experiment_id": "EXP-08",
+  "status": "frozen_for_confirmatory",
+  "frozen_at": "2026-08-07T23:46:57.759442+00:00",
+  "matrix": {
+    "path": "scenarios/canonical/exp08_matrix.yaml",
+    "sha256": "571d3eaf6023bd25c304328b95b479bb2c3b543be38dc8f951f7d87bff5ee8d2"
+  },
+  "development": {
+    "namespace": "EXP-08-development-v1",
+    "accepted_graphs": 240,
+    "outcomes_used": false,
+    "allocator_rows": 480,
+    "all_allocator_checks_passed": true,
+    "policy_timing_rows": 480,
+    "exact_timing_rows": 8,
+    "exp07_raw_seed_overlap": 0
+  },
+  "confirmatory": {
+    "namespace": "EXP-08-confirmatory-v1",
+    "expected_graphs": 480,
+    "exact_task_counts": [
+      8
+    ],
+    "exact_topology_families": [
+      "mixed",
+      "chain_like"
+    ],
+    "exact_observation_indices": [
+      0,
+      1
+    ],
+    "exact_time_limit_seconds": 30.0,
+    "exact_workers": 1,
+    "exact_random_seed": 0
+  },
+  "development_outputs": [
+    {
+      "path": "results/exp08_development_attempts.csv",
+      "sha256": "f7458674ca26ffb07412fde7af02b5eb92907d98c38a7d30a22379b23fcb2554"
+    },
+    {
+      "path": "results/exp08_development_dags.csv",
+      "sha256": "7f0c247d60d431cf6be194e9c053fa439da7263363f6955ca31be322351b19cf"
+    },
+    {
+      "path": "results/exp08_development_allocator_audit.csv",
+      "sha256": "2b9e396daefe05b4542662a56fa3d2fa54f4ba58db6a98578db9d5183928bbac"
+    },
+    {
+      "path": "results/exp08_development_policy_timing.csv",
+      "sha256": "4df0b73526d50350a87ecbe660f57257cffee4e6234f60f715d31edc681a05bf"
+    },
+    {
+      "path": "results/exp08_development_exact_timing.csv",
+      "sha256": "f2caecae6596334685da97816f10a0a7424ca4ef987c604d89b26f2bcccb1a6d"
+    }
+  ],
+  "article_modified": false
+}

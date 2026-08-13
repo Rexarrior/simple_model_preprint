@@ -1,0 +1,27 @@
+[project]
+name = "simple-model-experiments"
+version = "0.1.0"
+description = "Reproducible computational experiments for the simple_model_full article"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "matplotlib==3.11.1",
+  "ortools==9.15.6755",
+  "PyYAML==6.0.3",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3,<10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/experiments"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]

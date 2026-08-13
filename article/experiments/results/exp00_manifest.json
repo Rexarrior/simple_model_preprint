@@ -1,0 +1,180 @@
+{
+  "experiment_id": "EXP-00",
+  "generated_at": "2026-08-09T20:45:46.057365+00:00",
+  "command": "uv run python -m experiments run --experiment EXP-00",
+  "git_commit": "9589381d951500704bcb3a54603d65b16b1adb1f",
+  "git_dirty": true,
+  "dependencies": {
+    "matplotlib": "3.11.1",
+    "ortools": "9.15.6755",
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "solver": {
+    "time_limit_seconds": 300.0,
+    "random_seed": 0,
+    "workers": 1
+  },
+  "baseline_policy": {
+    "ready_tasks": "bottom_level_desc,weight_desc,task_id",
+    "human_queue": "request_time,bottom_level_desc,task_id,phase_index"
+  },
+  "implementation": [
+    {
+      "path": "src/experiments/__init__.py",
+      "sha256": "9a13c0738db91e8e7213df5033ad383582fbfb2cfb50a0fed2299096d882c9ad"
+    },
+    {
+      "path": "src/experiments/__main__.py",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    {
+      "path": "src/experiments/bounds.py",
+      "sha256": "06d7e485f6b132a53bade3edaf8f22781c6b8fa077193cb480ec1cd046f5e645"
+    },
+    {
+      "path": "src/experiments/candidate_figures.py",
+      "sha256": "4e96441a348ddb6a9a79539b1bd66fda7112b0e767a3a9da4bee4979aa521dbe"
+    },
+    {
+      "path": "src/experiments/cli.py",
+      "sha256": "c1249debcd15ebeb6bb78944200b1f744de1b7c2f6e8cb0b59bc188166183f51"
+    },
+    {
+      "path": "src/experiments/exact_solver.py",
+      "sha256": "382856a79fa280ac197e696171b9b418a71907fdd7d159f75514e1363acf7a35"
+    },
+    {
+      "path": "src/experiments/exp01.py",
+      "sha256": "02f1339eb4844dd9212f2ff899388f1a2feef8e46c61e04d05e1e2deee879611"
+    },
+    {
+      "path": "src/experiments/exp01_figures.py",
+      "sha256": "e8b767b4d80953cda373c8b889ee4a70bef9ff2b05e015222d4eabad7c9b2a55"
+    },
+    {
+      "path": "src/experiments/exp02.py",
+      "sha256": "3b9bb29ef0c30748a3aed23249210585b3c6c97080566647da3d7261b430f4a5"
+    },
+    {
+      "path": "src/experiments/exp02_figures.py",
+      "sha256": "095c889c2751d35ae91bd16a5a261950b7d61732315f50836de64367c54bca81"
+    },
+    {
+      "path": "src/experiments/exp03.py",
+      "sha256": "d9fc7819988dc9fa81562752898f15656ae120c116d7652a1a56eeb8ef377ece"
+    },
+    {
+      "path": "src/experiments/exp03_figures.py",
+      "sha256": "3ff324befa9e715081b0285604b152f75849b56e6099ab2fe8ed3814a87a5fdf"
+    },
+    {
+      "path": "src/experiments/exp04.py",
+      "sha256": "256ed936da7cd4f8ca725b756a019eec3f74069cba1868ef15557a1f3e6e2d89"
+    },
+    {
+      "path": "src/experiments/exp04_figures.py",
+      "sha256": "1a9a5b2b9bb562259a29448775303091aee1b5a51a32fb98f1fa02f8a5dbf377"
+    },
+    {
+      "path": "src/experiments/exp05.py",
+      "sha256": "9c547c47bd4fbc06a192823befe691d69affd6bac02ac943ae26fc824dee0dda"
+    },
+    {
+      "path": "src/experiments/exp05_figures.py",
+      "sha256": "8ff9560dc44244a657889e5f50458a73130582838147ba2292dc0eeae87aba4e"
+    },
+    {
+      "path": "src/experiments/exp06.py",
+      "sha256": "d7d32171aa2aa3c72476fc8fd8633eb171ea988308637135399f662378d438c5"
+    },
+    {
+      "path": "src/experiments/exp06_figures.py",
+      "sha256": "e55c3bfaa2b42259929d5769f88faa5250c7f006cf72fa0ddf8602a8eb9bd110"
+    },
+    {
+      "path": "src/experiments/exp07.py",
+      "sha256": "4e459c931911cbdc98d0908b9a285e33109a6344adcdf1feeea401aa3fabdeac"
+    },
+    {
+      "path": "src/experiments/exp07_figures.py",
+      "sha256": "bb9047d921a1d0416c8eae2a9812b829b6eb66fe65629767b8e87a4a95524b79"
+    },
+    {
+      "path": "src/experiments/exp08.py",
+      "sha256": "fb198e6d410497af0fc35d9737f7b4b5738576e28b660d27bb8cda08d3900ddf"
+    },
+    {
+      "path": "src/experiments/exp08_figures.py",
+      "sha256": "d20e23cbdeece09781f539dea748845ebabb935b16921819f6555fb6f840701a"
+    },
+    {
+      "path": "src/experiments/figures.py",
+      "sha256": "392e0620f320842247cfc57dac9481e379ed1c8aae8f7ad047c54b9f8ed59142"
+    },
+    {
+      "path": "src/experiments/generators.py",
+      "sha256": "d62a6adcae63484650a60b298544bf0f31c40898ca2952af1750be9d36cde932"
+    },
+    {
+      "path": "src/experiments/provenance.py",
+      "sha256": "600516cc047979a867191aeecf32273e03525aa70d95c1b79975886eeefd4a7f"
+    },
+    {
+      "path": "src/experiments/schema.py",
+      "sha256": "ac038ca2e653c4991ae2727b7c139a72de28e1a0b3dfedb2f80ea642a231cbdc"
+    },
+    {
+      "path": "src/experiments/simulator.py",
+      "sha256": "5aaa5e58d6c192feed0f5b56080c38f9dd58c57b1547c8c280d732624b0eb3ee"
+    },
+    {
+      "path": "src/experiments/validator.py",
+      "sha256": "f5a1c2caf12367fe8711266dfcd56cfcb103cc3dd016d10f67cc6bb617a5e0b5"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "361e9875a9c182504b78b1247b69cfc13b6d7272dd1f7fad5330853a343a1b0a"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "7a5f6fa24ce4038c92ecf0ecf7f661ee58bd2e11e63a8697997efdbb21b3dfb6"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "practical_variant_2",
+      "path": "scenarios/article/variant_2.yaml",
+      "sha256": "7bf9b48abf25ccc085e4de7f3632cc0ac51cbbfd487b6b2dec7bb54586f7b199"
+    },
+    {
+      "scenario_id": "practical_variant_3",
+      "path": "scenarios/article/variant_3.yaml",
+      "sha256": "2d535815c042db5089d02cb2b118b0cc6f1f7c4af50dc3b56d594b278d904778"
+    },
+    {
+      "scenario_id": "practical_variant_4",
+      "path": "scenarios/article/variant_4.yaml",
+      "sha256": "9d9e2e2c4134be3ba9fbd4ea685fbe8f22342815ed129c4a0c8a2d7c157592d6"
+    }
+  ],
+  "summary": "results/exp00_summary.csv",
+  "figures": [
+    {
+      "path": "figures/exp00_dag_variants_3_4.svg",
+      "sha256": "f704f2424195797134b029ee752d3b5cb0bf26d20975a965e8ab14e731724dae"
+    },
+    {
+      "path": "figures/exp00_dag_variants_3_4.png",
+      "sha256": "f69c5d191882edfb1011a7af793b300a7c9355c8a096c8dcf1a7a6139d956268"
+    },
+    {
+      "path": "figures/exp00_gantt_variant_2.svg",
+      "sha256": "0922fc3a37713daed33a261fc53fa8dd1ca35bd7c35eca23df3c8bc60e85760d"
+    },
+    {
+      "path": "figures/exp00_gantt_variant_2.png",
+      "sha256": "63bf7ae117333ab6ea50a425a8c9f5775220210cadf6c12c6f58887ee25ef328"
+    }
+  ]
+}

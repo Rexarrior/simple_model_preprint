@@ -1,0 +1,186 @@
+schema_version: 1
+experiment_id: EXP-07
+frozen: true
+frozen_at: "2026-08-07"
+
+design:
+  design_type: stratified_pilot
+  task_counts: [8, 16, 32, 64]
+  topology_families: [wide_layered, mixed, chain_like]
+  weight_types: [homogeneous, lognormal]
+  human_concentration_bins: [low, medium, high]
+  observation_seeds: {start: 0, stop: 19}
+  expected_cells: 72
+  expected_accepted_dags: 1440
+  limitation: >-
+    rho_L bin is stratified by topology family rather than crossed with it;
+    topology-family and rho_L effects are therefore not separately identified.
+
+generator:
+  master_seed: 707000
+  max_attempts_per_observation: 200
+  time_unit: "0.001"
+  tolerance: "0.000001"
+  base_effort: "12"
+  topology:
+    wide_layered:
+      target_rho_l_bin: low
+      layer_fraction: "0.20"
+      adjacent_edge_probability: "0.30"
+      skip_edge_probability: "0.00"
+    mixed:
+      target_rho_l_bin: medium
+      layer_fraction: "0.45"
+      adjacent_edge_probability: "0.25"
+      skip_edge_probability: "0.04"
+    chain_like:
+      target_rho_l_bin: high
+      layer_fraction: "0.75"
+      adjacent_edge_probability: "0.15"
+      skip_edge_probability: "0.00"
+  weights:
+    homogeneous:
+      integer_multiplier: 1
+    lognormal:
+      mu: "0"
+      sigma: "0.55"
+      integer_multiplier_scale: "2"
+      minimum_multiplier: 1
+      maximum_multiplier: 6
+  rho_l_bins:
+    low: {lower: "0.10", upper: "0.30", upper_inclusive: false}
+    medium: {lower: "0.30", upper: "0.60", upper_inclusive: false}
+    high: {lower: "0.60", upper: "0.90", upper_inclusive: true}
+  rho_h_cp_bins:
+    low: {lower: "0.00", upper: "0.30", upper_inclusive: false, target: "0.18"}
+    medium: {lower: "0.30", upper: "0.60", upper_inclusive: false, target: "0.45"}
+    high: {lower: "0.60", upper: "1.00", upper_inclusive: true, target: "0.75"}
+  human_share_grid:
+    - "0.025"
+    - "0.05"
+    - "0.10"
+    - "0.15"
+    - "0.20"
+    - "0.25"
+    - "0.30"
+    - "0.35"
+    - "0.40"
+    - "0.45"
+    - "0.50"
+    - "0.55"
+    - "0.60"
+    - "0.65"
+    - "0.70"
+    - "0.75"
+    - "0.80"
+  graph_checks:
+    - acyclic
+    - weakly_connected
+    - every_task_reachable_from_source
+    - rho_l_in_target_bin
+    - rho_h_cp_in_target_bin
+  rejection_rule: >-
+    Each observation seed is retried with a deterministic raw seed until every
+    graph check passes or max_attempts_per_observation is reached. Rejected
+    attempts are stored but never counted as observations.
+
+baseline_policy:
+  policy_id: bottom_level_fcfs_v1
+  ready_tasks: bottom_level_desc,weight_desc,task_id
+  human_queue: request_time,bottom_level_desc,task_id,phase_index
+
+claims:
+  C1:
+    description: alternating-sync does not reduce median tightness relative to staggered
+    paired_contrast: >-
+      (T_sync/B4-1) - (T_staggered/B4-1), same DAG, P=4, C=gamma=1
+    primary_metric: median_paired_delta_tightness
+    expected_sign: nonnegative
+    confirmation_rule: bootstrap_95_interval_median_upper_and_point_estimate_nonnegative
+    allowed_exceptions: individual negative DAG contrasts are retained and reported
+  C2:
+    description: increasing agent or human cost moves policy-optimal P down or leaves it unchanged
+    paired_contrast: P_opt_cost_regime - P_opt_base, same DAG and P grid
+    primary_metric: median_paired_delta_policy_optimal_p
+    expected_sign: nonpositive
+    confirmation_rule: median_nonpositive_and_reversal_rate_at_most_0.05
+    allowed_exceptions: ties and up to five percent positive DAG contrasts
+  C3:
+    description: decomposition benefits from P and is attenuated by overhead
+    paired_contrast: >-
+      interaction=[T(P=4,m=1)-T(P=4,m=3)]-[T(P=1,m=1)-T(P=1,m=3)];
+      attenuation=gain(r_o=0)-gain(r_o=0.10) at P=4
+    primary_metric: median_interaction_and_attenuation
+    expected_sign: nonnegative
+    confirmation_rule: both_medians_nonnegative
+    allowed_exceptions: individual negative DAG contrasts are retained and reported
+  C4:
+    description: high rho_H_cp increases the human-active lower-bound branch frequency
+    paired_contrast: >-
+      I(human active | high)-I(human active | low), paired by N, topology,
+      weight type and observation seed at P=4, C=gamma=1
+    primary_metric: mean_paired_indicator_delta
+    expected_sign: positive
+    confirmation_rule: paired_mean_positive_and_high_frequency_above_low_frequency
+    allowed_exceptions: zero and negative individual paired indicators
+
+claim_parameters:
+  phase_profiles: [io, alternating_sync, alternating_staggered]
+  default_agent_count: 4
+  p_grid: [1, 2, 4, 8]
+  cost_regimes:
+    base: {c: "1", gamma: "1"}
+    agent_cost: {c_formula: "1+0.05(P-1)+0.005P(P-1)", gamma: "1"}
+    human_cost: {c: "1", gamma_formula: "1+0.10(P-1)"}
+  decomposition:
+    m: 3
+    p_low: 1
+    p_high: 4
+    overhead_rates: ["0", "0.10"]
+    human_overhead_share: "0.50"
+    selected_task_rule: maximum-effort task on the B4 critical path, then task_id
+
+exact_audit:
+  task_counts: [8, 16]
+  weight_types: [homogeneous]
+  human_concentration_bins: [medium]
+  observation_seeds: [0, 1]
+  expected_dags: 12
+  expected_scenarios: 36
+  scenario_scope:
+    baseline_gap: {phase_profile: io, agent_count: 4}
+    C1: {phase_profiles: [alternating_sync, alternating_staggered], agent_count: 4}
+    C2: policy_only
+    C3: policy_only
+    C4: lower_bound_only
+  time_limit_seconds: 10
+  random_seed: 0
+  workers: 1
+  reporting_rule: >-
+    Only OPTIMAL objectives are labelled T_star. FEASIBLE rows retain incumbent,
+    best bound and relative gap and are excluded from proven exact contrasts.
+  resource_amendment: >-
+    Before any claim outcome was written or inspected, an aborted timing pass
+    showed that 20 exact variants per selected DAG did not reach the first
+    120-DAG progress mark in 7m52s. The same 12 DAGs are retained, while the
+    exact scope is globally restricted to baseline gap and C1 (36 scenarios)
+    with a common 10-second limit. Generator-only files from the aborted pass
+    are overwritten by the final run.
+
+pilot_extension:
+  evaluate_after_accepted_seeds: 20
+  maximum_accepted_seeds: 50
+  predeclared_key_cells:
+    - {task_count: 16, topology_family: mixed, weight_type: lognormal, human_concentration_bin: medium}
+    - {task_count: 64, topology_family: mixed, weight_type: lognormal, human_concentration_bin: high}
+  extend_if: >-
+    A primary paired median has a bootstrap interval crossing zero or the
+    Monte Carlo standard error of a primary proportion exceeds 0.05.
+  current_run: pilot_only
+
+reporting:
+  bootstrap_resamples: 2000
+  bootstrap_seed: 707071
+  quantiles: ["0.25", "0.50", "0.75", "0.90", "0.95"]
+  confirmatory_claims: [C1, C2, C3, C4]
+  exploratory_results_must_be_separate: true

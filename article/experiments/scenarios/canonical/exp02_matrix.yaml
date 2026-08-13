@@ -1,0 +1,74 @@
+schema_version: 1
+experiment_id: EXP-02
+frozen: true
+frozen_at: "2026-08-07"
+
+# Two objects x five unique regimes x seven agent counts.
+expected_point_count: 70
+objects:
+  - object_id: practical_v4
+    source: scenarios/article/variant_4.yaml
+    construction: preserve_dag_and_task_total_work
+    phase_profile: io
+  - object_id: fork_join_n4
+    source: scenarios/canonical/exp01_matrix.yaml
+    construction: exp01_canonical
+    topology: fork_join
+    task_count: 4
+    task_weight_cycle: ["6", "12", "18", "24"]
+    phase_profile: alternating_sync
+
+agent_counts: [1, 2, 3, 4, 6, 8, 12]
+human_shares: ["0.10", "0.25", "0.50"]
+time_unit: "0.00005"
+tolerance: "0.0001"
+
+# C0/gamma0 at r_h=0.25 is shared by the pure-parallelism and
+# human-share slices and is therefore executed only once.
+regimes:
+  - regime_id: c0_g0_rh10
+    slice_id: human_share
+    c_model: C0
+    gamma_model: gamma0
+    human_share: "0.10"
+  - regime_id: c0_g0_rh25
+    slice_id: pure_parallelism_and_human_share
+    c_model: C0
+    gamma_model: gamma0
+    human_share: "0.25"
+  - regime_id: c0_g0_rh50
+    slice_id: human_share
+    c_model: C0
+    gamma_model: gamma0
+    human_share: "0.50"
+  - regime_id: c1_g0_rh25
+    slice_id: interagent_overhead
+    c_model: C1
+    gamma_model: gamma0
+    human_share: "0.25"
+  - regime_id: c0_g1_rh25
+    slice_id: human_switching
+    c_model: C0
+    gamma_model: gamma1
+    human_share: "0.25"
+
+scaling_models:
+  C0: "1"
+  C1: "1 + 0.05 * (P - 1) + 0.005 * P * (P - 1)"
+  gamma0: "1"
+  gamma1: "1 + 0.10 * (P - 1)"
+
+baseline_policy:
+  policy_id: bottom_level_fcfs_v1
+  ready_tasks: bottom_level_desc,weight_desc,task_id
+  human_queue: request_time,bottom_level_desc,task_id,phase_index
+
+exact_solver:
+  time_limit_seconds: 60
+  random_seed: 0
+  workers: 1
+
+hypotheses:
+  - "Without growing overhead, gains saturate at the critical-path or human branch."
+  - "C1 or gamma1 may create a finite minimizing agent count."
+  - "The active B4 branch need not fully explain the exact makespan under queueing."

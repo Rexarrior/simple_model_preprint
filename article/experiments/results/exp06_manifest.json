@@ -1,0 +1,256 @@
+{
+  "experiment_id": "EXP-06",
+  "generated_at": "2026-08-09T20:58:00.902067+00:00",
+  "command": "uv run python -m experiments run --experiment EXP-06",
+  "git_commit": "9589381d951500704bcb3a54603d65b16b1adb1f",
+  "git_dirty": true,
+  "matrix": {
+    "path": "scenarios/canonical/exp06_matrix.yaml",
+    "sha256": "87ecde615f31dccf1d1ba0605bc1ed37a0ec71746cd0a109b7c3101fae5a23b5",
+    "frozen_at": "2026-08-07"
+  },
+  "sources": [
+    {
+      "path": "scenarios/article/variant_3.yaml",
+      "sha256": "2d535815c042db5089d02cb2b118b0cc6f1f7c4af50dc3b56d594b278d904778"
+    },
+    {
+      "path": "scenarios/article/variant_4.yaml",
+      "sha256": "9d9e2e2c4134be3ba9fbd4ea685fbe8f22342815ed129c4a0c8a2d7c157592d6"
+    },
+    {
+      "path": "scenarios/canonical/exp05_matrix.yaml",
+      "sha256": "dc24b3c9c6d8c5e705e9c7983b307568777e5e0ba37e2f4b7d2d1e9bedde1510"
+    }
+  ],
+  "solver": {
+    "exp06a_time_limit_seconds": 60.0,
+    "exp06b_time_limit_seconds": 10.0,
+    "exp06c_time_limit_seconds": 10.0,
+    "random_seed": 0,
+    "workers": 1
+  },
+  "baseline_policy_id": "bottom_level_fcfs_v1",
+  "dependencies": {
+    "matplotlib": "3.11.1",
+    "ortools": "9.15.6755",
+    "PyYAML": "6.0.3",
+    "pytest": "9.1.1"
+  },
+  "summary": {
+    "exp06a_points": 20,
+    "exp06a_optimal_points": 20,
+    "exp06b_pairs": 5000,
+    "exp06b_optimal_pairs": 5000,
+    "exp06b_reversals": 0,
+    "exp06c_pairs": 382,
+    "exp06c_optimal_pairs": 382,
+    "exp06c_crossings": 0
+  },
+  "scenario_hash_tables": [
+    {
+      "path": "results/exp06a_scale.csv",
+      "sha256": "ea0983aa4a26b155bb83b785fec56ade41201b1145fe14b02f3bb1705c81dcd2"
+    },
+    {
+      "path": "results/exp06b_pairs.csv",
+      "sha256": "3dac40b568e1bd814a99f8d804c6b380eb6ae9771e2713da3a59fdb9e6b8e9c3"
+    },
+    {
+      "path": "results/exp06c_pairs.csv",
+      "sha256": "91f4abecfaadb8ecff993f8ecda350386c46a8cf38be025dff12dcbfddd17d29"
+    }
+  ],
+  "implementation": [
+    {
+      "path": "src/experiments/__init__.py",
+      "sha256": "9a13c0738db91e8e7213df5033ad383582fbfb2cfb50a0fed2299096d882c9ad"
+    },
+    {
+      "path": "src/experiments/__main__.py",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    {
+      "path": "src/experiments/bounds.py",
+      "sha256": "06d7e485f6b132a53bade3edaf8f22781c6b8fa077193cb480ec1cd046f5e645"
+    },
+    {
+      "path": "src/experiments/candidate_figures.py",
+      "sha256": "4e96441a348ddb6a9a79539b1bd66fda7112b0e767a3a9da4bee4979aa521dbe"
+    },
+    {
+      "path": "src/experiments/cli.py",
+      "sha256": "c1249debcd15ebeb6bb78944200b1f744de1b7c2f6e8cb0b59bc188166183f51"
+    },
+    {
+      "path": "src/experiments/exact_solver.py",
+      "sha256": "382856a79fa280ac197e696171b9b418a71907fdd7d159f75514e1363acf7a35"
+    },
+    {
+      "path": "src/experiments/exp01.py",
+      "sha256": "02f1339eb4844dd9212f2ff899388f1a2feef8e46c61e04d05e1e2deee879611"
+    },
+    {
+      "path": "src/experiments/exp01_figures.py",
+      "sha256": "e8b767b4d80953cda373c8b889ee4a70bef9ff2b05e015222d4eabad7c9b2a55"
+    },
+    {
+      "path": "src/experiments/exp02.py",
+      "sha256": "3b9bb29ef0c30748a3aed23249210585b3c6c97080566647da3d7261b430f4a5"
+    },
+    {
+      "path": "src/experiments/exp02_figures.py",
+      "sha256": "095c889c2751d35ae91bd16a5a261950b7d61732315f50836de64367c54bca81"
+    },
+    {
+      "path": "src/experiments/exp03.py",
+      "sha256": "d9fc7819988dc9fa81562752898f15656ae120c116d7652a1a56eeb8ef377ece"
+    },
+    {
+      "path": "src/experiments/exp03_figures.py",
+      "sha256": "3ff324befa9e715081b0285604b152f75849b56e6099ab2fe8ed3814a87a5fdf"
+    },
+    {
+      "path": "src/experiments/exp04.py",
+      "sha256": "256ed936da7cd4f8ca725b756a019eec3f74069cba1868ef15557a1f3e6e2d89"
+    },
+    {
+      "path": "src/experiments/exp04_figures.py",
+      "sha256": "1a9a5b2b9bb562259a29448775303091aee1b5a51a32fb98f1fa02f8a5dbf377"
+    },
+    {
+      "path": "src/experiments/exp05.py",
+      "sha256": "9c547c47bd4fbc06a192823befe691d69affd6bac02ac943ae26fc824dee0dda"
+    },
+    {
+      "path": "src/experiments/exp05_figures.py",
+      "sha256": "8ff9560dc44244a657889e5f50458a73130582838147ba2292dc0eeae87aba4e"
+    },
+    {
+      "path": "src/experiments/exp06.py",
+      "sha256": "d7d32171aa2aa3c72476fc8fd8633eb171ea988308637135399f662378d438c5"
+    },
+    {
+      "path": "src/experiments/exp06_figures.py",
+      "sha256": "e55c3bfaa2b42259929d5769f88faa5250c7f006cf72fa0ddf8602a8eb9bd110"
+    },
+    {
+      "path": "src/experiments/exp07.py",
+      "sha256": "4e459c931911cbdc98d0908b9a285e33109a6344adcdf1feeea401aa3fabdeac"
+    },
+    {
+      "path": "src/experiments/exp07_figures.py",
+      "sha256": "bb9047d921a1d0416c8eae2a9812b829b6eb66fe65629767b8e87a4a95524b79"
+    },
+    {
+      "path": "src/experiments/exp08.py",
+      "sha256": "fb198e6d410497af0fc35d9737f7b4b5738576e28b660d27bb8cda08d3900ddf"
+    },
+    {
+      "path": "src/experiments/exp08_figures.py",
+      "sha256": "d20e23cbdeece09781f539dea748845ebabb935b16921819f6555fb6f840701a"
+    },
+    {
+      "path": "src/experiments/figures.py",
+      "sha256": "392e0620f320842247cfc57dac9481e379ed1c8aae8f7ad047c54b9f8ed59142"
+    },
+    {
+      "path": "src/experiments/generators.py",
+      "sha256": "d62a6adcae63484650a60b298544bf0f31c40898ca2952af1750be9d36cde932"
+    },
+    {
+      "path": "src/experiments/provenance.py",
+      "sha256": "600516cc047979a867191aeecf32273e03525aa70d95c1b79975886eeefd4a7f"
+    },
+    {
+      "path": "src/experiments/schema.py",
+      "sha256": "ac038ca2e653c4991ae2727b7c139a72de28e1a0b3dfedb2f80ea642a231cbdc"
+    },
+    {
+      "path": "src/experiments/simulator.py",
+      "sha256": "5aaa5e58d6c192feed0f5b56080c38f9dd58c57b1547c8c280d732624b0eb3ee"
+    },
+    {
+      "path": "src/experiments/validator.py",
+      "sha256": "f5a1c2caf12367fe8711266dfcd56cfcb103cc3dd016d10f67cc6bb617a5e0b5"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "361e9875a9c182504b78b1247b69cfc13b6d7272dd1f7fad5330853a343a1b0a"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "7a5f6fa24ce4038c92ecf0ecf7f661ee58bd2e11e63a8697997efdbb21b3dfb6"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "results/exp06a_scale.csv",
+      "sha256": "ea0983aa4a26b155bb83b785fec56ade41201b1145fe14b02f3bb1705c81dcd2"
+    },
+    {
+      "path": "results/exp06a_phases.csv",
+      "sha256": "ee22d96b75ad48237c986912df43be0660b1760eb72eb96753dab2188baef295"
+    },
+    {
+      "path": "results/exp06a_events.csv",
+      "sha256": "855492921ff0178665c4d20ecf4971407007b7491712f185eb12812aa2c86b57"
+    },
+    {
+      "path": "results/exp06b_pairs.csv",
+      "sha256": "3dac40b568e1bd814a99f8d804c6b380eb6ae9771e2713da3a59fdb9e6b8e9c3"
+    },
+    {
+      "path": "results/exp06b_multipliers.csv",
+      "sha256": "f472ca9c56fb825a166bbef1df3d359992c1567f0cd10c4e11386acea7d5727a"
+    },
+    {
+      "path": "results/exp06b_summary.csv",
+      "sha256": "72f1536bf99ca2c22ae040bae239b22d56c472304c8e3e5b53b2e1b7b1d468da"
+    },
+    {
+      "path": "results/exp06c_pairs.csv",
+      "sha256": "91f4abecfaadb8ecff993f8ecda350386c46a8cf38be025dff12dcbfddd17d29"
+    },
+    {
+      "path": "results/exp06c_summary.csv",
+      "sha256": "be55aef13ffafbba1dbfd75a4149107e6b63e5b3859418e592cd1422ece3fa04"
+    },
+    {
+      "path": "results/exp06_report.md",
+      "sha256": "b1b5480c63bc64c789bbedc58a00fbe67b6558d10c3182642adfa19cf144f35b"
+    },
+    {
+      "path": "figures/exp06_scale_invariance.svg",
+      "sha256": "9101a7c64d857ceb615c3857630632cce067a1f31cd7d7baec86d3d8e65b89b9"
+    },
+    {
+      "path": "figures/exp06_scale_invariance.png",
+      "sha256": "2cb068441bf88a3ebe011632d72c84c5a89b458592c56e3bf8f79b8ec62e46b5"
+    },
+    {
+      "path": "figures/exp06_ranking_stability.svg",
+      "sha256": "edd4ea328b4dea7252be0aa060a04cc8c9bb94e291f7c126cdb6c65889bfdeaa"
+    },
+    {
+      "path": "figures/exp06_ranking_stability.png",
+      "sha256": "4ac98106b417840006b53a041b8f9193d3099c096923808f7ff5f61fd5bd8e59"
+    },
+    {
+      "path": "figures/exp06_margin_distributions.svg",
+      "sha256": "f54dbd3259883890b13bc1f2bf96fc4c28a507e98cc06edc01e14808a05c46ab"
+    },
+    {
+      "path": "figures/exp06_margin_distributions.png",
+      "sha256": "cb035d048e58d8e22b95d9304fe7a5c88c0dc114588fd7506a8f07d2c2c39b36"
+    },
+    {
+      "path": "figures/exp06_adversarial_thresholds.svg",
+      "sha256": "ff5857cf79b963527227d97d8b04d4eb8019371ec8b6a2b1da1e7d65234031e4"
+    },
+    {
+      "path": "figures/exp06_adversarial_thresholds.png",
+      "sha256": "6c4c486ab0e7f880b6fd0eb27d6bf05a567bd48e91350920e35dab0475ac412c"
+    }
+  ]
+}

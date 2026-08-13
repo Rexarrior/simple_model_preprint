@@ -1,0 +1,69 @@
+schema_version: 1
+experiment_id: EXP-04
+frozen: true
+frozen_at: "2026-08-07"
+
+exp04a:
+  source_results: results/exp00_summary.csv
+  variants: ["3", "4"]
+  interpretation: practical_structural_comparison_only
+
+exp04b:
+  source_matrix: scenarios/canonical/exp01_matrix.yaml
+  topology: two_layer
+  task_count: 4
+  agent_count: 4
+  human_share: "0.25"
+  phase_profile: io
+  selected_task_id: t04
+  selected_quality_gate_id: qg_t04
+  base_effort: "24"
+  time_unit: "0.00625"
+  tolerance: "0.0001"
+
+  m_values: [1, 2, 3, 4, 6, 8]
+  overhead_rates: ["0", "0.025", "0.05", "0.10", "0.20"]
+  human_overhead_shares: ["0", "0.5", "1"]
+  raw_combination_count: 90
+  expected_unique_point_count: 66
+
+  operator:
+    useful_input_human: "original first human phase divided equally over m subtasks"
+    useful_agent: "original agent phase divided equally over m subtasks"
+    useful_final_human: "original final human phase retained on the join"
+    total_overhead: "(m - 1) * overhead_rate * base_effort"
+    placement_split:
+      subtask_inputs: "0.5"
+      integration_join: "0.5"
+    resource_split:
+      human: "lambda_h"
+      agent: "1 - lambda_h"
+    subtask_input_allocation: "equal over all m subtasks"
+    predecessors: "all subtasks inherit selected-task predecessors"
+    successors: "all selected-task successors depend on the join"
+    quality_gate: "selected quality_gate_id is retained on the join"
+
+  deduplication:
+    semantic_hash_excludes:
+      - scenario_id
+      - overhead_rate_when_total_overhead_is_zero
+      - lambda_h_when_total_overhead_is_zero
+    canonical_representative: "first in matrix iteration order"
+
+c: "1"
+gamma: "1"
+
+baseline_policy:
+  policy_id: bottom_level_fcfs_v1
+  ready_tasks: bottom_level_desc,weight_desc,task_id
+  human_queue: request_time,bottom_level_desc,task_id,phase_index
+
+exact_solver:
+  time_limit_seconds: 120
+  random_seed: 0
+  workers: 1
+
+hypotheses:
+  - "At zero overhead, decomposition reduces or preserves exact makespan."
+  - "Positive agent or human overhead can create an interior minimizing m."
+  - "A U-shaped result is claimed only for proven T_star, not only for B4."

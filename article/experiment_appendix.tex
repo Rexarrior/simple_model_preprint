@@ -1,0 +1,125 @@
+\subsection{Additional Visual Results}
+
+Рисунок~\ref{fig:app-exp01} показывает распределение разрывов между
+структурной границей, оптимумом и исходной политикой. Нулевой разрыв означает
+достижимость $B_4$, а не отсутствие очереди.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp01_gaps.png}
+  \caption{EXP-01: разрывы $T^*/B_4-1$ и разрывы исходной политики.}
+  \label{fig:app-exp01}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp03_profile_effects.png}
+  \caption{EXP-03: изменение $T^*$ при одинаковых агрегатах и разных фазовых
+  профилях. Историческая метка sync здесь не означает синхронизацию
+  wall-clock окон.}
+  \label{fig:app-exp03}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp05_interaction_contrast.png}
+  \caption{EXP-05: взаимодействие доступного параллелизма и гранулярности на
+  канонической точной сетке.}
+  \label{fig:app-exp05}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.90\textwidth]{candidate_task_lever_map.png}
+  \caption{Иллюстративная локальная чувствительность варианта 4. В ячейках
+  показано сокращение доказанного $T^*$ после контролируемого уменьшения фаз
+  одной задачи; звёздочкой отмечены задачи номинального критического пути.
+  Масштабы вмешательств синтетические и не являются эмпирическими оценками.}
+  \label{fig:app-task-levers}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp06_ranking_stability.png}
+  \caption{EXP-06: устойчивость ранжирования иллюстративных вариантов внутри
+  замороженных семейств ошибок.}
+  \label{fig:app-exp06}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp07_claim_effects.png}
+  \caption{EXP-07: эффекты на синтетических DAG. C1 и C4 не поддержаны; C2 и
+  C3 относятся преимущественно к фиксированной политике.}
+  \label{fig:app-exp07}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp08_critical_path_effects.png}
+  \caption{EXP-08: изменение заранее выбранного пути при $\gamma>C$ и
+  переключения глобального критического пути.}
+  \label{fig:app-exp08}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Reproducibility}
+
+Исходный код, замороженные входы и сохранённые результаты находятся в каталоге
+\texttt{experiments}. Из корня проекта полный набор команд имеет вид:
+\begin{verbatim}
+cd simple_model_full/experiments
+uv sync --python 3.13
+uv run pytest -q
+uv run python -m experiments validate scenarios/article
+uv run python -m experiments run --experiment EXP-00
+uv run python -m experiments run --experiment EXP-01
+uv run python -m experiments run --experiment EXP-02
+uv run python -m experiments run --experiment EXP-03
+uv run python -m experiments run --experiment EXP-04
+uv run python -m experiments run --experiment EXP-05
+uv run python -m experiments run --experiment EXP-06
+uv run python -m experiments run --experiment EXP-07
+uv run python -m experiments run --experiment EXP-08 --stage development
+uv run python -m experiments run --experiment EXP-08 --stage confirmatory
+uv run python -m experiments figures --set candidates
+\end{verbatim}
+EXP-00--EXP-07 независимы и могут повторяться по отдельности. Для EXP-08
+порядок существенен: development создаёт \texttt{exp08\_freeze.json}, а
+confirmatory-команда отказывается работать без совпадающего freeze и
+замороженной матрицы. Shortcut \texttt{--stage all} выполняет те же две стадии
+последовательно, но явные команды выше делают границу данных проверяемой.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.39\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Путь & Содержимое \\
+\midrule
+\path{scenarios/article/} & полностью заданные иллюстративные варианты EXP-00 \\
+\path{scenarios/canonical/} & замороженные матрицы EXP-01--EXP-08, исходный пилот EXP-01 и запись его глобального сокращения \\
+\path{src/experiments/} & schema, validator, fixed policy, exact solver, генераторы серий и код рисунков \\
+\path{tests/} & проверки схемы, генерации серий, инвариантов и регрессии чисел статьи \\
+\path{results/exp??_manifest.json} & SHA-256 входов, реализации и выходов, версии зависимостей, settings и статусы \\
+\path{results/exp??_report.md} & полный дизайн, таблицы результатов, ограничения и ссылки на raw CSV \\
+\path{results/full_experiments_report.md} & единая сводка EXP-00--EXP-08 и карта артефактов \\
+\path{figures/} & пары PNG/SVG и код их построения \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Основные raw-таблицы хранят параметры сценария, $B_4$, срок фиксированной
+политики, solver status, objective, best bound и gap; отдельные phase/event
+таблицы позволяют повторно проверить ресурсную допустимость. Manifests
+содержат commit Git и контрольные суммы перечисленных входов, реализации и
+выходов, поэтому изменение любого перечисленного файла обнаруживается до
+сопоставления результатов. Lockfile фиксирует
+пакеты; сведения об ОС и hardware исходных прогонов в manifests отсутствуют,
+что ограничивает воспроизводимость wall time, но не критерий
+\texttt{OPTIMAL} и сохранённые целочисленные objectives.
+
+\paragraph{Data and code availability.}
+Код лицензирован по MIT, а текст и исследовательские материалы --- по CC BY
+4.0. Публичный репозиторий, версионированный релиз и DOI будут указаны после
+архивирования версии препринта; состав дополнительного артефакта описан в
+Разделе~\ref{sec:availability}.

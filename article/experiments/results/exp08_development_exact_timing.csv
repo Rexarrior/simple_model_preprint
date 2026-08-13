@@ -1,0 +1,9 @@
+dag_id,task_count,topology_family,allocation,P,solver_status,solver_wall_time_seconds,objective_recorded
+exp08_development_n8_mixed_homogeneous_00,8,mixed,low,4,OPTIMAL,0.032015,false
+exp08_development_n8_mixed_homogeneous_00,8,mixed,low,8,OPTIMAL,0.255460,false
+exp08_development_n8_mixed_homogeneous_00,8,mixed,high,4,OPTIMAL,0.288830,false
+exp08_development_n8_mixed_homogeneous_00,8,mixed,high,8,OPTIMAL,0.021976,false
+exp08_development_n8_chain_like_homogeneous_00,8,chain_like,low,4,OPTIMAL,0.008327,false
+exp08_development_n8_chain_like_homogeneous_00,8,chain_like,low,8,OPTIMAL,0.041914,false
+exp08_development_n8_chain_like_homogeneous_00,8,chain_like,high,4,OPTIMAL,0.019848,false
+exp08_development_n8_chain_like_homogeneous_00,8,chain_like,high,8,OPTIMAL,0.005081,false

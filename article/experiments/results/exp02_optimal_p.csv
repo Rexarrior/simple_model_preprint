@@ -1,0 +1,11 @@
+object_id,regime_id,c_model,gamma_model,human_share,optimal_points,minimizing_P_B4,minimum_B4,minimizing_P_T_star,minimum_T_star,minimizing_P_baseline,minimum_baseline,observed_finite_optimum_T_star,T_star_at_P1,T_star_at_P12,P12_minus_minimum_T_star,active_branch_transitions
+practical_v4,c0_g0_rh10,C0,gamma0,0.10,7,2,36.70000,2,36.70000,2,36.70000,false,53.60000,36.70000,0.00000,P1:work;P2:critical_path
+practical_v4,c0_g0_rh25,C0,gamma0,0.25,7,2,36.70000,2,36.70000,2,36.70000,false,53.60000,36.70000,0.00000,P1:work;P2:critical_path
+practical_v4,c0_g0_rh50,C0,gamma0,0.50,7,2,36.70000,3,36.70000,2,38.70000,false,53.60000,36.70000,0.00000,P1:work;P2:critical_path
+practical_v4,c1_g0_rh25,C1,gamma0,0.25,7,2,38.35150000,2,38.35150,2,38.35150000,true,53.60000,70.00525,31.65375,P1:work;P2:critical_path
+practical_v4,c0_g1_rh25,C0,gamma1,0.25,7,2,37.6175000,2,37.61750,2,37.6175000,true,53.60000,46.79250,9.17500,P1:work;P2:critical_path
+fork_join_n4,c0_g0_rh10,C0,gamma0,0.10,7,2,48.00,2,48.00000,2,48.00,false,60.00000,48.00000,0.00000,P1:work;P2:critical_path
+fork_join_n4,c0_g0_rh25,C0,gamma0,0.25,7,2,48.00,2,48.00000,2,48.000,false,60.00000,48.00000,0.00000,P1:work;P2:critical_path
+fork_join_n4,c0_g0_rh50,C0,gamma0,0.50,7,2,48.00,2,49.50000,2,49.50,false,60.00000,49.50000,0.00000,P1:work;P2:critical_path
+fork_join_n4,c1_g0_rh25,C1,gamma0,0.25,7,2,50.16000,2,50.16000,2,50.16000,true,60.00000,91.56000,41.40000,P1:work;P2:critical_path
+fork_join_n4,c0_g1_rh25,C0,gamma1,0.25,7,2,49.2000,2,49.35000,2,49.35000,true,60.00000,62.77500,13.42500,P1:work;P2:critical_path

@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: >-
+  If you use this work, please cite the accompanying article and the archived
+  release of this repository.
+title: Phase-Based Planning Model for Software Work in a Human--Agent Cell
+type: software
+authors:
+  - family-names: Rodionov
+    given-names: Aleksandr
+    orcid: https://orcid.org/0009-0006-6710-923X
+    affiliation: Yandex
+    email: rexarrior@yandex.ru
+version: 0.1.0
+license:
+  - MIT
+  - CC-BY-4.0
+preferred-citation:
+  type: article
+  title: Phase-Based Planning Model for Software Work in a Human--Agent Cell
+  authors:
+    - family-names: Rodionov
+      given-names: Aleksandr
+      orcid: https://orcid.org/0009-0006-6710-923X
+      affiliation: Yandex
+  year: 2026

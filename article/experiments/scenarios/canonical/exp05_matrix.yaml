@@ -1,0 +1,69 @@
+schema_version: 1
+experiment_id: EXP-05
+frozen: true
+frozen_at: "2026-08-07"
+
+source_operator_matrix: scenarios/canonical/exp04_matrix.yaml
+
+canonical_object:
+  topology: two_layer
+  task_count: 4
+  human_share: "0.25"
+  phase_profile: io
+  selected_task_id: t04
+  selected_quality_gate_id: qg_t04
+  base_effort: "24"
+  time_unit: "0.00625"
+  tolerance: "0.0001"
+
+grid:
+  agent_counts: [1, 2, 3, 4, 6, 8]
+  m_values: [1, 2, 3, 4, 6, 8]
+  overhead_rates: ["0", "0.05", "0.10"]
+  human_overhead_shares: ["0", "0.5"]
+  raw_position_count: 216
+  expected_unique_point_count: 156
+  expected_analysis_position_count: 180
+
+deduplication:
+  semantic_hash_excludes:
+    - scenario_id
+    - overhead_rate_when_total_overhead_is_zero
+    - lambda_h_when_total_overhead_is_zero
+  canonical_representative: "first in P,m,r_o,lambda_h iteration order"
+  reconstruction: "reuse each semantic solution at all aliased grid positions"
+
+c: "1"
+gamma: "1"
+
+baseline_policy:
+  policy_id: bottom_level_fcfs_v1
+  ready_tasks: bottom_level_desc,weight_desc,task_id
+  human_queue: request_time,bottom_level_desc,task_id,phase_index
+
+exact_solver:
+  time_limit_seconds: 300
+  initial_time_limit_seconds: 120
+  random_seed: 0
+  workers: 1
+  full_block_limit_escalation:
+    applied: true
+    rule: "one allowed increase applied uniformly to all 156 unique points"
+    reason: "initial full pass returned one FEASIBLE point"
+    initial_status_counts:
+      OPTIMAL: 155
+      FEASIBLE: 1
+      UNKNOWN: 0
+    unresolved_scenario_id: exp05_p03_m08_ro050_lh05
+    unresolved_relative_gap: "0.09041394335511982570806100218"
+
+hypotheses:
+  - "At positive overhead, decomposition has a positive interaction with P in at least some proven cells."
+  - "The exact minimizing m can change with P even when the decomposition operator is fixed."
+  - "Human overhead weakens decomposition gains relative to agent-only overhead at the same rate."
+
+reporting:
+  interaction_contrast: "[T(P,1)-T(P,m)]-[T(1,1)-T(1,m)]"
+  zero_overhead_lambda: shared
+  t_star_rule: "report only OPTIMAL objectives as T_star"
+  incumbent_rule: "store FEASIBLE objectives separately and exclude them from proven contrasts"

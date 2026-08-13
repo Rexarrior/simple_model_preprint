@@ -1,0 +1,4 @@
+scenario_id,variant_id,T_h,A,H,W3,L3,W4,L4,W4_over_P,gamma_H,B4,active_branches,critical_path,article_makespan,article_queue,article_blocked_any,baseline_makespan,baseline_queue,baseline_gap_to_optimum,baseline_relative_gap,solver_status,solver_time_limit_seconds,solver_random_seed,solver_workers,T_star,solver_best_bound,solver_gap,solver_wall_time_seconds
+practical_variant_2,2,76,21.40,38.40,59.80,47.80,59.80,47.80,29.90,38.40,47.80,critical_path,1->2->3->4->6,47.8,22.2,22.2,48.6,12.2,0.80,0.016736,OPTIMAL,300,0,1,47.80,47.800,0.0,0.003408
+practical_variant_3,3,76,34.60,19.00,53.60,43.20,53.60,43.20,13.40,19.00,43.20,critical_path,1->2->3->4->6,43.2,0,0,43.6,1.9,0.40,0.009259,OPTIMAL,300,0,1,43.20,43.200,0.0,0.002393
+practical_variant_4,4,76.0,34.600,19.000,53.600,36.700,53.600,36.700,13.400,19.000,36.700,critical_path,1->2->3->4->6c,36.7,4.3,4.3,37.10,6.05,0.40,0.010899,OPTIMAL,300,0,1,36.70,36.700,0.0,0.005060

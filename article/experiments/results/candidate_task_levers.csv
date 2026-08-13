@@ -1,0 +1,28 @@
+task_id,task_name,intervention,intervention_label,reference_T_star,candidate_T_star,deadline_reduction,solver_status
+1,API contract and request validation,agent_20,Agent phases −20%,36.70,36.05,0.65,OPTIMAL
+1,API contract and request validation,human_20,Human phases −20%,36.70,36.30,0.40,OPTIMAL
+1,API contract and request validation,review_80,Review phase −80%,36.70,35.90,0.80,OPTIMAL
+2,Storage layer,agent_20,Agent phases −20%,36.70,35.60,1.10,OPTIMAL
+2,Storage layer,human_20,Human phases −20%,36.70,36.10,0.60,OPTIMAL
+2,Storage layer,review_80,Review phase −80%,36.70,35.50,1.20,OPTIMAL
+3,Business logic,agent_20,Agent phases −20%,36.70,34.95,1.75,OPTIMAL
+3,Business logic,human_20,Human phases −20%,36.70,35.90,0.80,OPTIMAL
+3,Business logic,review_80,Review phase −80%,36.70,35.10,1.60,OPTIMAL
+4,Background processor,agent_20,Agent phases −20%,36.70,35.50,1.20,OPTIMAL
+4,Background processor,human_20,Human phases −20%,36.70,36.10,0.60,OPTIMAL
+4,Background processor,review_80,Review phase −80%,36.70,35.50,1.20,OPTIMAL
+5,Observability and configuration,agent_20,Agent phases −20%,36.70,36.70,0.00,OPTIMAL
+5,Observability and configuration,human_20,Human phases −20%,36.70,36.70,0.00,OPTIMAL
+5,Observability and configuration,review_80,Review phase −80%,36.70,36.70,0.00,OPTIMAL
+6a,Unit tests for business logic,agent_20,Agent phases −20%,36.70,36.70,0.00,OPTIMAL
+6a,Unit tests for business logic,human_20,Human phases −20%,36.70,36.70,0.00,OPTIMAL
+6a,Unit tests for business logic,review_80,Review phase −80%,36.70,36.70,0.00,OPTIMAL
+6b,Integration tests for API and storage,agent_20,Agent phases −20%,36.70,36.70,0.00,OPTIMAL
+6b,Integration tests for API and storage,human_20,Human phases −20%,36.70,36.70,0.00,OPTIMAL
+6b,Integration tests for API and storage,review_80,Review phase −80%,36.70,36.70,0.00,OPTIMAL
+6c,Background processing and retry tests,agent_20,Agent phases −20%,36.70,36.55,0.15,OPTIMAL
+6c,Background processing and retry tests,human_20,Human phases −20%,36.70,36.60,0.10,OPTIMAL
+6c,Background processing and retry tests,review_80,Review phase −80%,36.70,36.50,0.20,OPTIMAL
+7,Packaging and deployment,agent_20,Agent phases −20%,36.70,36.70,0.00,OPTIMAL
+7,Packaging and deployment,human_20,Human phases −20%,36.70,36.70,0.00,OPTIMAL
+7,Packaging and deployment,review_80,Review phase −80%,36.70,36.70,0.00,OPTIMAL

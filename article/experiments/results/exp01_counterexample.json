@@ -1,0 +1,666 @@
+{
+  "experiment_id": "EXP-01",
+  "selection_rule": "minimum (task_count, total_work, scenario_id) among T_star > B4 + tolerance",
+  "counterexample_count": 30,
+  "selected": {
+    "scenario": {
+      "schema_version": 1,
+      "scenario_id": "exp01_diamond_n4_p2_rh50_alternating_staggered",
+      "time_unit": "0.025",
+      "tolerance": "0.0001",
+      "x": "1",
+      "p": 2,
+      "c": "1",
+      "gamma": "1",
+      "tasks": [
+        {
+          "task_id": "t01",
+          "z": "6",
+          "k": "1",
+          "h": "0.50",
+          "predecessors": [],
+          "phases": [
+            {
+              "phase_id": "human_1",
+              "resource": "human",
+              "base_duration": "0.75"
+            },
+            {
+              "phase_id": "agent_1",
+              "resource": "agent",
+              "base_duration": "0.50"
+            },
+            {
+              "phase_id": "human_2",
+              "resource": "human",
+              "base_duration": "0.75"
+            },
+            {
+              "phase_id": "agent_2",
+              "resource": "agent",
+              "base_duration": "1.00"
+            },
+            {
+              "phase_id": "human_3",
+              "resource": "human",
+              "base_duration": "0.75"
+            },
+            {
+              "phase_id": "agent_3",
+              "resource": "agent",
+              "base_duration": "1.50"
+            },
+            {
+              "phase_id": "human_4",
+              "resource": "human",
+              "base_duration": "0.75"
+            }
+          ]
+        },
+        {
+          "task_id": "t02",
+          "z": "12",
+          "k": "1",
+          "h": "0.50",
+          "predecessors": [
+            "t01"
+          ],
+          "phases": [
+            {
+              "phase_id": "human_1",
+              "resource": "human",
+              "base_duration": "1.50"
+            },
+            {
+              "phase_id": "agent_1",
+              "resource": "agent",
+              "base_duration": "2.00"
+            },
+            {
+              "phase_id": "human_2",
+              "resource": "human",
+              "base_duration": "1.50"
+            },
+            {
+              "phase_id": "agent_2",
+              "resource": "agent",
+              "base_duration": "3.00"
+            },
+            {
+              "phase_id": "human_3",
+              "resource": "human",
+              "base_duration": "1.50"
+            },
+            {
+              "phase_id": "agent_3",
+              "resource": "agent",
+              "base_duration": "1.00"
+            },
+            {
+              "phase_id": "human_4",
+              "resource": "human",
+              "base_duration": "1.50"
+            }
+          ]
+        },
+        {
+          "task_id": "t03",
+          "z": "18",
+          "k": "1",
+          "h": "0.50",
+          "predecessors": [
+            "t01"
+          ],
+          "phases": [
+            {
+              "phase_id": "human_1",
+              "resource": "human",
+              "base_duration": "2.25"
+            },
+            {
+              "phase_id": "agent_1",
+              "resource": "agent",
+              "base_duration": "4.50"
+            },
+            {
+              "phase_id": "human_2",
+              "resource": "human",
+              "base_duration": "2.25"
+            },
+            {
+              "phase_id": "agent_2",
+              "resource": "agent",
+              "base_duration": "1.50"
+            },
+            {
+              "phase_id": "human_3",
+              "resource": "human",
+              "base_duration": "2.25"
+            },
+            {
+              "phase_id": "agent_3",
+              "resource": "agent",
+              "base_duration": "3.00"
+            },
+            {
+              "phase_id": "human_4",
+              "resource": "human",
+              "base_duration": "2.25"
+            }
+          ]
+        },
+        {
+          "task_id": "t04",
+          "z": "24",
+          "k": "1",
+          "h": "0.50",
+          "predecessors": [
+            "t02",
+            "t03"
+          ],
+          "phases": [
+            {
+              "phase_id": "human_1",
+              "resource": "human",
+              "base_duration": "3.00"
+            },
+            {
+              "phase_id": "agent_1",
+              "resource": "agent",
+              "base_duration": "2.00"
+            },
+            {
+              "phase_id": "human_2",
+              "resource": "human",
+              "base_duration": "3.00"
+            },
+            {
+              "phase_id": "agent_2",
+              "resource": "agent",
+              "base_duration": "4.00"
+            },
+            {
+              "phase_id": "human_3",
+              "resource": "human",
+              "base_duration": "3.00"
+            },
+            {
+              "phase_id": "agent_3",
+              "resource": "agent",
+              "base_duration": "6.00"
+            },
+            {
+              "phase_id": "human_4",
+              "resource": "human",
+              "base_duration": "3.00"
+            }
+          ]
+        }
+      ]
+    },
+    "aggregates": {
+      "W4": "60.00",
+      "L4": "48.00",
+      "W4_over_P": "30.00",
+      "gamma_H": "30.00",
+      "B4": "48.00"
+    },
+    "exact": {
+      "status": "OPTIMAL",
+      "T_star": "49.250",
+      "best_bound": "49.2500",
+      "gap": "0.0",
+      "queue": "2.500",
+      "schedule": {
+        "schedule_id": "exact_solution",
+        "assignments": [
+          {
+            "task_id": "t01",
+            "agent": 2,
+            "assigned_at": "0.000"
+          },
+          {
+            "task_id": "t02",
+            "agent": 1,
+            "assigned_at": "8.250"
+          },
+          {
+            "task_id": "t03",
+            "agent": 2,
+            "assigned_at": "6.000"
+          },
+          {
+            "task_id": "t04",
+            "agent": 2,
+            "assigned_at": "25.250"
+          }
+        ],
+        "phases": [
+          {
+            "task_id": "t01",
+            "phase_id": "human_1",
+            "agent": 2,
+            "start": "0.000",
+            "end": "0.750"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "agent_1",
+            "agent": 2,
+            "start": "0.750",
+            "end": "1.250"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "human_2",
+            "agent": 2,
+            "start": "1.250",
+            "end": "2.000"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "agent_2",
+            "agent": 2,
+            "start": "2.000",
+            "end": "3.000"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "human_3",
+            "agent": 2,
+            "start": "3.000",
+            "end": "3.750"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "agent_3",
+            "agent": 2,
+            "start": "3.750",
+            "end": "5.250"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "human_4",
+            "agent": 2,
+            "start": "5.250",
+            "end": "6.000"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_1",
+            "agent": 1,
+            "start": "8.250",
+            "end": "9.750"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "agent_1",
+            "agent": 1,
+            "start": "9.750",
+            "end": "11.750"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_2",
+            "agent": 1,
+            "start": "11.750",
+            "end": "13.250"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "agent_2",
+            "agent": 1,
+            "start": "13.250",
+            "end": "16.250"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_3",
+            "agent": 1,
+            "start": "16.250",
+            "end": "17.750"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "agent_3",
+            "agent": 1,
+            "start": "17.750",
+            "end": "18.750"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_4",
+            "agent": 1,
+            "start": "20.000",
+            "end": "21.500"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_1",
+            "agent": 2,
+            "start": "6.000",
+            "end": "8.250"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "agent_1",
+            "agent": 2,
+            "start": "8.250",
+            "end": "12.750"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_2",
+            "agent": 2,
+            "start": "13.250",
+            "end": "15.500"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "agent_2",
+            "agent": 2,
+            "start": "15.500",
+            "end": "17.000"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_3",
+            "agent": 2,
+            "start": "17.750",
+            "end": "20.000"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "agent_3",
+            "agent": 2,
+            "start": "20.000",
+            "end": "23.000"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_4",
+            "agent": 2,
+            "start": "23.000",
+            "end": "25.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_1",
+            "agent": 2,
+            "start": "25.250",
+            "end": "28.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "agent_1",
+            "agent": 2,
+            "start": "28.250",
+            "end": "30.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_2",
+            "agent": 2,
+            "start": "30.250",
+            "end": "33.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "agent_2",
+            "agent": 2,
+            "start": "33.250",
+            "end": "37.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_3",
+            "agent": 2,
+            "start": "37.250",
+            "end": "40.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "agent_3",
+            "agent": 2,
+            "start": "40.250",
+            "end": "46.250"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_4",
+            "agent": 2,
+            "start": "46.250",
+            "end": "49.250"
+          }
+        ]
+      }
+    },
+    "baseline": {
+      "makespan": "49.25",
+      "queue": "4.75",
+      "schedule": {
+        "schedule_id": "deterministic_baseline",
+        "assignments": [
+          {
+            "task_id": "t01",
+            "agent": 1,
+            "assigned_at": "0"
+          },
+          {
+            "task_id": "t03",
+            "agent": 1,
+            "assigned_at": "6.00"
+          },
+          {
+            "task_id": "t02",
+            "agent": 2,
+            "assigned_at": "6.00"
+          },
+          {
+            "task_id": "t04",
+            "agent": 1,
+            "assigned_at": "25.25"
+          }
+        ],
+        "phases": [
+          {
+            "task_id": "t01",
+            "phase_id": "human_1",
+            "agent": 1,
+            "start": "0",
+            "end": "0.75"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "agent_1",
+            "agent": 1,
+            "start": "0.75",
+            "end": "1.25"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "human_2",
+            "agent": 1,
+            "start": "1.25",
+            "end": "2.00"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "agent_2",
+            "agent": 1,
+            "start": "2.00",
+            "end": "3.00"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "human_3",
+            "agent": 1,
+            "start": "3.00",
+            "end": "3.75"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "agent_3",
+            "agent": 1,
+            "start": "3.75",
+            "end": "5.25"
+          },
+          {
+            "task_id": "t01",
+            "phase_id": "human_4",
+            "agent": 1,
+            "start": "5.25",
+            "end": "6.00"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_1",
+            "agent": 1,
+            "start": "6.00",
+            "end": "8.25"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_1",
+            "agent": 2,
+            "start": "8.25",
+            "end": "9.75"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "agent_1",
+            "agent": 1,
+            "start": "8.25",
+            "end": "12.75"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "agent_1",
+            "agent": 2,
+            "start": "9.75",
+            "end": "11.75"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_2",
+            "agent": 2,
+            "start": "11.75",
+            "end": "13.25"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_2",
+            "agent": 1,
+            "start": "13.25",
+            "end": "15.50"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "agent_2",
+            "agent": 2,
+            "start": "13.25",
+            "end": "16.25"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "agent_2",
+            "agent": 1,
+            "start": "15.50",
+            "end": "17.00"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_3",
+            "agent": 2,
+            "start": "16.25",
+            "end": "17.75"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "agent_3",
+            "agent": 2,
+            "start": "17.75",
+            "end": "18.75"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_3",
+            "agent": 1,
+            "start": "17.75",
+            "end": "20.00"
+          },
+          {
+            "task_id": "t02",
+            "phase_id": "human_4",
+            "agent": 2,
+            "start": "20.00",
+            "end": "21.50"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "agent_3",
+            "agent": 1,
+            "start": "20.00",
+            "end": "23.00"
+          },
+          {
+            "task_id": "t03",
+            "phase_id": "human_4",
+            "agent": 1,
+            "start": "23.00",
+            "end": "25.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_1",
+            "agent": 1,
+            "start": "25.25",
+            "end": "28.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "agent_1",
+            "agent": 1,
+            "start": "28.25",
+            "end": "30.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_2",
+            "agent": 1,
+            "start": "30.25",
+            "end": "33.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "agent_2",
+            "agent": 1,
+            "start": "33.25",
+            "end": "37.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_3",
+            "agent": 1,
+            "start": "37.25",
+            "end": "40.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "agent_3",
+            "agent": 1,
+            "start": "40.25",
+            "end": "46.25"
+          },
+          {
+            "task_id": "t04",
+            "phase_id": "human_4",
+            "agent": 1,
+            "start": "46.25",
+            "end": "49.25"
+          }
+        ]
+      }
+    }
+  }
+}

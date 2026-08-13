@@ -1,0 +1,22 @@
+{
+  "experiment_id": "EXP-01",
+  "stage": "original_270_point_pilot",
+  "matrix": {
+    "path": "scenarios/canonical/exp01_matrix_270_pilot.yaml",
+    "original_sha256": "3547eb10a0a0b31c5ec6b3687b59233b9b590f384694ff5fe71d396a04728fcd",
+    "point_count": 270
+  },
+  "completed_optimal_before_stop": 76,
+  "first_non_optimal_point": {
+    "scenario_id": "exp01_independent_n8_p2_rh25_alternating_sync",
+    "status": "FEASIBLE",
+    "time_limit_seconds": 60,
+    "random_seed": 0,
+    "workers": 1
+  },
+  "predeclared_action": {
+    "rule": "If any declared exact point is not OPTIMAL within the common limit, reduce instance size globally.",
+    "decision": "Execute the full factorial at N=4 only (90 points).",
+    "individual_limit_increase": false
+  }
+}

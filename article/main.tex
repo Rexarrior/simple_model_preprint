@@ -1,0 +1,147 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+  pdftitle={Phase-Based Planning Model for Software Work in a Human--Agent Cell},
+  pdfauthor={Aleksandr Rodionov},
+  pdfsubject={Phase-based planning of software work in a human--agent cell},
+  pdfkeywords={AI agents, software engineering, scheduling, human--agent collaboration}
+}
+
+\geometry{margin=2.5cm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{observation}{Observation}
+\newtheorem{remark}{Remark}
+
+\newcommand{\FULLARTICLE}{}
+\renewcommand{\abstractname}{Abstract}
+\renewcommand{\proofname}{Proof}
+\renewcommand{\refname}{References}
+\graphicspath{{experiments/figures/}}
+
+\title{Phase-Based Planning Model for Software Work in a Human--Agent Cell}
+\author{Aleksandr Rodionov\\
+Yandex, Saint Petersburg, Russia\\
+\texttt{rexarrior@yandex.ru}\\
+\href{https://orcid.org/0009-0006-6710-923X}{ORCID: 0009-0006-6710-923X}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Рассматривается фиксированный объём программной работы, который один
+разработчик выполняет с помощью нескольких ИИ-агентов. Предложена
+детерминированная фазовая модель, связывающая эффект ИИ на отдельных задачах,
+граф зависимостей, число управляемых агентных потоков, интеграционные издержки
+и последовательный ресурс человеческого внимания. Иерархия M0--M4 отделяет
+идеально делимую работу от неделимых задач, критического пути,
+координационных издержек и точного расписания чередующихся агентных и
+человеческих фаз с локальной блокировкой ожидающего агента.
+
+Для M4 получена структурная нижняя граница срока $B_4$, объединяющая загрузку
+потоков, критический путь и человеческий ресурс, и введено
+ресурсно-дополненное фазовое представление точного makespan. Вычислительный пакет на основе CP-SAT
+воспроизводит иллюстративные сценарии и показывает, что $B_4$ не всегда
+достижима: на замороженной точной сетке разрыв $T^*>B_4$ возник в 30 из 90
+сценариев. На исследованной синтетической сетке растущие издержки конфигурации
+приводят к конечному оптимуму полезного параллелизма, положительные издержки
+декомпозиции --- к U-образному профилю точного срока, а interaction contrast
+параллелизма и гранулярности преимущественно положителен, хотя дробление не
+всегда даёт абсолютный выигрыш. Результаты являются
+вычислительной верификацией и анализом чувствительности модели, а не
+эмпирической оценкой производительности конкретного инструмента или команды.
+\end{abstract}
+
+\noindent\textbf{Language note.}
+В текущей рабочей версии заголовки и визуализации оформлены на английском
+языке, а основной текст сохранён на русском. Полный перевод статьи на
+английский язык планируется в одной из следующих редакций.
+
+\section{Introduction}
+\input{Введение.tex}
+
+\section{Problem Setting and Compact Notation}
+\input{Краткие термины и обозначения.tex}
+
+\section{Related Work}
+\input{simple_litreview.tex}
+
+\section{Formal Model}
+\input{Базовая модель.tex}
+
+\clearpage
+\section{Computational Verification Method}
+\input{computational_method.tex}
+
+\section{Computational Results}
+\label{sec:computational-results}
+\input{Практический пример.tex}
+\input{computational_results.tex}
+
+\section{Discussion}
+\input{discussion.tex}
+
+\section{Limitations and Threats to Validity}
+\input{limitations.tex}
+\par\medskip
+\input{threats_to_validity.tex}
+
+\section{Future Work}
+\input{future_work.tex}
+
+\section{Conclusion}
+\input{conclusion.tex}
+
+\section{Code and Data Availability}
+\label{sec:availability}
+\input{artifact_availability.tex}
+
+\section*{Declarations}
+The author is employed by Yandex. This research was conducted independently in
+the author's personal time and received no dedicated funding from Yandex. Some
+computational work used Yandex equipment and computing infrastructure. The
+views expressed are solely those of the author and do not necessarily represent
+those of Yandex. The author declares no other competing interests.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\appendix
+
+\section{Full Glossary of Terms and Notation}
+\label{app:glossary}
+\input{Термины и обозначения.tex}
+
+\section{Detailed Calculation Examples}
+\label{app:examples}
+\input{Примеры базовой модели.tex}
+
+\section{Additional Computational Results}
+\label{app:experiments}
+\input{experiment_appendix.tex}
+
+\end{document}

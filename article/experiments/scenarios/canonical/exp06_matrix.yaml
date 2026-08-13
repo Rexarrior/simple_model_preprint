@@ -1,0 +1,94 @@
+schema_version: 1
+experiment_id: EXP-06
+frozen: true
+frozen_at: "2026-08-07"
+
+article_sources:
+  variant_3: scenarios/article/variant_3.yaml
+  variant_4: scenarios/article/variant_4.yaml
+canonical_operator_matrix: scenarios/canonical/exp05_matrix.yaml
+
+exp06a:
+  scale_factors: ["0.25", "0.5", "1", "2", "4"]
+  objects:
+    - object_id: practical_variant_3
+      kind: article
+      variant: "3"
+    - object_id: practical_variant_4
+      kind: article
+      variant: "4"
+    - object_id: canonical_m1
+      kind: canonical
+      P: 4
+      m: 1
+      overhead_rate: "0"
+      lambda_h: "0"
+    - object_id: canonical_m3_mixed_overhead
+      kind: canonical
+      P: 4
+      m: 3
+      overhead_rate: "0.05"
+      lambda_h: "0.5"
+  expected_point_count: 20
+  scaling_rule:
+    x: "multiply by kappa"
+    phase_durations: "multiply by kappa"
+    time_unit: "multiply by kappa"
+    tolerance: "multiply by kappa"
+    dimensionless_task_coefficients: unchanged
+    topology_and_quality_gates: unchanged
+
+exp06b:
+  uncertainty_levels: ["0.05", "0.10", "0.20", "0.30", "0.50"]
+  seed_start: 0
+  seed_count: 1000
+  expected_pair_count: 5000
+  expected_solution_count: 10000
+  common_task_ids: ["1", "2", "3", "4", "5", "7"]
+  source_test_task_id: "6"
+  decomposed_test_task_ids: ["6a", "6b", "6c"]
+  multiplier_model:
+    distribution: "uniform in log space between log(1-u) and log(1+u)"
+    resources: [agent, human]
+    common_tasks: "same resource-specific multiplier in variants 3 and 4"
+    source_test_task: "one common agent and one common human multiplier"
+    decomposition_residual_log_scale: "0.25"
+    decomposed_tasks: "common test multiplier times independent bounded log residual"
+    clipping: "final multiplier clipped to [1-u,1+u]"
+    duration_quantization: "nearest positive source time_unit ticks, ROUND_HALF_UP; minimally adjust the last phase of each resource so the total is exactly representable as X*z*h or X*z*a"
+    random_engine: "Python random.Random(seed), reused across uncertainty levels"
+
+exp06c:
+  u_start: "0"
+  u_stop: "0.95"
+  u_step: "0.005"
+  expected_u_count: 191
+  modes:
+    - critical_task_agent
+    - test_human_phases
+  expected_pair_count: 382
+  expected_solution_count: 764
+  adversarial_rule:
+    variant_3_test_factor: "1-u on the selected resource"
+    variant_4_test_factors: "1+u on all decomposed test tasks on the selected resource"
+    other_resources_and_tasks: unchanged
+    justification: "makespan is monotone in durations, so these box endpoints are worst for variant 4 versus variant 3 in the frozen family"
+    crossing_rule: "smallest grid u with proven T4_star >= proven T3_star"
+
+baseline_policy:
+  policy_id: bottom_level_fcfs_v1
+
+exact_solver:
+  exp06a_time_limit_seconds: 60
+  exp06b_time_limit_seconds: 10
+  exp06c_time_limit_seconds: 10
+  random_seed: 0
+  workers: 1
+
+reporting:
+  t_star_rule: "report only OPTIMAL objectives as T_star"
+  ranking_reversal: "T4_star >= T3_star"
+  monte_carlo_error: "sqrt(p_hat*(1-p_hat)/n)"
+  zero_event_one_sided_95_upper: "1 - 0.05^(1/n) when no reversals are observed"
+  exp06a_tolerance: "scaled scenario tolerance"
+  no_empirical_ci_claim: true
