@@ -21,6 +21,8 @@ authors:
     affiliation: Yandex
     email: rexarrior@yandex.ru
 version: 0.1.0
+url: https://github.com/Rexarrior/simple_model_preprint
+repository-code: https://github.com/Rexarrior/simple_model_preprint
 license:
   - MIT
   - CC-BY-4.0

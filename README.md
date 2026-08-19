@@ -4,6 +4,8 @@ This repository accompanies Aleksandr Rodionov's preprint on planning a fixed
 software-development workload performed by one developer with multiple AI
 agents.
 
+Public repository: <https://github.com/Rexarrior/simple_model_preprint>
+
 The canonical manuscript for international distribution is the English source
 at [`article/main_en.tex`](article/main_en.tex). The Russian source at
 [`article/main.tex`](article/main.tex) is retained as the translation baseline
@@ -16,8 +18,8 @@ and for the Russian-language release.
 - [arXiv metadata and upload checklist](release/ARXIV_SUBMISSION.md)
 - [release checksums](release/SHA256SUMS)
 
-Repository, release, artifact DOI, and arXiv identifiers are intentionally not
-shown until the corresponding public records exist.
+Release, artifact DOI, and arXiv identifiers are intentionally not shown until
+the corresponding public records exist.
 
 ## Repository contents
 

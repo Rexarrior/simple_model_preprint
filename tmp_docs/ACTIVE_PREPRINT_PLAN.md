@@ -27,7 +27,8 @@ scientific audits are supporting records rather than task lists.
   calculator checks pass, the isolated arXiv archive builds, and every PDF page
   has passed visual QA.
 - [x] Final release PDFs and SHA-256 checksums are stored under `release/`.
-- [ ] A public Git remote and permanent repository URL have not been assigned.
+- [x] The public Git remote and permanent repository URL are available at
+  `https://github.com/Rexarrior/simple_model_preprint`.
 - [ ] The immutable `v0.1.0` release and external archival DOI have not been
   created.
 - [ ] The arXiv identifier has not been assigned.
@@ -37,7 +38,7 @@ scientific audits are supporting records rather than task lists.
 1. [x] Run the complete verification target: manuscript builds, experiment
    tests, calculator tests/lint/audit, isolated arXiv build, and visual PDF QA.
 2. [ ] Review the final English PDF and the copy-ready metadata as the author.
-3. [ ] Publish this repository to a public Git host and record its permanent
+3. [x] Publish this repository to a public Git host and record its permanent
    URL in `README.md`, `CITATION.cff`, and both availability statements.
 4. [ ] Create the immutable `v0.1.0` tag/release. Attach the English and Russian
    PDFs, arXiv source archive, and SHA-256 checksums.
@@ -64,6 +65,5 @@ scientific audits are supporting records rather than task lists.
 - repository URL, release tag, checksums, artifact DOI, and manuscript metadata
   agree everywhere they appear.
 
-The current blocker is external identity, not manuscript work: a public remote,
-release URL, archival DOI, and arXiv identifier cannot be filled in before those
-records exist.
+The remaining external identifiers are the immutable release URL, archival DOI,
+and arXiv identifier; they cannot be filled in before those records exist.
