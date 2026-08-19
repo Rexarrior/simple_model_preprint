@@ -1,0 +1,74 @@
+% T21 sources: limitations.tex; threats_to_validity.tex
+The formal model assumes that the directed acyclic graph $G=(V,E)$ is known
+before planning begins and remains unchanged during execution. This assumption
+is reasonable for a prespecified workload but limits the model's use for
+research tasks, architectural explorations, and other R\&D
+processes in which new tasks and dependencies are discovered as results become
+available. In such processes, the estimates $L_4(P)$ and $B_4$ apply only to the
+current snapshot $G_t$; a critical path computed once cannot be interpreted as
+a fixed property of the entire project.
+
+All tasks are assumed to be available when planning begins, their phases are
+assumed to be nonpreemptive, and the only constrained resources are the $P$
+agent streams and one developer. Release dates, separate CI/API capacities, and
+fully manual tasks require a different formulation; M4 describes only a
+prespecified AI-assisted task set.
+
+The model also does not describe the mechanism by which new vertices are
+revealed, the cost of replanning, or the choice of how to decompose the work
+further. Splitting a task can expose only substantively feasible parallelism: it
+does not eliminate genuine precedence relations and usually increases the cost
+of task specification, review, and integration. The reported results can
+therefore be used to evaluate a given graph or its current snapshot, but do not
+by themselves determine an optimal policy for constructing a dynamic graph.
+
+An absolute prediction of completion time requires calibrating $X$, $k_i$,
+$h_i$, $C(P)$, and $\gamma(P)$ for the specific tools and operating mode; when
+these change, the calibration may quickly become obsolete. The requirements
+are weaker for a comparative choice between two variants: workloads and
+durations may be expressed in notional units of a single baseline task if both
+configurations are evaluated on a common scale.
+Proposition~\ref{prop:invariance} guarantees ranking robustness only to a single
+common multiplier applied equally to all agent and human-attention phases of
+the variants being compared. Unequal errors across tasks or modes, distortion
+of the decomposition between $a_i$ and $h_i$ or of the within-task phase
+profile, and different values of $C(P)$ and $\gamma(P)$ can change the resource
+paths and the ranking of the variants.
+
+\textbf{Construct validity.}
+The coefficients $k$, $a$, and $h$ aggregate the quality of task specification,
+the capabilities of the tool, and the review and correction of the result. The
+same numerical profile may conceal different mechanisms, and makespan does not
+measure code quality, understanding of the system, computational cost, or
+downstream defects. The terms ``synchronous'' and ``concentration'' in the early
+experimental hypotheses proved insufficiently operationalized; the associated
+conclusions are not treated as supported.
+
+\textbf{Internal validity.}
+The exact series use deterministic durations, an integer grid, and a single
+solver. The risk of implementation error is reduced through independent checks
+of the constraints, optimality statuses, frozen inputs, and reproducible
+manifests; however, a computational experiment verifies properties of the
+implementation of the formal model, not the truth of its assumptions about the
+real process.
+
+\textbf{Conclusion validity.}
+Finite exact grids do not prove universal patterns beyond the selected ranges.
+The counts 30/90, 12/13, and 96/100 describe the matrices examined, not
+frequencies in the population of projects. In the large EXP-07 series and part
+of EXP-08, a fixed policy is evaluated; its effects cannot be transferred to
+$T^*$ without a separate exact proof.
+
+\textbf{External validity.}
+Most of the DAGs, durations, and functions $C(P),\gamma(P)$ are synthetic and
+have not been calibrated on longitudinal data from teams. The formulation
+considers one developer, homogeneous agent streams, and local blocking with
+slot retention. Other schedulers may reuse capacity held by a waiting task,
+multiple people may handle requests in parallel, and real tasks may reveal
+dependencies and rework dynamically.
+
+\textbf{Parameter uncertainty.}
+EXP-06 tests only prespecified random and adverse error families. The observed
+robustness of the ranking does not guarantee robustness to an arbitrary joint
+error in the estimates. Before a practical decision is made, local calibration,
+interval analysis, and replanning are required as actual data become available.

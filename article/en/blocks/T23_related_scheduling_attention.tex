@@ -1,0 +1,79 @@
+% T23 source: simple_litreview.tex lines 25--41
+\subsection{Scheduling Theory and Repeated Shared Service}
+
+The mathematical core of levels M1--M2 is standard. For identical parallel
+machines, the conventional quantities are makespan, total workload, the
+duration of the longest job, and the critical path
+\cite{pinedo2008scheduling}; list scheduling under precedence constraints and
+the LPT rule for independent jobs have classical guarantees
+\cite{graham1966bounds,graham1969bounds}. Disjunctive arcs, or resource-ordering
+arcs, are likewise a standard way to represent competition among machines
+\cite{pinedo2008scheduling}. The article therefore does not claim novelty for
+makespan, a directed acyclic graph (DAG), the critical path, a
+resource-augmented graph, or a shared resource.
+
+The resource-constrained project scheduling problem (RCPSP) combines a DAG of
+precedence relations with renewable resources of finite capacity, while
+multi-mode formulations permit alternative duration and resource profiles
+\cite{brucker1999resource}. Within such a core, attention can be represented as
+a resource of capacity 1 and phases as separate operations. The standard model,
+however, does not specify a coefficient $k$ for a software task and operating
+mode, the meaning of an accepted result, an operational decomposition
+$a_i/h_i$, or internal integration and attention-switching overhead.
+
+Still closer analogues are parallel-machine models with a common server. In
+setup-only formulations, the server sequentially prepares jobs before their
+parallel processing \cite{hall2000parallel,kravchenko1997parallel}. In a
+loading/unloading formulation, each job uses the same server before and after
+machine processing; a requirement for immediate unloading may keep a machine
+occupied after processing until the server becomes available
+\cite{elidrissi2023loading}. This is a formal analogue of the sequence ``human
+task specification---agent work---human review'' and a partial analogue of
+slot retention, but it lacks a DAG and a repeated ``agent rework---human
+review'' cycle.
+
+An even closer reentrant-scheduling formulation routes a job through its
+assigned primary machine, a remote server, and then back to the same primary
+machine \cite{chakhlevitch2009reentrant}. It reproduces the alternation
+``worker---shared service---the same worker,'' but includes only one repeated
+visit to the server, independent jobs, and a prespecified route. Importantly,
+the primary machine is released during remote service; this model therefore
+does not reproduce M4 local blocking. Neither common-server models nor the
+reentrant formulation by themselves include a coefficient $k$ for software
+work, human acceptance, or integration overhead.
+
+This comparison clarifies the contribution of M4: established scheduling
+mechanisms are used as the core, while the proposed mapping to the software
+process links the complete cycle ``human task specification---agent
+work---human review---agent rework---human acceptance'' to the task's operating
+mode, separate phase durations, retention of the assigned agent slot, and the
+fact that the result has been accepted. If a human-attention phase does not
+retain the slot, $A$ and $H$ should be scheduled as separate resources; this
+corresponds to a different resource-use rule.
+
+\subsection{Human Attention in Supervising Autonomous Workers}
+
+Research on human--robot interaction (HRI) provides a substantive structural
+analogue for one operator and multiple autonomous workers. The fan-out measure,
+the number of robots per operator, is related to the durations of interaction
+and autonomous work without operator attention \cite{olsen2004fanout}; models
+of multitask control require service for one robot to fit within the autonomous
+intervals of the others \cite{crandall2005validating}. State-aware attention
+allocation shows that the outcome depends on the selection rule and system
+state, not only on the average fraction of involvement
+\cite{crandall2011computing}. Threaded-cognition theory further cautions that
+not all human activity is uniformly sequential: interference arises at
+specific cognitive resources \cite{salvucci2008threaded}.
+
+Cummings and Mitchell tested an extended robots-per-operator model in a
+simulation experiment with 12 participants and multiple unmanned aerial
+vehicles (UAVs) \cite{cummings2008predicting}. Accounting for waiting for
+interaction, waiting in the queue, waiting to regain situational awareness, and
+cognitive reorientation reduced the model-based estimate of operator throughput
+by 36--67\% under the conditions examined; the authors explicitly emphasize
+that the result depends on the task and context. The experiment supports a
+sequential service queue and a finite useful number of autonomous workers only
+as a structural analogy. It does not calibrate the number of coding agents,
+$\gamma(P)$, or the makespan of software work: the vehicles were homogeneous
+and independent, and the outcome was a model-based estimate of throughput, not
+the completion time of an accepted software task.

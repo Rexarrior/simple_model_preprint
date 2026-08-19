@@ -1,0 +1,96 @@
+% T16 source: Практический пример.tex
+\subsection{Illustrative Planning Scenario and Reproduction by EXP-00}
+\label{sec:practical-example}
+
+Consider a synthetic illustrative scenario involving the development of a small
+request-processing service. The fixed workload comprises an API contract, a
+persistence layer, business logic, background processing, observability, tests,
+and packaging. On a notional scale, it equals $38$ story points, or $19$ units
+of $Z$; the normalization $X=4$ hours yields a sequential no-AI baseline time of
+$T_h=76$ hours. This relationship is used solely to make the scenario
+transparent and is not an empirical conversion from story points to hours.
+
+The task-DAG contains the sequential core
+$1\to2\to3\to4\to6$ and two side branches: observability with packaging, and
+work that becomes available once the interfaces have been fixed. Four variants
+of work organization are compared. In Variants 1--3, the operating mode and
+configured parallelism change, and the coefficients $k_i,h_i$ therefore change
+as well. Variant 4 retains the configuration of Variant 3 but decomposes the
+monolithic testing task into three parts with exact dependencies. Only the
+comparison of Variants 3 and 4 isolates the effect of decomposition with all
+other factors held constant.
+
+\begin{table}[ht]
+\centering
+\caption{Condensed comparison of the illustrative-scenario variants}
+\label{tab:compact-practical}
+\begin{tabular}{lcccc}
+\toprule
+Metric & Variant 1 & Variant 2 & Variant 3 & Variant 4 \\
+\midrule
+$P$ & 1 & 2 & 4 & 4 \\
+Mode & interactive & mixed & delegated & delegated \\
+Decomposition & coarse & coarse & coarse & split tests \\
+$W_4$, h & 65.0 & 59.8 & 53.6 & 53.6 \\
+$W_4/P$, h & 65.0 & 29.9 & 13.4 & 13.4 \\
+$L_4$, h & 51.8 & 47.8 & 43.2 & 36.7 \\
+$H$, h & 65.0 & 38.4 & 19.0 & 19.0 \\
+$B_4$, h & 65.0 & 47.8 & 43.2 & 36.7 \\
+$T^*$, h & 65.0 & 47.8 & 43.2 & 36.7 \\
+Speedup & $1.17\times$ & $1.59\times$ & $1.76\times$ & $2.07\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In EXP-00, the exact solver returned status \texttt{OPTIMAL} for Variants 2--4.
+In each case, a feasible schedule with $T(\pi)=B_4$ was exhibited; hence, the
+chain $B_4\le T^*\le T(\pi)$ proves $T^*=B_4$ specifically for these scenarios.
+The equality is not assumed to be a universal property of M4.
+
+\subsubsection{Local Blocking and the Human Resource}
+
+In Variant 2, two agent slots are served by a single developer. A naive
+schedule that is feasible with respect to the DAG and the number of agents
+contains overlapping human-attention phases and is therefore infeasible under
+M4. The corrected schedule in Figure~\ref{fig:practical-gantt} sequences the
+task-specification and review phases. Task 7 waits $22.2$ hours for review and
+retains the second slot, but this wait proceeds in parallel with the critical
+branch and does not increase the project makespan. This example shows why
+$Q(\pi)$ alone does not determine the makespan: the placement of the wait in the
+resource schedule matters.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{candidate_variant2_schedule_comparison.png}
+\caption{Variant 2 before and after explicitly accounting for the human
+resource. On the left, the original schedule contains overlapping
+human-attention phases and is infeasible under M4. On the right, the developer's
+service is serialized; the waiting task retains its agent slot but does not
+increase the overall makespan.}
+\label{fig:practical-gantt}
+\end{figure}
+
+\FloatBarrier
+
+\subsubsection{Critical-Path Decomposition}
+
+In Variant 3, the entire testing task waits for completion of the background
+worker. In Variant 4, unit and integration tests begin once their respective
+predecessors have completed, while only retry testing remains at the end of the
+critical path. With $A=34.6$, $H=19.0$, and $W_4=53.6$ unchanged, the critical
+path and exact makespan decrease from $43.2$ to $36.7$ hours. The effect is
+$6.5$ hours, or approximately $15\%$ of the Variant 3 makespan; speedup relative
+to the no-AI baseline increases from $1.76\times$ to $2.07\times$.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{exp00_dag_variants_3_4.png}
+\caption{Task-DAG and critical path before and after refining the dependencies
+of the testing task. Total work is preserved, while unnecessary serialization
+is reduced.}
+\label{fig:practical-dag}
+\end{figure}
+
+\FloatBarrier
+
+Complete task parameters, phase intervals, the human-resource check, and
+elementary M0--M1 examples are provided in Appendix~\ref{app:examples}.

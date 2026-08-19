@@ -1,0 +1,96 @@
+% T11 source: computational_method.tex lines 1--91
+\label{sec:computational-method}
+
+The computational experiments are designed to check the internal logic of M4,
+identify counterexamples to overly strong interpretations, and conduct
+sensitivity analysis. They do not estimate the performance of a particular team
+or AI tool: the durations, topologies, and overhead functions are predominantly
+synthetic. All sample sizes reported below refer either to fully enumerated
+frozen matrices or to a reproducible generator, rather than to a random sample
+of real-world projects.
+
+\subsection{Experimental Questions and Reporting Rules}
+
+Each series addresses a prespecified question and uses its own estimand.
+Table~\ref{tab:experiment-design} establishes this correspondence before the
+results are presented and prevents a certified optimum, the makespan of a fixed
+policy, and an observation on a finite synthetic grid from being conflated.
+
+\begin{table}[ht]
+\centering
+\scriptsize
+\caption{Relationship between the computational series and the claims being tested}
+\label{tab:experiment-design}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}Xl@{}}
+\toprule
+Series & Question & Varied factors & Estimand and reporting rule & Method \\
+\midrule
+EXP-00 & Are the variants of the illustrative scenario reproduced? & Configurations 2--4 & $B_4$, $T^*$; certificate of $T^*=B_4$ & exact \\
+EXP-01 & Is the bound $B_4$ always attainable? & DAG, phases, $P$ & $T^*/B_4-1$; certified positive gap & exact \\
+EXP-02 & How does available capacity differ from configured parallelism? & $P$, $C(P)$, $\gamma(P)$, human-share & Profile of $T^*(P)$ & exact \\
+EXP-03 & Do the aggregates identify the exact makespan? & Phase profile with equal aggregates & Paired difference in $T^*$ & exact \\
+EXP-04--05 & How does granularity interact with $P$ and overhead? & Decomposition, $P$, overhead type and magnitude & Optimal granularity and interaction contrast & exact \\
+EXP-06 & Are the scale and comparative conclusions robust? & Common scale and frozen error families & Invariance and preservation of ranking & exact/stress \\
+EXP-07 & Do the directions of the effects carry over to synthetic DAGs? & $N$, topology, weights, placement of human-work & Paired contrasts for $T(\pi)$; separate exact audit & mixed \\
+EXP-08 & What changes when a fixed $H$ is placed differently? & Concentration along a path, phases, $P$, $\gamma/C$ & Paired changes in aggregates, paths, and $T(\pi)$; exact audit & mixed \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\FloatBarrier
+
+All reports distinguish among four quantities: the structural lower bound $B_4$,
+the certified optimum $T^*$, a feasible solution found without proof of
+optimality, and the makespan $T(\pi)$ of a fixed policy. The notation $T^*$ is
+used only for runs with status \texttt{OPTIMAL}. A feasible schedule of length
+$B_4$ proves that the bound is attainable, but equality between the lower bound
+and the best solution found is insufficient unless the solver gap has been
+closed.
+
+\subsection{Common Semantics and Experimental Quantities}
+
+All series use the same M4 semantics: once a task has started, it retains one
+agent slot through its final phase, including while waiting for developer
+attention; all human-attention phases use a single nonpreemptive resource of
+capacity 1; and a successor becomes available after all its predecessors have
+completed. The multiplier $C(P)$ is applied to agent phases, whereas $\gamma(P)$
+is applied to human-attention phases. The solver minimizes only the makespan;
+queueing and total blocking are reported as derived characteristics but do not
+serve as secondary objectives. Therefore, the reported $Q$ pertains to one
+returned optimal schedule, not to the minimum $Q$ among all makespan-optimal
+schedules. In the exact model, a task is assigned when its first phase begins;
+the fixed simulation policy reserves a slot in advance when it selects a ready
+task. Its queue and makespan are specific to that policy.
+
+For series with an equal share of human work, define
+\[
+  r_h:=\frac{h_i}{k_i}.
+\]
+In the canonical instances of EXP-01 and EXP-03, $k_i=1$ and $r_h$ is the same
+for all tasks; in the illustrative instance of EXP-02, the original $k_i$ is
+retained and $h_i=r_hk_i$. The \texttt{io} profile divides $H_i$ equally around
+the single agent phase: $H_i/2,A_i,H_i/2$. The \texttt{front\_loaded} profile uses
+$0.9H_i,A_i,0.1H_i$. In the equal-alternation profile, the four human-attention
+phases have durations $H_i/4$, and the three agent phases have durations $A_i/3$.
+The historical label \texttt{alternating\_sync} denotes precisely this within-task
+equality and \emph{does not} require requests from different tasks to coincide in
+wall-clock time. In \texttt{alternating\_staggered}, the human-attention phases are
+the same, while the agent fractions $\{1/6,2/6,3/6\}$ are cyclically permuted
+across tasks. In EXP-08, the neutral name \texttt{equal\_alternating} is used for
+equal alternation. Only in EXP-08 are the nominal halves, quarters, and thirds
+implemented on an allocation grid of 0.001: an integer number of ticks is divided
+with a remainder, which is distributed according to a seeded permutation. The
+sum of the phases is preserved exactly, and parts of the same type may differ by
+at most one tick.
+
+The experimental granularity $m$ is the number of parallel subtasks that replace
+the selected task. Under the canonical EXP-04--EXP-05 operator, its original
+initial human-attention phase and useful agent work are divided equally among the
+$m$ subtasks; all of them inherit the predecessors of the original task. They are
+followed by a join that contains the original final acceptance, preserves the
+original quality gate, and becomes the predecessor of all former successors. At
+$m=1$, this represents semantically the same amount of useful work, although the
+DAG already contains an explicit join. Therefore, the EXP-04--EXP-05 contrasts
+refer to the transformed ``parts plus join'' operator; C3 in EXP-07 uses the
+original task when $m=1$, and the numerical values from these two series are not
+directly comparable.

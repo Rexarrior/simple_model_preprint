@@ -55,7 +55,7 @@ article: нормативная теория ценности, narrative/integra
 формальной экономико-математической модели.
 
 **Проверка локальной копии:** SHA-256 файла
-`simple_model_full/literature/post_agi_economics2026.pdf` равен
+`post_agi_economics2026.pdf` равен
 `2d1db13c2426e291dee2d257a9a6e24700ef847c70aa8b76be735075661d1fce` и
 совпадает с SHA-256 ответа `https://arxiv.org/pdf/2608.01432v1`. Обзор относится
 именно к arXiv v1, а не к документу, идентифицированному по имени файла.

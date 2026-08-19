@@ -1,0 +1,120 @@
+% T24 sources: simple_litreview.tex lines 43--54; closest_prior_work_table.tex
+\subsection{Synthesis and Bounded Empirical Gap}
+
+Table~\ref{tab:closest-prior-work} shows that the article's distinction does
+not reduce to adding a DAG or a shared resource. The closest partial analogues
+are distributed across several research areas: RCPSP provides precedence
+relations and resource-capacity constraints; common-server and reentrant
+models provide repeated service and different machine-retention rules; HRI
+provides a queue for, and switching by, a single operator; general-purpose MAS
+provide evidence on the effect of coordination topology; MAGIS provides an
+automated review-and-revision cycle; and CAID provides concurrently executed
+branches, merging, and testing. Each of these elements is known separately.
+
+Within the core corpus assembled under the search protocol, with a cutoff date
+of 2026-08-09, no study was identified that jointly calibrated, on software
+tasks, a task- and mode-specific coefficient $k$, autonomous and human-attention
+intervals, a dependency DAG, actual concurrency, repeated visits to a single
+human, local retention of an agent slot, integration and switching overhead,
+and the elapsed-time makespan of an accepted result. This statement applies
+only to the reviewed corpus and the search channels specified in the protocol;
+it is not a universal claim about the entire literature.
+
+CAID, the closest software system, observes concurrency, elapsed completion
+time, and integration, but does not include a human or a no-AI condition. MAGIS
+includes automated review and revision but does not establish actual
+concurrency or human service. Common-server and reentrant models formalize
+repeated service but do not map it to the software process; HRI quantifies
+waiting associated with human attention but not software work; and
+general-purpose MAS evaluate primarily
+success and quality rather than the makespan of a human--agent cell.
+
+The formal contribution of the present work is the joint representation of
+these quantities and the verification of model properties on synthetic
+scenarios. The article itself does not perform empirical calibration of a
+real-world workflow. Collecting observations on software tasks completed to an
+accepted result, and prospectively validating whether a jointly estimated M4
+predicts elapsed-time makespan better than the simpler levels, remain future
+work.
+
+\begin{landscape}
+\begin{table}[!ht]
+\centering
+\caption{Closest formulation classes and the scope of the present model. The
+values ``yes,'' ``partial,'' and ``no'' indicate whether a property is present
+in a formulation class, not empirical equivalence or novelty.}
+\label{tab:closest-prior-work}
+\setlength{\tabcolsep}{1.1pt}
+\renewcommand{\arraystretch}{1.18}
+\renewcommand{\textsuperscript}[1]{\ensuremath{^{\mathrm{#1}}}}
+\scriptsize
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.85cm}>{\centering\arraybackslash}p{1.45cm}>{\centering\arraybackslash}p{1.9cm}>{\centering\arraybackslash}p{1.65cm}>{\centering\arraybackslash}p{1.7cm}>{\centering\arraybackslash}p{1.6cm}>{\centering\arraybackslash}p{1.45cm}>{\centering\arraybackslash}p{1.55cm}>{\centering\arraybackslash}p{1.95cm}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{4.15cm}}
+\toprule
+Formulation class & DAG & \shortstack{Agent\\streams} & \shortstack{Unit-\\capacity\\service} & \shortstack{Repeated\\service} & \shortstack{Slot\\retention} & \shortstack{Task-\\and mode-\\specific $k$} & \shortstack{$a_i/h_i$\\phase split} & \shortstack{Coordination\\and\\integration\\overhead} & \shortstack{Primary\\outcome} & \shortstack{Real-world\\software-process\\calibration} \\
+\midrule
+RCPSP and multi-mode RCPSP \cite{brucker1999resource}\textsuperscript{a}
+& yes & partial & yes & partial & no & no & no & partial & makespan, cost, feasibility & no \\
+
+Parallel machines with a common server \cite{hall2000parallel,kravchenko1997parallel,elidrissi2023loading,chakhlevitch2009reentrant}\textsuperscript{b}
+& no & yes & yes & partial & partial & no & partial & no & makespan, algorithmic bounds & no \\
+
+HRI: robots per operator and attention allocation \cite{olsen2004fanout,crandall2005validating,crandall2011computing,cummings2008predicting}\textsuperscript{c}
+& no & yes & yes & yes & partial & no & partial & partial & throughput, mission performance & no \\
+
+General-purpose MAS and centralized coordination \cite{kim2025scaling}\textsuperscript{d}
+& no & partial & no & partial & no & no & no & partial & success, quality; sometimes cost & no \\
+
+Coding agents: MAGIS and CAID \cite{tao2024magis,geng2026caid}\textsuperscript{e}
+& partial & partial & no & partial & no & no & no & partial & success, quality; CAID also time and cost & no \\
+
+Present work\textsuperscript{f}
+& yes & yes & yes & yes & yes & yes & yes & yes & makespan of an accepted result & no \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.5em}
+\begin{minipage}{0.97\linewidth}
+\scriptsize
+\textsuperscript{a} An RCPSP renewable resource need not represent identical
+agent streams; repeated service and overhead require explicit operations, and
+the standard formulation does not introduce automatic slot retention while
+another resource is awaited.
+
+\textsuperscript{b} Repeated service is present in loading/unloading and
+reentrant variants, but not in setup-only formulations. Immediate unloading
+may retain a machine, whereas the reentrant model with a remote server releases
+it; machine-processing and service durations are not calibrated as agent and
+human components of software work.
+
+\textsuperscript{c} An autonomous system waits for the operator or loses
+performance, but this is not equivalent to retaining a software-development
+slot. Interaction and autonomous intervals are not software-specific
+$a_i/h_i$ components; queues, loss of situational awareness, and reorientation
+do not include code integration.
+
+\textsuperscript{d} Sequential interdependence is measured, but no explicit
+task DAG is constructed; the number of agents or roles does not establish that
+their intervals overlap. A centralized coordinator is not equivalent to
+observed unit-capacity service, repeated messages are not a human service cycle,
+and differences in outcomes do not constitute calibration of M4 overhead.
+
+\textsuperscript{e} CAID constructs a dependency-aware plan and exhibits
+overlapping branches; these properties are not established for MAGIS or for
+the class as a whole. Automated planning, quality assurance, and revision are
+not human service; waiting for dependencies or merging is not equivalent to
+local blocking. CAID observes merging, testing, time, and cost, but does not
+calibrate a human--agent process. Evaluation on software task suites is not
+empirical calibration of a real-world workflow with observed human-attention
+phases.
+
+\textsuperscript{f} The article uses synthetic scenarios; empirical calibration
+and prospective validation remain future work.
+
+\medskip
+The article does not claim novelty for DAGs, makespan, a shared resource,
+repeated service, return to the same worker, resource retention,
+resource-ordering arcs, or the number of autonomous workers per operator.
+\end{minipage}
+\end{table}
+\end{landscape}
+\FloatBarrier

@@ -1,0 +1,292 @@
+% T27 source: Примеры базовой модели.tex lines 31--257
+\detailedsummaryheading{Elementary M0--M1 Examples}
+
+We first consider four self-contained numerical examples. In every case, the
+baseline effort per unit of work is set to $X = 4$~hours.
+
+The idealized AI-assisted completion time is calculated as
+\[
+  T_{ai}^{(0)} = \frac{1}{P} \sum_{i=1}^{N} Z_i k_i X.
+\]
+
+The speedup condition in the idealized model can be written as a parallelism
+threshold:
+\[
+  P > \frac{\sum_{i=1}^{N} Z_i k_i}{\sum_{i=1}^{N} Z_i} = \bar{k}_w.
+\]
+If the configured parallelism $P$ does not exceed the threshold $\bar{k}_w$,
+no speedup is achieved. The condition $P > \bar{k}_w$ is necessary in all
+variants of the model; it is sufficient only in the idealized model of
+perfectly divisible tasks.
+
+For comparison with the more realistic model of indivisible tasks, we also use
+the following lower bound on the makespan:
+\[
+  T_{ai} \ge \max\left\{ \frac{1}{P} \sum_{i=1}^{N} Z_i k_i X,\; \max_{i \in \overline{1,N}} (Z_i k_i X) \right\}.
+\]
+
+The calculations assume $C(P) \equiv 1$ and $\gamma(P) \equiv 1$. Examples
+1--4 cover levels M0, where work is treated as perfectly divisible, and M1,
+where independent indivisible tasks are considered. The illustrative scenario
+additionally considers level M2 with a dependency graph and level M4 with the
+developer as a sequential resource. At level M4, each task has a
+human-attention component $h_i$ in the decomposition $k_i = a_i + h_i$; the
+total human-attention time $H = X \sum_i Z_i h_i$ and the speedup ceiling
+$1/\bar{h}_w$ are calculated. A delegated task is divided into initial task
+specification, an autonomous agent phase, and final review. From task
+specification through acceptance, it retains its assigned agent slot,
+including while it waits for developer attention. The schedules are checked
+to ensure that human-attention intervals do not overlap and blocked slots
+are not reused; their sensitivity to $\gamma(P)>1$ is discussed when the
+variants are compared.
+Level M3, which describes cross-stream integration overhead $C(P)$, is not
+used in the calculations.
+
+\detailedexampleheading{Example 1}
+
+\paragraph{Parameters.}
+\begin{table}[ht!]
+\centering
+\caption{Parameters of Example 1}
+\label{tab:example-1-params}
+\begin{tabular}{lc}
+\toprule
+Parameter & Value \\
+\midrule
+$N$ (number of tasks) & 3 \\
+$\{Z_i\}$ (task sizes) & $\{2, 3, 1\}$ \\
+$\{k_i\}$ (normalized-duration coefficients) & $\{0.5, 0.7, 0.4\}$ \\
+$P$ (parallelism) & 2 \\
+$X$ (baseline effort) & 4 h \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Calculations.}
+\begin{align*}
+  \sum Z_i &= 2 + 3 + 1 = 6, \\
+  \sum Z_i k_i &= 2{\cdot}0.5 + 3{\cdot}0.7 + 1{\cdot}0.4 = 3.5, \\
+  T_h &= 6 \cdot 4 = 24~\text{h}, \\
+  T_{ai}^{(0)} &= \frac{1}{2} \cdot 3.5 \cdot 4 = 7~\text{h}, \\
+  S_E &= \frac{24}{7} \approx 3.43.
+\end{align*}
+
+For the indivisible-task model, the AI-assisted task weights are
+\[
+  \{Z_i k_i X\} = \{4.0, 8.4, 1.6\}~\text{h}.
+\]
+Under an optimal assignment, the first processor receives the $8.4$-hour task,
+and the second receives two tasks with a combined duration of
+$4.0 + 1.6 = 5.6$ hours. The attainable makespan is therefore $8.4$ hours, and
+the speedup is
+\[
+  S_E^{\text{ach}} = \frac{24}{8.4} \approx 2.86.
+\]
+
+\paragraph{Interpretation.}
+All three tasks have $k_i<1$, so AI assistance reduces their modeled effort,
+while parallelism $P=2$ amplifies this effect. The idealized model yields a
+$3.43\times$ speedup. After task indivisibility is taken into account, the
+speedup decreases to $2.86\times$ because the makespan is bounded by the
+longest task, whose duration is $8.4$ hours.
+
+\detailedexampleheading{Example 2}
+
+\paragraph{Parameters.}
+\begin{table}[ht!]
+\centering
+\caption{Parameters of Example 2}
+\label{tab:example-2-params}
+\begin{tabular}{lc}
+\toprule
+Parameter & Value \\
+\midrule
+$N$ (number of tasks) & 4 \\
+$\{Z_i\}$ (task sizes) & $\{5, 2, 4, 3\}$ \\
+$\{k_i\}$ (normalized-duration coefficients) & $\{0.8, 0.6, 0.9, 0.5\}$ \\
+$P$ (parallelism) & 3 \\
+$X$ (baseline effort) & 4 h \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Calculations.}
+\begin{align*}
+  \sum Z_i &= 5 + 2 + 4 + 3 = 14, \\
+  \sum Z_i k_i &= 5{\cdot}0.8 + 2{\cdot}0.6 + 4{\cdot}0.9 + 3{\cdot}0.5 = 10.3, \\
+  T_h &= 14 \cdot 4 = 56~\text{h}, \\
+  T_{ai}^{(0)} &= \frac{1}{3} \cdot 10.3 \cdot 4 \approx 13.73~\text{h}, \\
+  S_E &= \frac{56}{13.73} \approx 4.08.
+\end{align*}
+
+For the indivisible-task model, the AI-assisted task weights are
+\[
+  \{Z_i k_i X\} = \{16.0, 4.8, 14.4, 6.0\}~\text{h}.
+\]
+Under an optimal workload assignment, the processors receive $16.0$, $14.4$,
+and $6.0 + 4.8 = 10.8$ hours of work, respectively. The attainable makespan is
+$16.0$ hours, and the speedup is
+\[
+  S_E^{\text{ach}} = \frac{56}{16.0} = 3.50.
+\]
+
+\paragraph{Interpretation.}
+In Example 2, $k_i<1$ for every task and the parallelism factor is $P=3$. The
+idealized speedup of $4.08\times$ is the largest among the first three
+examples. Once task indivisibility is taken into account, the makespan is
+bounded by the $16.0$-hour task, so the attainable speedup decreases to
+$3.50\times$.
+
+\detailedexampleheading{Example 3}
+
+\paragraph{Parameters.}
+\begin{table}[ht!]
+\centering
+\caption{Parameters of Example 3}
+\label{tab:example-3-params}
+\begin{tabular}{lc}
+\toprule
+Parameter & Value \\
+\midrule
+$N$ (number of tasks) & 3 \\
+$\{Z_i\}$ (task sizes) & $\{8, 5, 6\}$ \\
+$\{k_i\}$ (normalized-duration coefficients) & $\{1.1, 0.7, 0.8\}$ \\
+$P$ (parallelism) & 2 \\
+$X$ (baseline effort) & 4 h \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Calculations.}
+\begin{align*}
+  \sum Z_i &= 8 + 5 + 6 = 19, \\
+  \sum Z_i k_i &= 8{\cdot}1.1 + 5{\cdot}0.7 + 6{\cdot}0.8 = 17.1, \\
+  T_h &= 19 \cdot 4 = 76~\text{h}, \\
+  T_{ai}^{(0)} &= \frac{1}{2} \cdot 17.1 \cdot 4 = 34.2~\text{h}, \\
+  S_E &= \frac{76}{34.2} \approx 2.22.
+\end{align*}
+
+For the indivisible-task model, the AI-assisted task weights are
+\[
+  \{Z_i k_i X\} = \{35.2, 14.0, 19.2\}~\text{h}.
+\]
+Under an optimal assignment, one processor receives the $35.2$-hour task and
+the other receives two tasks with a combined duration of
+$19.2 + 14.0 = 33.2$ hours. The attainable makespan is $35.2$ hours, and the
+speedup is
+\[
+  S_E^{\text{ach}} = \frac{76}{35.2} \approx 2.16.
+\]
+
+\paragraph{Interpretation.}
+In Example 3, speedup is retained even though AI assistance increases the
+modeled effort of one task ($k_i = 1.1$). This same $35.2$-hour task is the
+schedule bottleneck. Consequently, the idealized speedup of $2.22\times$ is
+only slightly greater than the attainable value of $2.16\times$; both are
+lower than in Examples 1 and 2.
+
+\detailedexampleheading{Example 4}
+
+\paragraph{Parameters.}
+\begin{table}[ht!]
+\centering
+\caption{Parameters of Example 4}
+\label{tab:example-4-params}
+\begin{tabular}{lc}
+\toprule
+Parameter & Value \\
+\midrule
+$N$ (number of tasks) & 3 \\
+$\{Z_i\}$ (task sizes) & $\{4, 3, 3\}$ \\
+$\{k_i\}$ (normalized-duration coefficients) & $\{2.4, 2.1, 2.3\}$ \\
+$P$ (parallelism) & 2 \\
+$X$ (baseline effort) & 4 h \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Calculations.}
+\begin{align*}
+  \sum Z_i &= 4 + 3 + 3 = 10, \\
+  \sum Z_i k_i &= 4{\cdot}2.4 + 3{\cdot}2.1 + 3{\cdot}2.3 = 22.8, \\
+  \bar{k}_w &= \frac{22.8}{10} = 2.28, \\
+  T_h &= 10 \cdot 4 = 40~\text{h}, \\
+  T_{ai}^{(0)} &= \frac{1}{2} \cdot 22.8 \cdot 4 = 45.6~\text{h}, \\
+  S_E &= \frac{40}{45.6} \approx 0.88.
+\end{align*}
+
+The threshold condition for speedup is not satisfied:
+\[
+  P = 2 < \bar{k}_w = 2.28.
+\]
+Consequently, the configured parallelism is insufficient to offset the
+increase in modeled task effort under AI-assisted execution.
+
+For the indivisible-task model, the AI-assisted task weights are
+\[
+  \{Z_i k_i X\} = \{38.4, 25.2, 27.6\}~\text{h}.
+\]
+For $P=2$, the optimal assignment is $\{38.4\}$ and
+$\{25.2 + 27.6 = 52.8\}$ hours. The attainable makespan is therefore $52.8$
+hours, and the speedup is lower than the idealized estimate:
+\[
+  S_E^{\text{ach}} = \frac{40}{52.8} \approx 0.76 < 1.
+\]
+
+The makespan lower bound is $\max\{45.6,\; 38.4\} = 45.6$ hours, but it is not
+attained: the optimum is $52.8$ hours. This is the only one of the four
+examples in which $\max\{W/P,\; \max_i Z_i k_i X\}$ is strictly less than the
+optimum. The expression is thus a lower bound rather than a result guaranteed
+to be attainable. The gap remains within Graham's guarantee:
+$52.8 \le (2 - 1/2) \cdot 45.6 = 68.4$ hours.
+
+The sufficient speedup criterion is not satisfied either. The longest-task
+share is $\mu = M_N/T_h = 38.4/40 = 0.96$, and the threshold is
+$P - (P-1)\,\mu = 2 - 0.96 = 1.04$, whereas
+$\bar{k}_w = 2.28 > 1.04$. Moreover, even the necessary condition
+$\bar{k}_w < P = 2$ is violated, consistently with the absence of speedup.
+
+\paragraph{Interpretation.}
+In Example 4, all coefficients $k_i$ are substantially greater than one, so
+AI assistance markedly increases the modeled effort of every task. With
+$\bar{k}_w = 2.28$, the configured parallelism $P=2$ is insufficient to offset
+this slowdown. Even the idealized model shows an increase in completion time
+from $40$ to $45.6$ hours; after task indivisibility and load imbalance are
+taken into account, the makespan increases to $52.8$ hours.
+
+\detailedsummaryheading{Summary Comparison}
+
+\begin{table}[ht!]
+\centering
+\caption{Summary of the Calculation Results}
+\label{tab:summary-results}
+\begin{tabular}{lcccc}
+\toprule
+Metric & Ex.~1 & Ex.~2 & Ex.~3 & Ex.~4 \\
+\midrule
+$T_h$ (without AI), h & 24.0 & 56.0 & 76.0 & 40.0 \\
+$T_{ai}^{(0)}$ (with AI), h & 7.0 & 13.73 & 34.2 & 45.6 \\
+Idealized speedup $S_E$ & $3.43\times$ & $4.08\times$ & $2.22\times$ & $0.88\times$ \\
+Attainable makespan, h & 8.4 & 16.0 & 35.2 & 52.8 \\
+Attainable speedup $S_E^{\text{ach}}$ & $2.86\times$ & $3.50\times$ & $2.16\times$ & $0.76\times$ \\
+Speedup condition met? & Yes & Yes & Yes & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}[Final Interpretation]
+\begin{enumerate}
+  \item Examples 1--3 achieve a speedup both under the idealized formula and
+  under the more realistic assignment of indivisible tasks.
+  \item The difference between the idealized and attainable speedups is due to
+  the longest task: increasing parallelism cannot reduce the makespan below
+  its duration.
+  \item Example 2 yields the greatest speedup because it combines $k_i < 1$
+  for every task with greater parallelism, $P=3$.
+  \item Example 3 exhibits a more moderate effect because one of the largest
+  tasks has $k_i > 1$ and becomes the critical bottleneck in the schedule.
+  \item Example 4 illustrates an adverse scenario: even with $P=2$, the
+  parallelism threshold is not satisfied ($P < \bar{k}_w$), so
+  $T_{ai}^{(0)} > T_h$ and no speedup is achieved.
+\end{enumerate}
+\end{remark}

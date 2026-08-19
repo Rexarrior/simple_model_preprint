@@ -1,0 +1,215 @@
+% T28 source: Примеры базовой модели.tex lines 258--397
+\detailedsummaryheading{Full Parameters of the Illustrative Scenario}
+
+We now move from abstract task sets to an illustrative scenario involving the
+development of a small microservice. This is a synthetic scenario with
+author-specified parameters, not an empirical study of a particular project.
+The same project is considered in four variants to separate the influence of
+two factors. In Variants 1--3, the task set remains unchanged while the
+\emph{process configuration} changes: the parallelism and the agents' operating
+mode. Variant 4 retains the best of these configurations but changes the
+\emph{decomposition}: a large task on the critical path is split into subtasks.
+This comparison makes it possible to assess separately the effect of work
+organization and the effect of a finer project decomposition.
+
+As before, the baseline effort of one unit of work is set to $X = 4$~hours.
+
+\detailedexampleheading{Scenario Definition}
+
+Consider a project to develop a small microservice for processing user
+requests. The service accepts a request through an HTTP API, validates the
+input, persists the state, initiates asynchronous processing, and provides
+observability facilities. The project is compact enough to permit a complete
+analysis, yet includes typical elements of production software development: an
+API contract, data persistence, business rules, background processing, tests,
+and infrastructure configuration.
+
+For concreteness, assume that the service must support the following minimum
+set of capabilities:
+\begin{itemize}
+  \item creating a request through the HTTP API;
+  \item validating required fields and using a uniform error format;
+  \item persisting the request and its status in a database;
+  \item moving a request through the following states: created, accepted for
+  processing, processed, and completed with an error;
+  \item background processing with retries after transient errors;
+  \item structured logs, metrics, a health check, and basic configuration;
+  \item a suite of unit and integration tests;
+  \item packaging and a minimal configuration for execution in a continuous
+  integration and deployment environment.
+\end{itemize}
+
+For transparent parameterization of the illustrative scenario, we use notional
+story points (SP) as units of task size. Let $2$~SP correspond to one unit of
+$Z_i$. One story point then corresponds to $X/2 = 2$~hours, while the baseline
+effort associated with one unit of $Z_i$ remains $X = 4$~hours. Subtasks with
+an odd number of story points have fractional task sizes ($1$~SP $= 0.5\,Z$),
+which is consistent with the condition $Z_i \in \mathbb{Q}^{+}$ in
+Definition~\ref{def:params}. Calculations in Variants 1--3 use the aggregate tasks, whereas
+Variant 4 directly uses the decomposition into subtasks.
+
+The baseline decomposition of the project into aggregate tasks is shown in
+Table~\ref{tab:practical-baseline}.
+
+\begin{table}[ht!]
+\centering
+\caption{Baseline decomposition of the project into tasks}
+\label{tab:practical-baseline}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}Xcc@{}}
+\toprule
+$i$ & Task & Estimate, SP & Task size $Z_i$ \\
+\midrule
+1 & API contract and request validation & 4 & 2 \\
+2 & Persistence layer (model, migrations, repository) & 6 & 3 \\
+3 & Business logic (primary use cases and state transitions) & 8 & 4 \\
+4 & Background worker (asynchronous processing and retries) & 6 & 3 \\
+5 & Observability and configuration (logs, metrics, health check) & 4 & 2 \\
+6 & Tests and integration checks & 6 & 3 \\
+7 & Packaging and deployment configuration (Docker, CI) & 4 & 2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The composition of the aggregate tasks is detailed in
+Table~\ref{tab:practical-subtasks}. This detail is important for planning: at
+the subtask level, it becomes apparent which work can be delegated to agents
+independently and which work requires a contract to have been fixed in advance
+or the result of another task. The detailed decomposition is used below to
+identify dependencies introduced by graph coarsening and in Variant~4, where
+the testing task is split into separate components.
+
+\begin{table}[ht!]
+\centering
+\caption{Subtasks and story points}
+\label{tab:practical-subtasks}
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}Xc@{}}
+\toprule
+$i$ & Task & Subtask & SP \\
+\midrule
+1 & API & Specify endpoints, DTOs, and the error format & 2 \\
+1 & API & Implement data validation and error handling & 2 \\
+2 & Persistence & Design database tables and migrations & 2 \\
+2 & Persistence & Implement the repository and data-access methods & 3 \\
+2 & Persistence & Add basic test data for local verification & 1 \\
+3 & Business logic & Specify states and valid transitions & 2 \\
+3 & Business logic & Implement the primary use cases & 4 \\
+3 & Business logic & Handle domain-level errors & 2 \\
+4 & Background worker & Implement retrieval of tasks for processing & 2 \\
+4 & Background worker & Add retries and failure handling & 3 \\
+4 & Background worker & Synchronize statuses with the primary model & 1 \\
+5 & Observability & Add structured logs and metrics & 2 \\
+5 & Observability & Configure settings and the health check & 2 \\
+6 & Tests & Cover the business logic with unit tests & 2 \\
+6 & Tests & Add integration tests for the API and persistence layer & 3 \\
+6 & Tests & Verify background processing and retries & 1 \\
+7 & Packaging & Prepare the Docker/service configuration & 2 \\
+7 & Packaging & Add continuous-integration commands and a smoke test & 2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The total project size in terms of the aggregate tasks is
+\[
+  \sum_{i=1}^{7} Z_i = 2 + 3 + 4 + 3 + 2 + 3 + 2 = 19.
+\]
+The equivalent total is $38$~SP, which, at $2$~hours per story point, also
+yields $76$~hours of baseline work.
+
+The no-AI completion time (one developer working sequentially) is
+\[
+  T_h = 19 \cdot 4 = 76~\text{h}.
+\]
+
+The tasks are linked by precedence relations. To plan parallel work, define a
+graph $G=(V,E)$ whose vertices correspond to the aggregate tasks in
+Table~\ref{tab:practical-baseline}. The dependencies are listed in
+Table~\ref{tab:practical-dependencies}.
+
+\begin{table}[ht!]
+\centering
+\caption{Dependency graph among the aggregate tasks}
+\label{tab:practical-dependencies}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Task & Depends on & Work that can proceed in parallel \\
+\midrule
+1. API contract and request validation & --- & Initial task; establishes interfaces for the remaining work \\
+2. Persistence layer & 1 & Can proceed in parallel with observability once the API is fixed \\
+3. Business logic & 1, 2 & Can be partially designed after the API is fixed; implementation requires the persistence layer \\
+4. Background worker & 2, 3 & Requires the data model and state-transition rules \\
+5. Observability and configuration & 1 & Can proceed in parallel with the persistence layer and business logic \\
+6. Tests and integration checks & 1, 2, 3, 4 & Unit tests can begin earlier; integration tests depend on the core components \\
+7. Packaging and deployment & 1, 5 & Can be prepared in parallel once the interfaces and configuration are fixed \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+In edge notation, the graph is
+\[
+  E = \{1{\to}2,\; 1{\to}3,\; 1{\to}5,\; 1{\to}7,\; 2{\to}3,\; 2{\to}4,\; 3{\to}4,\; 3{\to}6,\; 4{\to}6,\; 5{\to}7\}.
+\]
+
+This graph implies a natural wave-based schedule:
+\begin{enumerate}
+  \item first, the API contract and basic DTOs are fixed;
+  \item the persistence layer and observability can then be undertaken in
+  parallel;
+  \item once the persistence layer is complete, the full business logic becomes
+  available, while packaging can be prepared in parallel;
+  \item the background worker depends on the business logic and data model;
+  \item integration tests and background-processing checks complete the
+  critical path.
+\end{enumerate}
+
+The project thus combines parallelizable portions with strict dependencies. In
+Variants 1--3, the aggregate values $Z_i$ and coefficients $k_i$ are used, but
+completion time is determined not by balancing independent tasks, but by a
+schedule on the graph in Table~\ref{tab:practical-dependencies}.
+
+\paragraph{Actual Dependencies and Coarsening Artifacts.}
+The coarsened graph conceals an important distinction. Some edges in
+Table~\ref{tab:practical-dependencies} represent \emph{substantive}
+dependencies: the business logic cannot rely on a data model that has not yet
+been created, nor can the background worker rely on undefined state
+transitions. Other edges arise solely from \emph{task coarsening}: they connect
+entire tasks even though only individual subtasks are actually dependent. For
+example, the dependence of Task 6 on Tasks 1--4 means that the test suite
+contains checks for each component. Nevertheless, unit tests for the business
+logic can begin immediately after Task 3, integration tests can begin once the
+API and persistence layer are complete, and only the retry tests require a
+completed background worker. Similarly, at the subtask level, the dependency
+$3 \to 4$ pertains only to the 2-SP state-and-transition model within the 8-SP
+task; the background worker does not require the remaining business-logic use
+cases. A substantive dependency cannot be eliminated by rescheduling, whereas
+a dependency induced by coarsening can be refined by replacing one vertex with
+several subtasks. The dominance of the critical path in the calculations below
+is therefore determined in part by the chosen graph granularity. Variant~4
+quantifies this effect.
+
+In Variants 1--3, the project and aggregate task set remain unchanged, but the
+process configurations $\sigma = (P, r)$ differ: the number of parallel streams
+$P$, the operating-mode assignment to tasks, and the stream assignment. Because the
+coefficient $k_i = k_i^{(r)}$ depends on the ``task $\times$ tool $\times$
+mode'' triple, interactive work in Variant 1, mixed-mode work in Variant 2, and
+delegated work from detailed specifications in Variant 3 define different
+vectors $\{k_i\}$ for the same task set. The tool and acceptance rules are fixed
+within the scenario. Entire configurations are therefore compared, rather than
+an isolated change in a single parameter. Variant~4 reproduces the
+configuration of Variant~3 and changes only the decomposition, allowing its
+effect to be assessed separately.
+
+At level M4, competition among streams for developer attention is modeled
+explicitly. Each task has a human component $h_i$ that includes task
+specification, review, and the direction of corrections. A schedule is
+considered feasible only if the human-attention intervals of different tasks do
+not overlap and one agent remains continuously assigned to every task that has
+started but has not yet been accepted. If a human-attention phase cannot begin
+immediately, the agent remains blocked in the queue; other agents continue
+working. In interactive mode, $h_i = k_i$ because the developer retains the
+task context throughout its execution; in delegated mode, $h_i$ is
+substantially smaller than $k_i$ but is nonzero because task specification and
+acceptance are still required. The values of $h_i$, like those of $k_i$, are
+assigned by expert judgment. Two simplifying assumptions are retained:
+$C(P) \equiv 1$, meaning that cross-stream integration overhead is not modeled,
+and $\gamma(P) \equiv 1$. The effect of attention switching is considered
+separately when the variants are compared.

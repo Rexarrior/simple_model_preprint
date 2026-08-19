@@ -1,0 +1,160 @@
+% T33 source: Введение.tex
+The effect of AI tools on software development productivity cannot be
+characterized by a single universal speedup factor. In a controlled experiment
+with GitHub Copilot, participants who completed the scoped task spent, on
+average, 55.8\% less elapsed time on it than participants in the control group
+\cite{peng2023impact}. By contrast, in a randomized study of experienced
+developers working on tasks in familiar, mature open-source projects, access
+to tools available in early 2025 increased adjusted active implementation time
+by 19\% \cite{becker2025measuring}. A follow-up to that study reported likely
+improvements in more recent agentic tools but also identified a deeper
+methodological problem: developers selected tasks with the availability of AI
+in mind and worked with multiple agents concurrently, so the duration of an
+individual task no longer characterized the productivity of the overall
+process \cite{metr2026uplift}. These findings concern different tasks, tools,
+participants, and metrics and therefore do not constitute a direct
+contradiction. Taken together, they show that the effectiveness of AI must be
+assessed for an explicitly specified way of working, rather than for a model
+or product outside its organizational context.
+
+For development planning, this qualification is insufficient. Even a reliable
+estimate of the duration of an individual AI-assisted task does not determine
+the makespan of a set of interdependent tasks. The autonomous intervals of
+multiple agents may overlap, but tasks compete for a limited number of streams,
+follow dependencies, require integration, and periodically require input from
+a single developer for task specification, clarification, review, or
+acceptance.
+Consequently, a local speedup may leave the overall makespan unchanged if it
+does not reduce the active constraint, and an additional agent may fail to
+create useful parallelism. Conversely, even an operating mode in which an
+individual task takes longer than its manual baseline may reduce the makespan
+of the full workload through overlap among autonomous phases. Thus, a distinct
+problem of process organization and scheduling intervenes between an observed
+task-level AI effect and the project's elapsed-time outcome.
+
+This article considers one \emph{human--agent cell}: one developer completes a
+prespecified AI-assisted set of software tasks using up to $P$ agent streams,
+continuing each task until its result meets a fixed acceptance criterion. The no-AI
+baseline is sequential completion of the same workload by one developer.
+Interactive, delegated, and fully autonomous operating modes are
+distinguished. In interactive mode, the human and the tool work jointly on a
+task in a single stream; in delegated mode, task specification and acceptance
+require the human, while autonomous agent phases may occur between them; in fully
+autonomous mode, there is no mandatory human-attention phase. The article
+focuses primarily on interactive and delegated tasks. Fully autonomous mode is
+admitted as a limiting case with zero mandatory human work, but the discovery
+of new tasks and automatic acceptance of results are not modeled.
+
+For delegated tasks, a local retention rule is assumed: once started, a task
+retains its assigned agent slot until its result is accepted. If the agent
+requests the attention of a busy developer, it waits and is not assigned
+another task, while the other agents continue working independently. A new
+task may begin only in an available slot, and a dependent task may begin only
+after all of its predecessors have been accepted. This rule describes a
+specific process architecture rather than agent systems in general. Reuse of
+a blocked slot, preemption, multiple developers, separate constrained CI/API
+resources, dynamic revelation of the work graph, and interproject scheduling
+are outside the scope of the formulation. The choice between fully manual and
+AI-assisted execution for individual tasks is likewise treated as an external
+decision; the model schedules the already selected AI-assisted task set.
+
+The research question is: \emph{under what conditions does a fully specified
+configuration in which one developer works with multiple AI agents reduce the
+makespan of a fixed set of interdependent software tasks relative to sequential
+work without AI, and what constraints determine the achievable speedup?} A
+configuration specifies the number of agent streams and the operating mode of
+each task; a substantively complete comparison must also hold fixed or
+explicitly vary the decomposition, dependency graph, phase profiles,
+acceptance criterion, and overhead functions. The objective is the makespan of
+an accepted result. Quality and computational cost are included only through
+their effects on the duration of review, correction, and task completion and
+are not separate optimization objectives.
+
+The central thesis of the article is that \textbf{achievable speedup is a
+property of a fully specified human--agent process, not the product of ``AI
+speed'' and a nominal number of agents}. The makespan may be constrained by the
+aggregate workload of the streams, an indivisible task, a critical path
+induced by technological precedence, the sequential human resource, or a
+mixed resource chain created by phase ordering and the queue for developer
+attention. Thus,
+shortening a task that is not on the current critical path may still be useful
+if it releases a scarce stream; increasing available capacity may reduce the
+makespan until saturation, whereas moving to a configuration with a larger
+configured $P$ may increase it if integration or attention-switching overhead
+rises at the same time. Decomposition is similarly ambiguous: it removes
+artificial serialization and enables parallel work, but adds boundaries for
+task specification, review, and integration.
+
+To answer the research question, a deterministic phase-based model M0--M4 is
+proposed. The normalized duration $k_i^{(r)}$ pertains to the ``task---tool---mode''
+triplet and compares the full cycle required to obtain an accepted result with
+the baseline duration of the same task. It is a descriptive normalization, not
+a causal estimate in the absence of a separate identification design. At
+level M4, it is decomposed into the autonomous agent and human components
+$a_i^{(r)}$ and $h_i^{(r)}$, and their internal order is specified by a
+sequence of phases. The hierarchy begins with ideally divisible aggregate work
+at M0 and then successively incorporates task indivisibility at M1, the
+dependency graph at M2, cross-stream integration overhead at M3, and an exact
+schedule of phases with a shared human resource and local blocking at M4. This
+construction separates simple necessary constraints from the combinatorial
+losses of a particular schedule.
+
+The article provides four related results.
+
+First, it defines an operational unit of comparison: not an AI tool in
+isolation, but a complete ``tasks---modes---resources---acceptance criterion''
+scenario. This makes it possible to distinguish an observed task duration from
+a forecast, available capacity from configured parallelism, and an autonomous
+agent phase from fully autonomous mode.
+
+Second, for levels M0--M2, conditions are derived that relate normalized
+durations, parallelism, and the work structure. At M0, speedup is equivalent to
+$P>\bar{k}_w$. At M1--M2, this condition remains necessary, while the classical
+list-scheduling bound yields a sufficient criterion in terms of the relative
+length of the longest task or critical path. This explicitly distinguishes the
+idealized speedup estimate, the structural lower bound, and the attainable
+makespan.
+
+Third, for M4, the structural lower bound
+\[
+  B_4=\max\{W_4/P,L_4,\gamma(P)H\},
+\]
+is introduced, and a speedup ceiling imposed by the sequential human resource
+is proved. The bound combines the workload of the streams, the original
+critical path, and total human work, but in general it is not equal to the
+optimal makespan $T^*$. The resource-augmented phase graph provides an exact
+representation of $T^*$ and shows how the service order of human-attention
+phases and the order of tasks on the agent slots create mixed paths that are
+absent from the original task-DAG\@. This distinguishes a lower bound, a
+certified optimum, and the makespan $T(\pi)$ of a particular policy.
+
+Fourth, a reproducible computational package with an exact solver and a fixed
+deterministic policy tests the internal logic of the model in series
+EXP-00--EXP-08. It reproduces the illustrative scenarios, provides
+counterexamples to the universal attainability of $B_4$, separates the effect of
+available capacity from that of increasing configuration overhead, examines
+granularity and its interaction with $P$, tests scale robustness, and evaluates
+whether the directions of the effects transfer across synthetic DAGs. These results constitute
+computational verification and sensitivity analysis of the formal model, not
+an empirical estimate for a specific team or AI tool.
+
+The mathematical elements of this construction are individually well known:
+indivisible jobs, the critical path, constrained resources, a shared service
+resource, and resource-ordering arcs belong to scheduling theory. The claimed
+contribution is not to reintroduce these objects but to map them systematically
+to the complete cycle of a software task with a task- and mode-specific
+coefficient $k$, separate agent and human-attention phases, repeated requests
+for developer attention, agent-slot retention, integration overhead, and an
+acceptance criterion for the result. Empirical calibration of this mapping
+remains an open problem.
+
+The article follows this logic. After the problem setting and compact notation,
+it compares empirical estimates of AI productivity, scaling models, scheduling
+theory, and research on human attention. It then introduces the M0--M4
+hierarchy and the exact resource representation. The computational part first
+specifies the method and rules of evidence and then examines the illustrative
+scenario and series EXP-00--EXP-08. The discussion relates the formal and
+computational results to practical use of the model; separate sections record
+the limitations, threats to validity, and directions for future work. The full
+glossary, detailed calculations, and additional results are provided in the
+appendices.

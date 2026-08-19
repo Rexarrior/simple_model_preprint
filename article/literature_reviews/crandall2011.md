@@ -16,7 +16,7 @@
 
 **Статус:** финальная опубликованная журнальная статья IEEE. PDF содержит историю received/revised/accepted и указывает редактора, организовавшего review; детали процедуры рецензирования не описаны.
 
-**Локальный файл:** `/Users/rexarrior/work/articles/simple_model_full/literature/crandall2011.pdf`.
+**Локальный файл:** `crandall2011.pdf`.
 
 - формат: PDF 1.4;
 - объём: 14 PDF-страниц;

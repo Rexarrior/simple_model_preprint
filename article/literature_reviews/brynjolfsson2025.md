@@ -22,7 +22,7 @@
 
 ### Что находится в переданном PDF
 
-Файл `/Users/rexarrior/work/articles/simple_model_full/literature/brynjolfsson2025.pdf` **не является финальной QJE-версией**, несмотря на имя файла. Это NBER Working Paper 31161, April 2023, revised November 2023:
+Файл `brynjolfsson2025.pdf` **не является финальной QJE-версией**, несмотря на имя файла. Это NBER Working Paper 31161, April 2023, revised November 2023:
 
 - титульный лист прямо обозначает `NBER Working Paper 31161` и предупреждает, что NBER working papers не прошли peer review (локальный PDF с. 1);
 - abstract сообщает `5,179` agents и `14%`, а не финальные `5,172` и `15%` (локальный PDF с. 2);

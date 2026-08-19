@@ -1,0 +1,41 @@
+% English translation of artifact_availability.tex, extracted from T26.
+{\sloppy
+The research artifact is distributed with the current working version of the
+manuscript in the \texttt{experiments} directory. It includes the source code
+for the simulator and exact solver, tests, frozen EXP-00--EXP-08 scenario
+matrices, checksum manifests, raw CSV/JSON results, reports, and figure-generation
+code. The \texttt{pyproject.toml} and \texttt{uv.lock} files pin the Python
+dependencies of the computational package. The literature-review search
+protocol and evidence matrix are included in the artifact as
+\path{../tmp_docs/simple_model_full_literature_search_protocol.md} and
+\path{../tmp_docs/simple_model_full_evidence_matrix.md}.\par}
+
+In addition to the reproducibility package, we developed an interactive
+companion artifact, the M4 Human--Agent Workbench, available at
+\url{https://m4.articles.rexarrior.fun/}. Its source code and deployment
+configuration are located in the \texttt{calculator} directory. The interface
+allows a user to import an AI-generated project decomposition in JSON format,
+edit the DAG and M4 parameters, and then compute the lower bound, a
+resource-feasible schedule, and scenario-based speedup locally in the browser.
+The Russian and English versions, as well as automatic, light, and dark themes,
+are available within the same deployment. The configuration and result are not
+sent to the server unless the user explicitly opts in to sharing the
+calculation.
+
+The public calculator is a demonstration and practical interface to the model,
+but it does not replace the reproducibility package in \texttt{experiments}.
+The code for the computational package and calculator is distributed under the
+MIT License; the manuscript text, documentation, author-created figures,
+scenarios, and results are distributed under the CC BY 4.0 License. The precise
+scope and exclusions of each license are specified in \texttt{LICENSE.md}. The
+public repository, versioned release, and DOI will be provided after the version
+accompanying the preprint has been archived. The calculator's live URL
+is not an archival persistent identifier.
+
+Verification and reproduction commands are provided in
+Appendix~\ref{app:experiments}. If the article is distributed separately from
+the repository, the \texttt{experiments} directory and the two review files
+listed above must be distributed as a single supplementary artifact: without
+the input matrices, manifests, lockfile, and search protocol, the PDF manuscript
+alone is insufficient for independent verification of the computations and
+literature search.

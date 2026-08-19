@@ -1,0 +1,67 @@
+% T20 source: discussion.tex lines 58--119
+\subsection{Relation to Prior Work}
+
+The human-resource ceiling is a structural analogue of the logic of Amdahl's
+law: the sequential component here is not a segment of a computational program
+but the measured involvement of the developer \cite{amdahl1967validity}. An
+interior
+minimum over configured $P$ is consistent with the Universal Scalability Law in
+the limited sense that increasing contention and coordination can turn
+saturation into negative returns \cite{gunther2008general}. The numerical form
+of $C(P)$ for agents nevertheless remains a hypothesis of the model, not a
+consequence of these classical results.
+
+The gap between $B_4$ and $T^*$ connects the formulation to scheduling theory
+and the RCPSP: the original task-dependency graph and aggregate load are
+insufficient when a single service resource creates additional chains induced
+by resource constraints \cite{graham1966bounds,brucker1999resource}.
+Resource-order arcs and a shared server are standard mechanisms in scheduling
+theory \cite{pinedo2008scheduling,hall2000parallel}. Loading and unloading models
+already include service before and after processing and may retain a machine
+until unloading \cite{elidrissi2023loading}; the reentrant model routes work back
+to the same primary machine after a remote server but releases that machine
+during service \cite{chakhlevitch2009reentrant}. Accordingly, no novelty is
+claimed for DAGs, a shared resource, repeated service, or a resource-augmented
+graph as such.
+
+A related concept of a finite number of robots that can be controlled
+effectively appears in models of the number of robots per operator, in which
+service intervals must fit within the autonomous-work windows of the other
+systems \cite{olsen2004fanout,crandall2005validating}. The experiment by Cummings
+and Mitchell further shows that queueing, delays in regaining situational
+awareness, and retasking reduce the operator's predicted throughput, but its
+UAV-simulation results cannot be transferred numerically to software development
+\cite{cummings2008predicting}. Among coding-agent systems, MAGIS implements an
+automated ``development---quality control---revision'' cycle, while CAID uses
+concurrent worktrees with a dependency plan, merging, and testing
+\cite{tao2024magis,geng2026caid}. Their quality and success metrics do not
+demonstrate a reduction in makespan; in CAID's main comparisons, elapsed time
+and cost increased together with the quality metric.
+
+The present model combines known constructs in a mapping to the software
+process: a task- and mode-dependent coefficient $k$, separate $a_i$ and $h_i$,
+repeated human-attention phases, local retention of an agent slot, integration
+and attention-switching overhead, and the makespan of an accepted result. The
+main reviewed corpus, assembled under a search protocol with a cutoff date of
+2026-08-09, contained no joint empirical calibration of these elements on
+software tasks; this is not a universal claim about the entire literature. The
+present article likewise does not close this empirical gap: the computational
+results clarify the mechanism of the process constraint in synthetic scenarios
+but do not replace measurements of specific tools and teams.
+
+\subsection{Using the Model}
+
+First, tasks and operating modes should be estimated on a common scale, and the
+task-DAG and phase profiles should be constructed; $B_4$ can then be computed as
+a rapid bottleneck diagnostic. For several competing configurations, an exact
+or heuristic schedule is constructed, and whether a certified $T^*$ or only
+$T(\pi)$ was obtained is recorded explicitly. Finally, sensitivity to $k$, $h$,
+$C$, and $\gamma$ is evaluated. The model is more useful for comparing variants
+of work organization than for promising a precise elapsed time without local
+calibration. The active branch of $B_4$ characterizes the constraint that
+determines the lower bound, but does not by itself prove that $T^*$ is governed
+by the same branch: such a conclusion requires either
+attainability of the bound or analysis of the resource-augmented schedule.
+Similarly, an autonomous agent phase means only that the developer is not
+involved during that interval; a task containing such a phase remains delegated
+if task specification or acceptance requires human involvement.

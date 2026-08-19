@@ -62,7 +62,7 @@ Index (PDF с. 21). Это не опровергает результаты, н�
 независимой внешней валидации.
 
 **Локальная копия:**
-`simple_model_full/literature/shipping_faith2026.pdf`, SHA-256
+`shipping_faith2026.pdf`, SHA-256
 `34c92f7faeefa6e03338788ad45376c3a8fd55337a83647fd8158c567e2f55a9`.
 
 Предлагаемая BibTeX-запись, если источник всё же понадобится в discussion:

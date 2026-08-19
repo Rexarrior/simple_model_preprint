@@ -68,7 +68,7 @@ acceptance или издательская версия. Источник нел
 **Лицензия arXiv:** CC BY-NC-SA 4.0.
 
 **Локальная копия:**
-`simple_model_full/literature/agentic_coding_wild2026.pdf`, SHA-256
+`agentic_coding_wild2026.pdf`, SHA-256
 `01b4a5e0674e385807635629baf1d6c8399cacb4a049103f07eabd4dd266f782`.
 
 Предлагаемая BibTeX-запись:

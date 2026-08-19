@@ -14,7 +14,7 @@
 
 **Статус:** опубликованная журнальная статья. На первой странице указаны даты `Received: 6 April 2023`, `Accepted: 23 September 2024` и `Published online: 28 October 2024`, а также том, месяц и страницы выпуска: *Nature Human Behaviour*, volume 8, December 2024, 2293-2303 (PDF с. 1).
 
-**Фактически проверенная версия:** издательский PDF основного текста `/Users/rexarrior/work/articles/simple_model_full/literature/vaccaro2024.pdf`, SHA-256 `69ff4683a8513b2247a5375eaa81d8d18b3b8f51a9ba546c4daeb77a13205f74`. Числа ниже относятся именно к этой версии. Supplementary tables и figures не проверялись, поэтому результаты, доступные только в supplement, в обзор не переносятся.
+**Фактически проверенная версия:** издательский PDF основного текста `vaccaro2024.pdf`, SHA-256 `69ff4683a8513b2247a5375eaa81d8d18b3b8f51a9ba546c4daeb77a13205f74`. Числа ниже относятся именно к этой версии. Supplementary tables и figures не проверялись, поэтому результаты, доступные только в supplement, в обзор не переносятся.
 
 Предлагаемая запись для `references.bib`:
 

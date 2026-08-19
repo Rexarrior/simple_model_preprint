@@ -1,0 +1,308 @@
+% T31 source: Примеры базовой модели.tex lines 628--821
+\detailedexampleheading{Variant 3. Delegated Agents with Detailed Specifications}
+
+In this variant, four AI agents work in parallel ($P = 4$). The configuration
+is specified as
+$\sigma_3 = (P{=}4,\ \text{delegated mode with detailed specifications})$.
+The coefficients $k_i$ are lower than in the preceding variants because the
+operating-mode profile changes, not because parallelism increases: the agents
+receive detailed specifications and execute the autonomous agent phases, after
+which the developer accepts the result. The dependency graph among the
+aggregate tasks remains unchanged and limits the exploitable parallelism.
+
+\paragraph{Parameters.}
+\begin{table}[ht!]
+\centering
+\caption{Parameters of Variant 3}
+\label{tab:practical-v3-params}
+\begin{tabular}{clccc}
+\toprule
+$i$ & Task & $Z_i$ & $k_i$ & $h_i$ \\
+\midrule
+1 & API contract and request validation & 2 & 0.65 & 0.25 \\
+2 & Persistence layer & 3 & 0.70 & 0.25 \\
+3 & Business logic & 4 & 0.80 & 0.25 \\
+4 & Background worker & 3 & 0.75 & 0.25 \\
+5 & Observability and configuration & 2 & 0.60 & 0.25 \\
+6 & Tests & 3 & 0.65 & 0.25 \\
+7 & Packaging and deployment & 2 & 0.70 & 0.25 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The same human component, $h_i = 0.25$, is assumed for all tasks. The
+developer's involvement consists of preparing a detailed specification and
+subsequently reviewing the result; implementation is delegated entirely to the
+agent.
+
+\paragraph{Calculations.}
+\begin{align*}
+  \sum_{i=1}^{7} Z_i k_i &= 2{\cdot}0.65 + 3{\cdot}0.70 + 4{\cdot}0.80 + 3{\cdot}0.75 + 2{\cdot}0.60 + 3{\cdot}0.65 + 2{\cdot}0.70 \\
+  &= 1.30 + 2.10 + 3.20 + 2.25 + 1.20 + 1.95 + 1.40 = 13.40.
+\end{align*}
+
+The weighted-average normalized duration is
+\[
+  \bar{k}_w = \frac{13.40}{19} \approx 0.705.
+\]
+
+The task weights in the graph are $w_i = Z_i k_i X$:
+\[
+  \{w_i\}_{i=1}^{7} = \{5.2,\; 8.4,\; 12.8,\; 9.0,\; 4.8,\; 7.8,\; 5.6\}~\text{h}.
+\]
+
+The total work is
+\[
+  W = \sum_{i=1}^{7} w_i = 13.40 \cdot 4 = 53.6~\text{h}.
+\]
+
+The idealized completion time for independent tasks, that is, the lower bound
+based on total work when $P = 4$, is
+\[
+  T_{ai}^{(0)} = \frac{W}{P} = \frac{53.6}{4} = 13.4~\text{h}.
+\]
+
+The idealized speedup without accounting for dependencies is
+\[
+  S_E = \frac{76}{13.4} \approx 5.67.
+\]
+
+The critical path through the graph comprises Tasks
+$1 \to 2 \to 3 \to 4 \to 6$:
+\[
+  L = 5.2 + 8.4 + 12.8 + 9.0 + 7.8 = 43.2~\text{h}.
+\]
+
+The human time at level M4 is
+\[
+  \sum_{i=1}^{7} Z_i h_i = 0.25 \cdot 19 = 4.75,
+  \qquad
+  H = 4.75 \cdot 4 = 19.0~\text{h},
+  \qquad
+  \bar{h}_w = 0.25,
+  \qquad
+  \frac{1}{\bar{h}_w} = 4.0.
+\]
+
+The lower bound on the makespan accounting for the dependency graph and the
+human resource is
+\[
+  B_4 = \max\left\{\frac{W}{P},\; L,\; H\right\} = \max\{13.4,\; 43.2,\; 19.0\} = 43.2~\text{h}.
+\]
+
+One feasible assignment to four agents that respects the dependencies is
+\begin{itemize}
+  \item Agent 1: Task 1 $[0,5.2]$, Task 2 $[5.2,13.6]$, Task 3
+  $[13.6,26.4]$, Task 4 $[26.4,35.4]$, and Task 6 $[35.4,43.2]$.
+  \item Agent 2: Task 5 $[6.7,11.5]$ and Task 7 $[15.6,21.2]$.
+  \item Agents 3 and 4 are idle because, at this coarse graph granularity, the
+  critical path dominates the exploitable parallelism.
+\end{itemize}
+
+This schedule attains the lower bound:
+\[
+  T(\pi_3)=T^{*}=B_4=43.2~\text{h}.
+\]
+
+\paragraph{Human-Resource Check (Level M4).}
+To prevent an agent from starting work before task specification, the human
+time is divided equally between preparation of the input specification and
+final review; the agent performs the implementation between these stages. The
+developer's blocks are scheduled as follows: Task 1---$[0,\,1.0]$ and
+$[4.2,\,5.2]$; Task 2---$[5.2,\,6.7]$ and $[12.1,\,13.6]$; Task
+5---$[6.7,\,7.7]$ and $[10.5,\,11.5]$; Task 3---$[13.6,\,15.6]$ and
+$[24.4,\,26.4]$; Task 7---$[15.6,\,16.6]$ and $[20.2,\,21.2]$; Task
+4---$[26.4,\,27.9]$ and $[33.9,\,35.4]$; and Task 6---$[35.4,\,36.9]$
+and $[41.7,\,43.2]$. The intervals are pairwise nonoverlapping, and each input
+specification precedes the agent component of the corresponding task. Total
+human utilization is $19.0$~h $= H$ over a project duration of $43.2$~h, so the
+schedule is feasible without modification.
+
+The achievable speedup accounting for the graph and the human resource is
+\[
+  S_E^{\text{ach}} = \frac{76}{43.2} \approx 1.76.
+\]
+
+\paragraph{Interpretation.}
+With four agents, total work decreases to $W=53.6$~h, and the estimate for
+independent tasks is $W/P=13.4$~h. Under the coarsened graph, however, this
+value is unattainable: the chain $1 \to 2 \to 3 \to 4 \to 6$ has length
+$43.2$~h and becomes the primary constraint. After dependencies are taken into
+account, the speedup is therefore not $\times 5.67$ but $\times 1.76$.
+
+The improvement relative to Variant~2 should be interpreted with caution. The
+critical path decreases from $47.8$ to $43.2$~h because the coefficients $k_i$
+decrease upon switching to delegated mode with detailed specifications. The
+increase in $P$ from 2 to 4 does not itself affect $L$: additional agents do not
+accelerate the sequential chain of aggregate tasks and are idle in this
+schedule. The next change to the scenario is therefore not a further increase
+in the number of agents, but the decomposition of large tasks on the critical
+path into smaller, independently verifiable components. Variant~4 considers
+precisely this change.
+
+Level M4 imposes an additional upper bound on speedup. In this variant, the
+human-resource ceiling $1/\bar{h}_w = 4.0$ is substantially higher than the
+achieved speedup of $\times 1.76$, so $L$ remains the active constraint.
+Nevertheless, under the selected mode ($\bar{h}_w = 0.25$), neither
+decomposition nor any number of agents can provide speedup greater than
+$\times 4.0$: the 19 hours of sequential human time cannot be eliminated. As
+the critical path is shortened, $H$ becomes the active constraint.
+
+\detailedexampleheading{Variant 4. The Same Configuration with Finer Decomposition}
+
+This variant differs from Variant~3 only in its decomposition. The number of
+agents $P = 4$, delegated mode with detailed specifications, the coefficients
+$k$, and the human components $h$ remain unchanged. Only the graph changes: the
+aggregate Task 6, ``Tests,'' is replaced by the three subtasks from
+Table~\ref{tab:practical-subtasks}, each with its exact dependencies. In
+Variants 1--3, the configuration changed while the decomposition remained
+fixed; here, by contrast, the decomposition changes while the configuration
+remains fixed. The difference from Variant~3 is therefore attributable solely
+to decomposition.
+
+\paragraph{Parameters.}
+Tasks 1--5 and 7 remain unchanged (Table~\ref{tab:practical-v3-params}). Task 6
+is decomposed as specified in Table~\ref{tab:practical-subtasks}:
+
+\begin{table}[ht!]
+\centering
+\footnotesize
+\caption{Subtasks of Task 6 in Variant 4}
+\label{tab:practical-v4-params}
+\begin{tabular}{clcccl}
+\toprule
+$i$ & Subtask & SP & $Z_i$ & $k_i$ / $h_i$ & Depends on \\
+\midrule
+6a & Unit tests for the business logic & 2 & 1 & 0.65 / 0.25 & 3 \\
+6b & Integration tests for the API and persistence layer & 3 & 1.5 & 0.65 / 0.25 & 1, 2 \\
+6c & Verification of background processing and retries & 1 & 0.5 & 0.65 / 0.25 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The decomposition is assumed \emph{not to change the amount of work}: the
+subtasks inherit $k = 0.65$ and $h = 0.25$ from the original task. The
+quantities $W$, $\bar{k}_w$, and $H$ are therefore unchanged, so the comparison
+with Variant~3 isolates the structural effect. In practice, decomposition
+entails additional overhead for preparing specifications, issuing tasks, and
+accepting each subtask. Under the adopted accounting rule, this overhead is
+included in $k^{(r)}$ and increases it when decomposition becomes excessive.
+Conversely, $k$ may decrease for small tasks with clear boundaries. Thus, holding $k$ and
+$h$ constant is a neutral scenario assumption, and the sensitivity of the
+result to decomposition overhead requires separate calibration.
+
+The subtask sizes are fractional ($Z_{6\text{b}} = 1.5$,
+$Z_{6\text{c}} = 0.5$): an odd number of story points under the conversion
+$2$~SP $= 1\,Z$. The subtask weights are
+\[
+  w_{6\text{a}} = 1 \cdot 0.65 \cdot 4 = 2.6~\text{h}, \qquad
+  w_{6\text{b}} = 1.5 \cdot 0.65 \cdot 4 = 3.9~\text{h}, \qquad
+  w_{6\text{c}} = 0.5 \cdot 0.65 \cdot 4 = 1.3~\text{h};
+\]
+together, they total $7.8$~h, the weight of the original Task 6.
+
+\paragraph{Calculations.}
+The aggregate quantities are the same as in Variant~3:
+\[
+  W = 53.6~\text{h}, \qquad
+  \bar{k}_w \approx 0.705, \qquad
+  \frac{W}{P} = 13.4~\text{h}, \qquad
+  H = 19.0~\text{h}, \qquad
+  \frac{1}{\bar{h}_w} = 4.0.
+\]
+
+The critical path changes. The monolithic vertex 6 and its incoming edges
+$3 \to 6$ and $4 \to 6$ are replaced by three vertices with the exact
+dependencies $3 \to 6\text{a}$, $\{1,2\} \to 6\text{b}$, and
+$4 \to 6\text{c}$, and the longest path becomes
+\[
+  1 \to 2 \to 3 \to 4 \to 6\text{c}: \qquad
+  L = 5.2 + 8.4 + 12.8 + 9.0 + 1.3 = 36.7~\text{h}
+\]
+(the competing paths are shorter: $1 \to 2 \to 3 \to 6\text{a}$ yields
+$29.0$~h, $1 \to 2 \to 6\text{b}$ yields $17.5$~h, and
+$1 \to 5 \to 7$ yields $15.6$~h). The tail of the critical path decreases
+from $7.8$~h (all of Task 6) to $1.3$~h (only the component that actually waits
+for the background worker).
+
+The lower bound on the makespan is
+\[
+  B_4 = \max\left\{\frac{W}{P},\; L,\; H\right\} = \max\{13.4,\; 36.7,\; 19.0\} = 36.7~\text{h}.
+\]
+
+A feasible assignment that respects the dependencies is
+\begin{itemize}
+  \item Agent 1: Task 1 $[0,\,5.2]$, Task 2 $[5.2,\,13.6]$, Task 3
+  $[13.6,\,26.4]$, Task 4 $[26.4,\,35.4]$, and Task 6c
+  $[35.4,\,36.7]$.
+  \item Agent 2: Task 5 $[6.7,\,11.5]$; for Task 7, the input specification
+  occupies $[19.5,\,20.5]$, agent implementation occupies
+  $[20.5,\,24.1]$, and the result then waits in the queue for developer
+  attention until the review at $[28.4,\,29.4]$. During the waiting interval
+  $[24.1,\,28.4]$, the agent remains assigned to Task 7 and cannot receive
+  other work.
+  \item Agent 3: Task 6b $[15.6,\,19.5]$ and Task 6a
+  $[27.9,\,30.5]$. Agent 4 is idle.
+\end{itemize}
+
+This schedule attains the lower bound:
+\[
+  T(\pi_4)=T^{*}=B_4=36.7~\text{h}.
+\]
+
+\paragraph{Human-Resource Check (Level M4).}
+As in Variant~3, the human time for each task is divided equally between the
+input specification and final review. The developer's blocks are as follows:
+Task 1---$[0,\,1.0]$ and $[4.2,\,5.2]$; Task 2---$[5.2,\,6.7]$ and
+$[12.1,\,13.6]$; Task 5---$[6.7,\,7.7]$ and $[10.5,\,11.5]$; Task
+3---$[13.6,\,15.6]$ and $[24.4,\,26.4]$; Task 6b---$[15.6,\,16.35]$
+and $[18.75,\,19.5]$; Task 7---$[19.5,\,20.5]$ and $[28.4,\,29.4]$;
+Task 4---$[26.4,\,27.9]$ and $[33.9,\,35.4]$; Task
+6a---$[27.9,\,28.4]$ and $[30.0,\,30.5]$; and Task
+6c---$[35.4,\,35.65]$ and $[36.45,\,36.7]$. The intervals are pairwise
+nonoverlapping, each input specification precedes agent implementation, and
+total human utilization is $19.0$~h $= H$. The schedule is therefore feasible
+with respect to the human resource and does indeed attain $36.7$~h.
+
+The achievable speedup accounting for the graph and the human resource is
+\[
+  S_E^{\text{ach}} = \frac{76}{36.7} \approx 2.07.
+\]
+
+\paragraph{Interpretation.}
+The makespan decreases from $43.2$ to $36.7$~h, while speedup increases from
+$\times 1.76$ to $\times 2.07$, an increase of $18\%$, without adding agents,
+changing the operating mode, or improving the tool. This effect is obtained by
+replacing one aggregate vertex with three subtasks already identified in
+Table~\ref{tab:practical-subtasks}. The dependency ``testing after completion
+of the entire core'' was an artifact of graph coarsening; refining it shortens
+the critical path by $6.5$~h. In the comparison considered here, the result is
+determined by decomposition, not by the number of agents.
+
+Only the transition from Variant 3 to Variant 4 is an all-else-equal
+comparison: the decrease from $43.2$ to $36.7$~h is attributable to
+decomposition with $P$, $k$, and $h$ held constant. In the transition from
+Variant 2 to Variant 3, both $P$ and the operating mode change, so their effects
+are not separated. The calculation nevertheless shows that the reduction in
+the active bound $L$ from $47.8$ to $43.2$~h is associated with lower $k$
+values along the critical path. The value of $P$ does not itself enter the
+formula for $L$, and the additional agents are idle.
+
+The comparative conclusion for Variants 3 and 4 also holds without an exact
+absolute calibration. By Proposition~\ref{prop:invariance}, multiplying all
+agent and human-attention phases in both variants by a common factor
+$\kappa>0$ multiplies both makespans by $\kappa$ but leaves the ratio
+$43.2/36.7$ and the ranking of the variants unchanged. This robustness does
+not extend to task-specific errors of unequal magnitude or to changes in the
+relative profiles of $k_i$ and $h_i$.
+
+Decomposition can be continued iteratively. The next candidate is the
+dependency $3 \to 4$, which at the subtask level reduces to the 2-SP state model
+within the 8-SP task. If it is separated into an early subtask, the background
+worker can begin before the remaining business-logic use cases are complete.
+The limit to such decomposition is already apparent: the path
+$1 \to 2 \to 3 \to 4$, of length $35.4$~h, almost completely determines
+$L = 36.7$~h, while the makespan is bounded below by the human resource
+$H = 19.0$~h and speedup is bounded above by $\times 4.0$. As the critical path
+is shortened further, $H$ becomes the active constraint, as predicted by level
+M4.

@@ -1,0 +1,120 @@
+% T22 source: simple_litreview.tex lines 1--23
+\subsection{Empirical Estimates of AI Productivity}
+
+Empirical studies do not support a single coefficient for the effect of AI on
+software development. In the experiment by Peng et al., participants who
+completed a bounded JavaScript task using GitHub Copilot spent, on average,
+55.8\% less elapsed time on it than control-group participants who completed the
+task \cite{peng2023impact}. This result pertains to one task, an early version of
+Copilot, and a sample that included only participants who completed the task;
+parallel use of multiple agents was not studied. By contrast, in the randomized
+field study by Becker et al., access to tools available in early 2025 increased
+adjusted active implementation time by 19\% among experienced developers working
+on mature open-source projects \cite{becker2025measuring}. This study measured
+active time, not the elapsed completion time of the entire workload; moreover,
+the experimental condition included heterogeneous tools and usage patterns.
+The estimates therefore concern different participants, tasks, tools, inclusion
+rules, and outcome measures and do not contradict one another.
+
+Heterogeneity in effects is also observed outside software development. When a
+generative assistant was introduced in customer support, Brynjolfsson et al.\
+estimated a 15\% average increase in throughput, measured as the number of
+resolved cases per hour \cite{brynjolfsson2025generative}. The effect depended
+on employee experience and case type, and the throughput of a dynamic flow
+cannot be converted directly into the duration of a fixed software-development
+task. In terms of the model, estimates of $k_i^{(r)}$ are comparable only when
+task boundaries, the baseline configuration, and acceptance criteria are the
+same. Elapsed time, active time, throughput, success, quality, and comprehension
+remain distinct outcome measures.
+
+Studies of interaction explain some of this heterogeneity. Vaithilingam et al.\
+found no statistically significant Copilot benefit in either time or the
+task-completion rate across three short tasks, but
+identified costs associated with understanding, reviewing, editing, debugging,
+and rewriting generated code \cite{vaithilingam2022expectation}. Barke et al.\
+showed that programmers alternate between using AI to accelerate their work and
+using it to explore a possible solution \cite{barke2023grounded}. The operating
+mode $r$ therefore describes the entire process of task specification,
+execution, review, and correction, while $h_i^{(r)}$ includes deferred review
+and rework.
+
+The transition to coding agents makes the need to distinguish time from quality
+particularly clear. In the study by Balepur et al., an agent accelerated the
+original web-development task and improved its accuracy relative to a
+constrained chatbot, but impaired code comprehension; during a subsequent
+extension performed without the agent, no sustained advantage in time or
+accuracy was found \cite{balepur2026impaired}. The absence of a no-AI condition
+precludes estimation of $k$. Telemetry from millions of GitHub Copilot agent
+sessions likewise reveals long tool-call chains, limited internal parallelism,
+and repeated attempts, but does not link sessions to fixed tasks completed to
+an accepted result or to human actions \cite{liu2026agenticcoding}. Finally,
+METR notes that selecting
+tasks based on AI availability and working with multiple agents in parallel
+biases estimates of the effect at the individual-task level
+\cite{metr2026uplift}. These findings motivate separate measurement of
+autonomous and human-attention intervals and comparison of complete workflow
+configurations.
+
+\subsection{Effort Estimation as an External Model Layer}
+
+Effort estimation addresses a related but distinct problem. Boehm, Abts, and
+Chulani systematize parametric, regression-based, analogy-based, expert, and
+combined methods for forecasting effort, cost, and duration
+\cite{boehm2000survey}. These methods estimate inputs that are not yet known,
+but do not by themselves assign indivisible tasks to streams, verify resource
+feasibility, or minimize the makespan of a fixed workload. Comparisons of formal
+models and expert estimates identify no universally superior approach
+\cite{jorgensen2007forecasting}; a systematic map of 304 journal publications
+also documents the predominance of retrospective validation and insufficient
+attention to uncertainty and prospective validation
+\cite{jorgensenShepperd2007systematic}. An observed post-task value of
+$k_i^{(r)}$ therefore does not itself constitute a forecast. Before a project
+begins, an external, locally calibrated estimate $\hat{k}_i^{(r)}$ with
+explicitly stated uncertainty is required; the scheduling model translates
+these estimates into elapsed-time constraints.
+
+\subsection{Scaling, Orchestration, and Coding-Agent Architectures}
+
+For a fixed workload, Amdahl's law relates the limiting speedup to the sequential
+fraction \cite{amdahl1967validity}. Only a structural analogy is used here: the
+sequential resource is operationally defined human involvement, not a segment
+of a machine program. Gunther's Universal Scalability Law permits saturation
+and negative returns due to resource contention and state coherency
+\cite{gunther2008general}; its denominator is a hypothesis for $C(P)$, not an
+empirically established law for coding agents. Brooks's reasoning about
+communication and conceptual integrity similarly motivates integration overhead
+\cite{brooks1995mythical}, but the number of communication links in a human team
+cannot be transferred literally to the ``one developer---multiple agents''
+topology.
+
+In general-purpose benchmarks of multi-agent systems (MAS), Kim et al.\ compared
+260 configurations and found that success depended on task decomposability,
+sequential dependencies, the base model, and topology \cite{kim2025scaling}.
+The outcomes, however, were accuracy and success. No human participated, and
+the number of agents varied together with the architecture. This supports the
+structural dependence of coordination overhead on system and task structure,
+but does not estimate $C(P)$ or the makespan of the human--agent cell considered
+here.
+
+Repository-level systems provide closer but still incomplete analogues. MAGIS
+separates the roles of planner, repository custodian, developer, and quality
+assurance and permits automated review-and-revision cycles \cite{tao2024magis}.
+Its primary outcome is the proportion of SWE-bench tasks solved; four roles do
+not imply four concurrently operating streams, and automated quality assurance
+is not a human resource. CAID, by contrast, constructs a dependency-aware plan
+and does execute developer agents concurrently in isolated Git worktrees,
+followed by merging, testing, and final review \cite{geng2026caid}. In each of
+the six primary ``model family---task set'' pairs, CAID increased the quality
+metric but simultaneously increased elapsed completion time and cost.
+Comparisons of configurations with 2, 4, and 8 agents showed a nonmonotonic
+relationship between quality and agent count, together with increasing
+overhead. CAID therefore supports the distinction among the configured number
+of agents, actual concurrency, and useful parallelism, but does not demonstrate
+speedup and lacks human-attention phases, a no-AI condition, and decomposition
+into $a_i/h_i$.
+
+Thus, internal parallel tool use by a single agent, concurrent execution of
+independent tasks, the number of named roles, and the coordination architecture
+must be distinguished. Actual concurrency can be established only from observed
+overlapping intervals under an unchanged comparison condition; success and
+quality metrics do not replace measurement of makespan.

@@ -12,9 +12,9 @@ Copyright © 2026 Александр Родионов / Aleksandr Rodionov.
 
 К этой области относятся, в частности:
 
-- `experiments/src/` и `experiments/tests/`;
-- `experiments/pyproject.toml`;
-- исходники и конфигурация в `calculator/`.
+- `article/experiments/src/` и `article/experiments/tests/`;
+- `article/experiments/pyproject.toml`;
+- исходники и конфигурация в `article/calculator/`;
 
 ## Статья, документация и исследовательские материалы — CC BY 4.0
 

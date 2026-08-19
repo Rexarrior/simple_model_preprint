@@ -1,0 +1,175 @@
+% T09 source: Термины и обозначения.tex lines 1--171
+\label{sec:terms}
+
+This appendix consolidates the terms and notation used throughout the article.
+The explanations provide a concise reference; the formal definitions and
+assumptions are introduced in Section~\ref{sec:formal-model}.
+
+\subsection{Core Terms}
+
+\begin{description}[style=nextline]
+  \item[Work Unit] An abstract amount of work whose no-AI effort is equal to
+  $X$. In the illustrative scenario, work units are linked to estimates in
+  story points, although the model does not require a particular task-size
+  scale.
+
+  \item[Task] A part of the project that is indivisible at the selected level
+  of decomposition. A task has size $Z_i$, operating mode $r$, and normalized
+  duration $k_i^{(r)}$. When the level of decomposition changes, one task may
+  be replaced by several subtasks.
+
+  \item[Effort] The amount of work expressed in terms of execution time without
+  AI\@. In the no-AI baseline with one developer, effort coincides with elapsed
+  time; under parallel execution, total effort and the project's elapsed time
+  differ.
+
+  \item[Elapsed and Active Time] Elapsed time is measured from the start to the
+  completion of a task and includes waiting. Active time counts only intervals
+  during which the worker is directly engaged in execution. These metrics, as
+  well as task-flow throughput, are not interchangeable.
+
+  \item[Accepted Result] A result that satisfies the specified acceptance
+  criterion. The time spent on review, correction, and repeated review is
+  included in the task duration; merely completing agent generation does not
+  constitute completion of the work.
+
+  \item[No-AI Baseline] Sequential execution of the specified workload by one
+  developer without AI\@. Its duration is denoted by $T_h$ and is used as the
+  baseline for calculating speedup. The term used in the English-language
+  literature is \emph{baseline}.
+
+  \item[Normalized AI-Assisted Duration] The ratio of the AI-assisted task
+  duration to the baseline estimate $Z_iX$. It is denoted by $k_i^{(r)}$ and
+  depends on the task, tool, and mode. This is a descriptive quantity, not a
+  universal property of an AI model or a causal estimate in the absence of a
+  separate identification design.
+
+  \item[AI Coding Agent] A software system based on an AI model that can receive
+  a task, work with code and tools, and return a result for automated or human
+  acceptance. The short form used in the article is \emph{agent}.
+
+  \item[Human--Agent Cell] The organizational unit considered in the article:
+  one developer assigns tasks to one or more agents and accepts their results.
+  Modeling multiple interacting cells is left for future work.
+
+  \item[Operating Mode] The manner in which a human and an agent interact while
+  performing a task. The interactive, delegated, and fully autonomous modes are
+  distinguished. The mode characterizes not the product itself but the sequence
+  of task specification, execution, review, and correction.
+
+  \item[Interactive Mode] The developer and agent perform a single task jointly,
+  sequentially exchanging requests and results. In the limiting case, the human
+  component occupies the entire task duration: $h_i=k_i$.
+
+  \item[Delegated Mode] The developer specifies a task, the agent performs it
+  autonomously, and the developer then reviews the result and either accepts it
+  or returns it for revision.
+
+  \item[Fully Autonomous Mode] A limiting mode in which a prespecified task has
+  no mandatory human-attention phase. The model does not represent discovery
+  of new tasks or automatic acceptance of results, and this mode is not
+  examined in detail. It must not be conflated with an autonomous agent phase
+  of a delegated task: such a phase frees the developer during execution, but
+  task specification and acceptance of the result still require
+  human-attention phases.
+
+  \item[Process Configuration] A complete description of how the work is
+  organized: configured parallelism $P$, the assignment of modes to tasks, the
+  tool used, and the task-specification and acceptance protocol. When the tool
+  and protocol are fixed, the abbreviated notation $\sigma=(P,r)$ is used for a
+  common mode, or $\sigma=(P,\rho)$ for different modes. Configurations should
+  be compared as a whole because changing any of these elements may change the
+  coefficients $k_i^{(r)}$, phase profiles, and overhead.
+
+  \item[Decomposition] The division of a project into tasks and subtasks with
+  explicit boundaries and dependencies. Decomposition determines the
+  parallelism that can be exploited and the composition of the critical path;
+  excessive fragmentation may increase task-specification and acceptance
+  overhead.
+
+  \item[Parallelism] The number of AI-assisted execution streams configured to
+  be available concurrently. It is denoted by $P$. In scheduling problems, $P$
+  is an integer number of processors, whereas in analytical estimates it may be
+  interpreted as an effective value averaged over a period. The number of
+  agents launched need not coincide with the parallelism actually attainable.
+
+  \item[Dependency Graph] A directed acyclic graph $G=(V,E)$ whose vertices
+  correspond to tasks and whose arcs specify precedence relations. The English
+  abbreviation is DAG (\emph{directed acyclic graph}).
+
+  \item[Schedule] An assignment of tasks to processors and of their start and
+  completion times. A schedule is called feasible if it respects precedence
+  relations, phase order, the number of agent streams, local retention of the
+  assigned agent slot by a task once started, and the human-resource constraint.
+
+  \item[Task Phase] A continuous stage of task execution with a uniquely
+  specified resource type. The model distinguishes autonomous agent phases and
+  human-attention phases; the latter require the developer's attention while
+  simultaneously retaining the corresponding agent slot.
+
+  \item[Critical Path] The longest path by duration in the dependency graph.
+  Its length $L$ provides a lower bound on the project duration: increasing the
+  number of agents does not shorten tasks connected sequentially along this
+  path.
+
+  \item[Makespan] The time from the start of the project until the completion of
+  the final task with an accepted result. This is the principal time metric in
+  the article. In scheduling theory, the corresponding term is
+  \emph{makespan}.
+
+  \item[Total Work] The sum of the durations of all AI-assisted tasks when they
+  are executed in separate streams. It is denoted by $W$. The quantity $W/P$
+  provides an idealized estimate under uniform load distribution.
+
+  \item[Agent Component] Intervals of task execution during which the agent
+  works autonomously and the developer is free. The normalized duration is
+  denoted by $a_i^{(r)}$.
+
+  \item[Human Component] Intervals during which the developer is engaged in
+  task specification, reading, review, or directing corrections for the task.
+  The normalized duration is denoted by $h_i^{(r)}$.
+
+  \item[Human Resource] The time and attention of a single developer, shared by
+  all streams. The resource has unit capacity: human-attention intervals of
+  different tasks cannot overlap.
+
+  \item[Coordination Overhead] Additional costs arising from the parallel
+  operation of multiple streams. Cross-stream integration overhead is captured
+  by the function $C(P)$, while the developer's cost of switching among streams
+  is captured by the multiplier $\gamma(P)$.
+
+  \item[Local Blocking of an Agent Slot] The level-M4 rule under which a task,
+  once started, retains its assigned agent until its result is accepted. If a
+  task requests the attention of a busy developer, the agent stops working and
+  remains occupied while waiting; the other agents continue their tasks.
+  Blocking one stream does not imply that the entire system stops.
+
+  \item[Queue for Developer Attention] The set of agent requests awaiting
+  service by a single developer. Waiting is not included in the productive
+  human time $H$, but it increases the occupancy of retained agent slots and may
+  cause the actual completion time to exceed the lower bound $B_4$.
+
+  \item[Reuse of a Blocked Stream] Starting another task in place of an agent
+  that is waiting for the developer. Neither this arrangement nor the launch of
+  an additional priority stream beyond $P$ is considered in the article.
+
+  \item[Speedup] The ratio of the no-AI baseline time to the time of the selected
+  AI-assisted configuration. A value greater than one indicates a reduction in
+  project duration, a value equal to one indicates no effect on time, and a
+  value less than one indicates a slowdown.
+
+  \item[Lower Bound on Time] A value below which the makespan cannot fall. At
+  levels M1--M4, the lower bound need not be attainable even under an optimal
+  schedule.
+
+  \item[Bottleneck] A task, path, or resource that determines the lower bound on
+  time in the configuration under consideration. In the model, the bottleneck
+  may be the aggregate load $W/P$, the longest task $M_N$, the critical path
+  $L$, or the human resource $\gamma(P)H$.
+
+  \item[Levels M0--M4] Successive refinements of the model. Level M0 assumes
+  ideal divisibility of work; M1 accounts for task indivisibility, M2 for the
+  dependency graph, M3 redefines durations to account for coordination
+  overhead, and M4 introduces phase ordering, a capacity-constrained human
+  resource, and local blocking.
+\end{description}

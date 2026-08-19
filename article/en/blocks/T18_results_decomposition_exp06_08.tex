@@ -1,0 +1,88 @@
+% T18 source: computational_results.tex lines 60--143
+\subsection{Decomposition and Its Interaction with \texorpdfstring{$P$}{P}}
+
+In EXP-04, the exact $T^*(m)$ profile on the finite grid was U-shaped in 12 of
+the 13 curves---in every case with positive decomposition overhead. The common
+zero-overhead slice
+reached a plateau once serialization was removed. With low overhead, the
+optimum was usually attained at $m=3$; as overhead increased, it shifted toward
+$m=2$. Decomposition is therefore not monotonically beneficial: it reduces
+structural serialization but adds task-specification, acceptance, and
+integration overhead.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\textwidth]{exp04_decomposition_curves.png}
+  \caption{Exact decomposition curves. On the finite grid examined, positive
+  overhead produces a finite optimal granularity; zero overhead produces a plateau.}
+  \label{fig:exp04-decomposition}
+\end{figure}
+
+EXP-05 examines the interaction effect. Of the 100 interior interaction
+contrasts with positive overhead, 96 are positive, four are zero, and none are
+negative. However, the absolute gain from decomposition at $P>1$ is positive at
+only 74 points and negative at 26; at 22 points, a positive interaction contrast
+coincides with a negative absolute gain. Complementarity therefore means that
+the effect is more favorable than at $P=1$, not that decomposition is
+unconditionally beneficial. Increasing the human component of overhead
+attenuates the gain. This is a result on the selected finite grid, not a
+universal theorem.
+
+\subsection{Scale and Parameter Robustness: EXP-06}
+
+As an implementation check, EXP-06 reproduced scale invariance at all 20 of 20
+exact-solver points. The advantage of illustrative Variant 4 over Variant 3 was
+preserved in all 5000 random pairs and all 382 prespecified adverse pairs. This
+result establishes robustness only within the frozen error families, not under
+arbitrary perturbations of all parameters.
+
+\subsection{Transfer across Synthetic DAGs: EXP-07}
+
+Across 1440 scenarios constructed from 480 synthetic DAGs with three placements
+of human work, EXP-07, in its pilot mode, supported two prespecified median
+directions for \texttt{bottom\_level\_fcfs\_v1}. In C2, the median shift in
+$P_{\mathrm{opt}}:=\min\operatorname*{arg\,min}_{P}T_\pi(P)$ after introducing
+agent and human costs was zero; shifts in the opposite, positive direction
+occurred in 0.42\% and 0.63\% of DAGs, respectively, below the prespecified
+5\% threshold. In C3, the median $I_\pi(4,3)$ was 6.4, with a 95\% bootstrap
+interval of $[6.0,6.8]$, while the median attenuation of the gain due to overhead
+was 2.0, with an interval of $[2.0,2.0]$. Negative individual contrasts
+nevertheless accounted for 6.53\% and 3.47\%, respectively. Thus, the pilot
+supported aggregate directions, not universal signs for every DAG or claims
+about a certified $T^*$. Because the pilot-extension rule was only partially
+implemented, these decisions pertain to the resulting 20-seed pilot and require
+reassessment under the fully implemented gate.
+
+The hypotheses concerning the ``synchronous'' profile and simple concentration
+of human work were not supported: the former did not, in fact, model
+synchronization in time, while the latter conflated a change in total $H$ with
+its placement. The retrospective interpretation of the former is therefore
+limited to a comparison of equal and permuted asynchronous phase profiles, and
+the conclusion regarding the placement of $H$ is retested in EXP-08. In the
+EXP-07 exact audit, only 17 of 36 runs returned \texttt{OPTIMAL}; four complete
+C1 pairs yielded a small estimate of the opposite sign. This audit did not
+cover C2--C3 and does not replace the primary fixed-policy estimand.
+
+\subsection{Placement of Fixed Human Work: EXP-08}
+
+The corrected paired design of EXP-08 preserved the DAG, $A$, $H$, and total
+work. With $C=\gamma=1$, moving human work between tasks changed neither
+$H,W_4,L_4,B_4$ nor the active branches in any of the 2880 checks. When
+$\gamma>C$, moving an amount $\Delta H$ onto the prespecified path changes the
+length of that path by exactly $(\gamma-C)\Delta H$; this identity was confirmed
+in all 480 pairs. The change in the fixed-policy makespan, however,
+depended on the phases and on $P$. For the primary \texttt{io} profile, the
+normalized paired median ``high minus low'' at $P=4$ was $-0.0077$, with a 95\%
+bootstrap interval of $[-0.0090,-0.0065]$, and was classified as practically
+equivalent under the prespecified margin of 0.01. At $P=8$, the estimate was
+$-0.0117$, with an interval of $[-0.0120,-0.0101]$, and the decision was
+negative.
+
+All 16 exact-audit scenarios had status \texttt{OPTIMAL}, but this does not make
+the statistical conclusion determinate: the eight certified pairs yielded the
+same median, $0.0010$, for $P=4$ and $P=8$, with an interval of
+$[-0.0150,0.0080]$, so both decisions remained inconclusive. Thus, two distinct
+characteristics matter: total human work determines the resource ceiling; when
+$\gamma\ne C$, its placement changes the path weights and $L_4$, whereas when
+$C=\gamma$, phase order can still change the queue and the fixed-policy makespan
+while the aggregates remain unchanged.

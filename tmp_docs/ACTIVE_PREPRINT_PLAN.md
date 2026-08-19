@@ -1,73 +1,69 @@
-# Активный план подготовки препринта
+# Active preprint release plan
 
-Дата актуализации: 2026-08-13.
+Last updated: 2026-08-19.
 
-Этот файл — единственный оперативный план проекта. Завершённые планы и исходные
-постановки перенесены в `tmp_docs/archive/`; доказательные материалы научного
-аудита остаются рядом с этим файлом и не являются списками текущих задач.
+This is the only operational plan for the initial preprint release. Historical
+plans remain under `tmp_docs/archive/`; the evidence matrix, screening log, and
+scientific audits are supporting records rather than task lists.
 
-## Текущий статус
+## Current status
 
-- [x] Формальная модель и основная аргументация статьи собраны.
-- [x] Серия EXP-00--EXP-08 реализована, результаты зафиксированы, тесты проходят.
-- [x] Выполнены математико-логический, литературный и claim--citation аудиты.
-- [x] В рукопись внесены имя автора, аффилиация, email, ORCID и declarations.
-- [x] Зафиксированы лицензии: MIT для кода, CC BY 4.0 для рукописи,
-  документации, авторских рисунков, сценариев и результатов.
-- [x] Калькулятор включён в состав воспроизводимых артефактов.
-- [x] Подготовлен отдельный публикационный репозиторий без сторонних PDF и
-  рабочих build-файлов.
-- [x] Русская внутренняя версия собрана в
-  `release/phase_based_human_agent_planning_ru.pdf`.
-- [ ] Английская версия не подготовлена.
-- [ ] Публичный remote, версионированный release и DOI ещё не созданы.
+- [x] The M0--M4 formal model and main argument are complete.
+- [x] EXP-00--EXP-08, frozen scenarios, raw results, manifests, tests, and
+  figure generators are included.
+- [x] Mathematical/logical, literature, and claim--citation audits are present.
+- [x] Author name, current affiliation, email, ORCID, declarations, and the
+  employer-publication disclosure are included.
+- [x] MIT and CC BY 4.0 license boundaries are documented.
+- [x] The calculator source and independent live deployment are documented.
+- [x] The English manuscript is complete, synchronized with the recorded
+  Russian baseline hashes, and integrated as `article/main_en.tex`.
+- [x] All nine translation queries have explicit editorial resolutions.
+- [x] English and Russian build targets and an isolated arXiv-source builder
+  are available through the root `Makefile`.
+- [x] Copy-ready arXiv metadata and a submission checklist are stored in
+  `release/ARXIV_SUBMISSION.md`.
+- [x] Full local verification is complete: both PDFs build, experiments and
+  calculator checks pass, the isolated arXiv archive builds, and every PDF page
+  has passed visual QA.
+- [x] Final release PDFs and SHA-256 checksums are stored under `release/`.
+- [ ] A public Git remote and permanent repository URL have not been assigned.
+- [ ] The immutable `v0.1.0` release and external archival DOI have not been
+  created.
+- [ ] The arXiv identifier has not been assigned.
 
-Контрольная точка локального репозитория до этой актуализации:
-`fa4ea8a45e14d8a9cf29726c2fbc3361d78d7136`.
+## Remaining release sequence
 
-## Следующие шаги
+1. [x] Run the complete verification target: manuscript builds, experiment
+   tests, calculator tests/lint/audit, isolated arXiv build, and visual PDF QA.
+2. [ ] Review the final English PDF and the copy-ready metadata as the author.
+3. [ ] Publish this repository to a public Git host and record its permanent
+   URL in `README.md`, `CITATION.cff`, and both availability statements.
+4. [ ] Create the immutable `v0.1.0` tag/release. Attach the English and Russian
+   PDFs, arXiv source archive, and SHA-256 checksums.
+5. [ ] Archive that exact tagged release in a DOI-issuing repository such as
+   Zenodo. Add the artifact DOI to repository metadata and the manuscript's
+   availability statement, then rebuild the English PDF and source archive.
+6. [ ] Submit the generated source archive to arXiv using
+   `release/ARXIV_SUBMISSION.md`; inspect arXiv's compiled PDF before confirming.
+7. [ ] After announcement, add the arXiv identifier and arXiv-assigned DOI to
+   the repository and citation metadata. Submit an arXiv replacement only if
+   the manuscript PDF changes.
 
-Выполнять по порядку; пункты 1--8 образуют путь до подачи.
+## Release gates
 
-1. [ ] Перевести рукопись на английский по разделам, предварительно закрепив
-   единый глоссарий терминов модели.
-2. [ ] Отредактировать английские название, abstract, заголовки, подписи к
-   рисункам и таблицам; проверить единообразие терминов и обозначений.
-3. [ ] Собрать английский PDF и выполнить визуальную проверку всех страниц,
-   ссылок, формул, таблиц и рисунков.
-4. [ ] После перевода повторить финальный claim--citation и
-   математико-логический regression-аудит: перевод не должен изменить силу
-   утверждений, определения или численные результаты.
-5. [ ] Создать публичный репозиторий и опубликовать текущую подготовленную
-   историю проекта.
-6. [ ] Подставить постоянный URL репозитория в `README.md`, `CITATION.cff`,
-   `article/artifact_availability.tex` и `article/experiment_appendix.tex`.
-7. [ ] Создать неизменяемый тег и release для версии препринта; приложить
-   английский PDF и архив исходников, записать контрольные суммы.
-8. [ ] Заархивировать release в сервисе с DOI (например, Zenodo), внести DOI в
-   рукопись и метаданные, затем пересобрать финальный PDF.
-9. [ ] Подать финальный PDF на выбранный сервер препринтов, заполнив авторские
-   данные, рубрики, abstract, keywords и лицензию CC BY 4.0; проверить
-   опубликованную карточку и скачиваемые файлы.
+- both manuscripts compile from a clean checkout without undefined references,
+  citations, labels, box warnings, or missing figures;
+- the English PDF has no clipped text, overlap, broken glyphs, unreadable
+  figures, or malformed landscape pages;
+- experiment and calculator verification passes from locked dependencies;
+- the arXiv archive contains one top-level `main.tex` and only required TeX,
+  bibliography, `.bbl`, and figure inputs;
+- the public release contains no secrets, local databases, virtual
+  environments, build caches, or third-party full-text publications;
+- repository URL, release tag, checksums, artifact DOI, and manuscript metadata
+  agree everywhere they appear.
 
-## Критерии готовности к подаче
-
-- английский PDF собран без незакрытых ссылок, переполненных блоков и
-  визуальных дефектов;
-- тесты экспериментов и калькулятора проходят из release-снимка;
-- публичный тег воспроизводим, а README, лицензии и `CITATION.cff` согласованы;
-- постоянные URL и DOI одинаково указаны в артефактах и рукописи;
-- в release нет секретов, локальных build-файлов и полных текстов сторонних
-  публикаций.
-
-## Что не блокирует препринт
-
-- косметическая доводка русской внутренней версии;
-- эмпирическая калибровка на данных реальных команд;
-- необязательные дополнительные эксперименты и визуализации, перечисленные в
-  архивных планах;
-- отдельное публичное развёртывание веб-калькулятора: его исходники уже входят
-  в версионированный артефакт.
-
-Ближайшее действие: начать английскую версию с глоссария, названия, abstract и
-введения, затем сверить их с русским источником утверждение за утверждением.
+The current blocker is external identity, not manuscript work: a public remote,
+release URL, archival DOI, and arXiv identifier cannot be filled in before those
+records exist.

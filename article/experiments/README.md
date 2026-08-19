@@ -1,4 +1,4 @@
-# Computational experiments for simple_model_full
+# Computational experiments for the phase-based planning model
 
 This directory contains schema v1, the M4 aggregate calculator, schedule
 validator, a deterministic baseline scheduler, an exact CP-SAT model and the
@@ -11,6 +11,11 @@ The implementation follows the article semantics:
 - a task waiting for a human phase keeps its agent slot;
 - C(P) scales only agent phases and gamma(P) only human phases;
 - queueing time is derived from assignment and phase timestamps.
+
+This publication repository stores the experiment project at
+`article/experiments`. Some immutable, checksum-covered historical reports name
+its former monorepository location, `simple_model_full/experiments`; substitute
+the current path when following those command blocks.
 
 The baseline ranks ready tasks by decreasing bottom level and task weight.
 Human requests use FCFS, with the same priority and identifiers as deterministic

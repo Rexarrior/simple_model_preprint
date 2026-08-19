@@ -1,0 +1,131 @@
+% T32 source: Примеры базовой модели.tex lines 822--891
+\detailedexampleheading{Comparison of Variants}
+
+\begin{table}[ht!]
+\centering
+\caption{Comparison of work-organization variants accounting for the dependency graph}
+\label{tab:practical-comparison}
+\small
+\begin{tabularx}{\textwidth}{Xcccc}
+\toprule
+Metric & Variant 1 & Variant 2 & Variant 3 & Variant 4 \\
+\midrule
+Configured parallelism $P$ & 1 & 2 & 4 & 4 \\
+Mode & interactive & mixed & delegated w/spec. & delegated w/spec. \\
+Decomposition & coarse & coarse & coarse & split tests \\
+$W$, h & 65.0 & 59.8 & 53.6 & 53.6 \\
+$W/P$, h & 65.0 & 29.9 & 13.4 & 13.4 \\
+$L$, h & 51.8 & 47.8 & 43.2 & 36.7 \\
+$H$, h & 65.0 & 38.4 & 19.0 & 19.0 \\
+$B_4$, h & 65.0 & 47.8 & 43.2 & 36.7 \\
+$T(\pi)$, h & 65.0 & 47.8 & 43.2 & 36.7 \\
+$S_E^{\text{ach}}$ & $\times 1.17$ & $\times 1.59$ & $\times 1.76$ & $\times 2.07$ \\
+Ceiling $1/\bar{h}_w$ & $\times 1.17$ & $\times 1.98$ & $\times 4.00$ & $\times 4.00$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+For these illustrative variants, the table shows that, once dependencies are
+accounted for, the final speedup is determined not only by the total work $W$
+and the number of agents $P$, but also by the critical-path length $L$---and
+$L$ itself depends on the selected decomposition.
+
+\begin{enumerate}
+  \item \textbf{The $W/P$ lower bound is informative but optimistic as a
+  makespan estimate.} It equals $29.9$~h for Variant~2 and $13.4$~h for
+  Variant~3. These values are attainable only with sufficiently independent
+  tasks and appropriately timed requests for human attention; queueing
+  increases agent-stream occupancy beyond $W$.
+
+  \item \textbf{The critical path determines the result in Variants 2--4.} In
+  Variants 2 and 3, the chain $1 \to 2 \to 3 \to 4 \to 6$ determines
+  makespans of $47.8$ and $43.2$~h, respectively. After the tests are split in
+  Variant 4, the critical path decreases to $36.7$~h but remains the active
+  constraint. The achievable speedups are therefore $\times 1.59$,
+  $\times 1.76$, and $\times 2.07$, rather than the values calculated under
+  the assumption of fully independent tasks.
+
+  \item \textbf{Increasing $P$ alone is insufficient in these illustrative
+  variants.} In the transition from $P=2$ to $P=4$, the independent-task
+  estimate $W/P$ decreases sharply, but the overall makespan changes only
+  moderately: additional agents cannot begin tasks on the critical path until
+  their predecessors have been completed.
+
+  \item \textbf{The decomposition contrast is isolated by an all-else-equal
+  comparison.} The transitions $1 \to 2$ and $2 \to 3$ change several
+  configuration parameters simultaneously. Only the transition $3 \to 4$
+  preserves $P$, the operating mode, $k$, and $h$; therefore, within this
+  illustrative scenario, the increase in speedup from $\times 1.76$ to
+  $\times 2.07$ pertains to the change in decomposition and requires no
+  additional resources.
+
+  \item \textbf{The human resource imposes a ceiling and constrains the
+  schedule.} As the human component decreases, the ceiling $1/\bar{h}_w$
+  increases: $\times 1.17 \to \times 1.98 \to \times 4.00$. It is already
+  attained in Variant 1, where the process is human-constrained. Variants 2--4
+  retain headroom, but exploiting it requires explicit scheduling of the
+  service intervals. In the revised Variant 2 schedule, the agent assigned to
+  Task 7 is blocked in the queue for developer attention for $22.2$~h; this
+  does not increase the makespan because the task is not on the critical path.
+
+  \item \textbf{Moderate attention-switching overhead does not change the
+  ranking in this example.} With $\gamma(P)=1+0.1(P-1)$, exact recomputation on
+  the refined time grid yields the following values (hours):
+  \[
+  \begin{array}{c|ccccc}
+  \text{variant} & W_4 & L_4 & \gamma H & B_4 & T^* \\ \hline
+  2 & 63.640 & 51.320 & 42.240 & 51.320 & 51.36 \\
+  3 & 59.300 & 47.700 & 24.700 & 47.700 & 47.70 \\
+  4 & 59.300 & 40.450 & 24.700 & 40.450 & 40.45
+  \end{array}
+  \]
+  Thus, the ordering $4<3<2$ is preserved, and the human-resource branch
+  remains inactive. Under the more conservative assumption $h_i=0.5k_i$ for
+  Variants 3--4, we obtain $H=26.8$~h and $\gamma(4)H\approx34.8$~h; for
+  Variant 4, this value is already close to the critical-path length.
+  Consequently, as $L_4$ decreases, the human resource may become the active
+  constraint.
+\end{enumerate}
+
+\paragraph{Implications of the Illustrative Scenario.}
+\begin{enumerate}
+  \item \textbf{Dependencies should be modeled explicitly.} Balancing
+  independent tasks overstates speedup when the work is linked by a dependency
+  graph. For the illustrative scenario considered here, at level M4 the lower
+  bound is $\max\{W/P, L, H\}$ when $C(P) = \gamma(P) = 1$.
+
+  \item \textbf{The critical path becomes the principal constraint.} In
+  Variants~2--4, the makespan equals $L$. The composition of the critical path
+  depends on the granularity of the graph: after the testing task is split,
+  only retry testing remains at the end of the path, whereas unit and
+  integration tests are performed earlier and in parallel.
+
+  \item \textbf{In this illustrative scenario, increasing the number of agents
+  does not yield proportional speedup.} The mechanism illustrated here is that,
+  if the graph contains large sequentially dependent tasks, increasing $P$
+  quickly ceases to affect the result: some agents remain idle while waiting
+  for mandatory predecessors to be completed.
+
+  \item \textbf{Decomposition produces a quantifiable difference in this
+  illustrative scenario.} Splitting one testing task reduced the makespan by
+  $6.5$~h and increased speedup from $\times 1.76$ to $\times 2.07$ without
+  changing $P$, $k$, or $h$. Further candidates should be sought among
+  critical-path edges that connect entire large tasks even though the actual
+  dependency pertains to only one subtask.
+
+  \item \textbf{Both agents and human involvement must be scheduled.} A single
+  developer reviews delegated tasks sequentially, so the corresponding
+  intervals and the queue for developer attention must be included explicitly
+  in the M4 schedule. A waiting agent retains its assigned agent slot; that
+  slot cannot be reassigned to another task until the current task is accepted.
+  Prolonged continuous interactive work blocks the processing of parallel
+  results, and the achievable speedup is bounded above by $1/\bar{h}_w$
+  independently of the number of agents.
+\end{enumerate}
+
+\ifdefined\FULLARTICLE
+  \let\finishdocument\relax
+\else
+  \def\finishdocument{\end{document}}
+\fi
+\finishdocument

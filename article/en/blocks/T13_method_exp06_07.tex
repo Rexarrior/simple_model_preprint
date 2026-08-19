@@ -1,0 +1,80 @@
+% T13 source: computational_method.tex lines 192--265
+\subsection{Robustness, Synthetic DAGs, and Confirmatory Freeze}
+
+EXP-06 is divided into three parts. EXP-06A scales four prespecified instances
+(illustrative Variants 3--4 and two canonical points) by
+$\kappa\in\{0.25,0.5,1,2,4\}$, jointly scaling $X$, the phases, the time unit,
+and the tolerance; this yields 20 exact-solver points with an unchanged integer
+model. EXP-06B compares Variants 3--4 at five levels
+$u\in\{0.05,0.10,0.20,0.30,0.50\}$ and 1000 seeds per level: 5000 pairs, or
+10000 exact-solver instances. The agent and human multipliers are sampled
+independently and uniformly in log space over
+$[\log(1-u),\log(1+u)]$; tasks common to both variants receive identical
+multipliers, while the decomposed test tasks inherit the multiplier of the
+original task with an independent bounded log-residual of scale 0.25. EXP-06C
+tests two prespecified adverse directions over
+$u=0,0.005,\ldots,0.95$: the original test task in Variant 3 receives the
+multiplier $1-u$, whereas the corresponding decomposed tasks in Variant 4
+receive $1+u$ on the selected agent or human resource. This yields 382 pairs,
+or 764 exact-solver instances. These error families are synthetic and do not
+represent confidence intervals for empirical calibration.
+
+EXP-07 is a stratified pilot comprising 72 cells:
+\[
+\begin{aligned}
+N &\in \{8,16,32,64\}, &
+\text{topology} &\in \{\text{wide-layered,mixed,chain-like}\},\\
+\text{weights} &\in \{\text{homogeneous,lognormal}\}, &
+\rho_H^{cp} &\in \{\text{low,medium,high}\}.
+\end{aligned}
+\]
+In each cell, 20 sequential observation seeds are accepted, for a total of 1440
+scenarios: 480 common ``graph plus weights'' structural bases are each repeated
+for three levels of human-work placement. Rejected attempts are retained but
+are not counted as observations. By construction, the three topology families
+correspond to the low, medium, and high bins of $\rho_L$, so the effect of
+topology family is not separately identifiable from $\rho_L$. On the full
+sample, the four frozen directions C1--C4 evaluate a fixed policy or branches of
+$B_4$: the contrast between equal and permuted alternation; the shift in
+policy-optimal $P$ over the grid $\{1,2,4,8\}$ as agent or human cost increases;
+the policy contrast $I_\pi(4,3)$ for $m=3$, $P=1/4$, $r_o=0/0.10$,
+$\lambda_h=0.5$; and the frequency with which the human branch is active at
+different values of $\rho_H^{cp}$. When minimum makespans are tied,
+policy-optimal parallelism is defined as
+$P_{\mathrm{opt}}:=\min\operatorname*{arg\,min}_{P}T_\pi(P)$.
+
+The signs and decision rules were fixed before computation. For C1, the median
+equal-minus-permuted difference in policy-tightness is
+expected to be nonnegative; the decision requires both the point estimate and
+the upper bound of the 95\% bootstrap interval to be nonnegative. For C2, the
+median shift in policy-optimal $P$ is expected to be nonpositive; in addition,
+the proportion of positive shifts must not exceed 0.05. For C3, the medians of
+$I_\pi(4,3)$ and of the attenuation of the gain when moving from $r_o=0$ to
+$r_o=0.10$ are expected to be nonnegative. For C4, both the paired mean of the
+high-minus-low differences between the human-active-branch indicators and the
+high-minus-low difference in their frequencies are expected to be positive.
+Individual exceptions are retained and reported, so confirmation of
+a median direction does not imply a universal sign on every DAG\@. The intervals
+use 2000 cluster bootstrap resamples with seed 707071; the common structural
+base is the resampling unit, so the three human-work placements are not treated
+as independent.
+
+After 20 accepted seeds in each cell, the frozen matrix prescribed a
+pilot-extension rule for two key cells. In the first, $N=16$, the topology
+family is mixed, the weights are lognormal, and $\rho_H^{cp}$ is medium; in the
+second, $N=64$ with the same topology family and weight type, but
+$\rho_H^{cp}$ is high. Under the protocol, the sample was to be increased to 50
+seeds if the bootstrap interval for the primary median crossed zero or the
+Monte Carlo standard error of the primary proportion exceeded 0.05. The
+implemented runner checked only whether the global bootstrap intervals for the
+medians crossed zero; the key-cell and MCSE branches were not executed. The
+global trigger did not fire, so the extension was not run. EXP-07 should
+therefore be interpreted as a 20-seed pilot with a partially implemented
+extension rule, not as a fully completed confirmatory procedure. The
+prespecified exact audit comprises 12 DAGs with $N\in\{8,16\}$, homogeneous
+weights, medium concentration, and seeds 0--1 for the three topology families.
+Following a single resource adjustment adopted before inspection of the claim
+outcomes, the exact scope is restricted to the baseline-gap and the two C1
+profiles: 36 scenarios with a 10-second limit. C2 and C3 in EXP-07 are
+policy-only, whereas C4 is lower-bound-only. \texttt{FEASIBLE} incumbents are
+excluded from the certified pairs.

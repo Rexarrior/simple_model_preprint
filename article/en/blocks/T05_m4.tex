@@ -1,0 +1,87 @@
+% T05 source: Базовая модель.tex lines 324--409
+\subsection{Level M4: Phase Semantics and the Exact Schedule}
+
+\begin{remark}[Local Blocking and Lower Bound $B_4$]\label{rem:human}
+At level M4, the decomposition $k_i^{(r)} = a_i^{(r)} + h_i^{(r)}$ (Definition~\ref{def:params}) is augmented by the ordering of phases. Task $i$ is represented by a finite sequence $\mathcal F_i=(f_{i1},\dots,f_{im_i})$. Agent phases include autonomous implementation, self-review, and rework; human-attention phases include task specification, requirements clarification, review, and acceptance. At $P=1$, the sums of their durations are $Z_iXa_i$ and $Z_iXh_i$, respectively. The phases of a task follow a prescribed order, so the model permits multiple requests for developer attention and repeated ``review---correction---re-review'' cycles.
+
+Once the first phase has begun, the task remains assigned to a single agent slot until its result is accepted. A human-attention phase simultaneously requires the developer's attention and retention of the allocated agent slot. If the developer is busy, the request enters the queue, while the corresponding agent stops working and remains blocked. The other agents continue their tasks independently until they themselves request the developer's attention. Blocking is therefore \emph{local}, not global.
+
+At any time, unfinished assigned tasks occupy no more than $P$ agent slots, and the developer handles no more than one human-attention phase. The model does not permit a blocked slot to be reassigned to another task or an additional priority slot to be launched beyond the limit $P$. A new task may be assigned only to an available agent.
+If $(i,j)\in E$, the first phase of task $j$ may begin only after task $i$ has
+been accepted. Agent and human-attention phases are assumed to be
+nonpreemptive; the order in which simultaneously pending requests are handled
+is part of the schedule $\pi$.
+
+For $P>1$, the aggregate effective duration of the human-attention phases is taken to be $\gamma(P)H$, where $\gamma(P)\ge1$ and $\gamma(1)=1$. The multiplier captures the additional service time due to attention switching and context recovery, but excludes time spent waiting in the queue. Like $C(P)$, it is treated as exogenous for a fixed configuration and does not depend on the particular schedule. The reduced-form approximation $\gamma(P)=1+\delta(P-1)$, $\delta\ge0$, is used; in empirical calibration, it should be related to the actual number of streams supervised concurrently and the frequency of interventions.
+
+Define the effective weights and aggregates at level M4 as follows:
+\[
+  w_i^{(4)}(P):=Z_iX\bigl(C(P)a_i+\gamma(P)h_i\bigr),
+\]
+\[
+  W_4(P):=\sum_iw_i^{(4)}(P)=C(P)A+\gamma(P)H,
+\]
+and let $L_4(P)$ denote the critical-path length under the weights $w_i^{(4)}(P)$. The resulting fixed lower bound on time is
+\[
+  T^{*} \;\ge\; B_4 := \max\left\{ \frac{W_4(P)}{P},\; L_4(P),\; \gamma(P)H \right\},
+\]
+where $T^{*}:=\min_{\pi}T(\pi)$ is the optimal makespan over feasible schedules and $T(\pi)$ is the makespan of a particular schedule $\pi$.
+
+Let $Q(\pi)$ denote the total time for which already assigned agents are blocked while waiting in the queue for developer attention. This time is induced by the schedule itself and is included in neither $k_i$ nor $H$. Every feasible schedule additionally satisfies
+\[
+  T(\pi)\ge \frac{W_4(P)+Q(\pi)}{P}.
+\]
+Consequently, the equality $T^{*}=B_4$ is not guaranteed: simultaneous requests for developer attention can increase the makespan even when $H$ is small.
+
+For example, suppose that, of two agents working in parallel, Agent A requests assistance. It stops and retains its slot until the developer handles the request. Agent B continues working. If Agent B subsequently also requires assistance, both agents will be waiting in the queue for the same developer; the resulting systemwide idle time is a consequence of coincident requests, not a rule imposing global blocking.
+
+The aggregates $A$, $H$, $W_4$, $L_4$, and $B_4$ characterize the workload and the three necessary constraints, but do not encode the relative placement of the human-attention phases. Hence, two instances with identical values of these aggregates can have different values of $T^{*}$: their lower bound is the same, whereas queueing time and attainability of the bound are determined by the full phase profile. A computational example of this discrepancy is presented in Section~\ref{sec:computational-results}.
+\end{remark}
+
+\begin{definition}[Resource-Augmented Phase Graph]\label{def:resource-graph}
+Fix the assignment of each task to one of the $P$ agent slots, the order of tasks within each slot, and the service order of all human-attention phases. If these orders are compatible with the original dependencies, construct a directed graph $G_R(\omega)$ whose vertices are the phases and whose vertex weights are their effective durations, incorporating the multiplier $C(P)$ for an agent phase or $\gamma(P)$ for a human-attention phase. Four types of arcs are added to the graph:
+\begin{enumerate}
+  \item between consecutive phases of the same task;
+  \item from the final phase of a predecessor to the first phase of a dependent task;
+  \item between consecutive human-attention phases in the selected service order;
+  \item from the final phase of one task to the first phase of the next task assigned to the same agent slot.
+\end{enumerate}
+Let $\omega$ denote the collection of assignment and resource-ordering decisions. Only those $\omega$ for which $G_R(\omega)$ is acyclic are considered feasible. Let $\Lambda(\omega)$ denote the length of a maximum-weight path in this graph.
+\end{definition}
+
+\begin{proposition}[Exact Representation of the M4 Optimum]\label{prop:resource-graph}
+For a fixed feasible resource order $\omega$, the earliest-start schedule has makespan $\Lambda(\omega)$ and is feasible. Conversely, every feasible schedule $\pi$ induces an order $\omega(\pi)$ such that $\Lambda(\omega(\pi))\le T(\pi)$. Therefore,
+\[
+  T^{*}=\min_{\omega\in\Omega}\Lambda(\omega),
+\]
+where $\Omega$ is the finite set of feasible assignments and resource orders.
+\end{proposition}
+
+\begin{proof}
+For a fixed acyclic graph, the earliest start time of each phase equals the maximum path length leading to that phase. Arcs of the first two types enforce the technological precedence constraints, those of the third type prevent human-attention phases from overlapping, and those of the fourth type prevent tasks assigned to the same slot from overlapping. The resulting schedule is therefore feasible and completes in $\Lambda(\omega)$. Conversely, the nonoverlapping operations in any schedule can be ordered on each resource; all added arcs are consistent with the actual timing and therefore create no cycle, and the length of any path does not exceed $T(\pi)$. Minimizing the two representations yields the equality.
+\end{proof}
+
+This representation serves as a \emph{resource-augmented critical path}: the original critical path is augmented with arcs capturing competition for the developer and agent slots. It does not introduce a new level M5 because it adds no constraint to M4; rather, it exposes the exact combinatorial structure of the schedule already specified. This construction is closely related to disjunctive graphs and resource-constrained scheduling models \cite{brucker1999resource}.
+
+\begin{corollary}[Attainability Certificate for the Lower Bound]\label{cor:attainability}
+For every M4 instance, $B_4\le T^{*}$. The equality $T^{*}=B_4$ holds if and only if there exists a feasible schedule $\pi$ with $T(\pi)=B_4$; equivalently, there exists an $\omega\in\Omega$ with $\Lambda(\omega)=B_4$. An explicit schedule of this length constitutes an attainability certificate. If the solver proves that no schedule with horizon $B_4$ exists, the bound is unattainable and $T^{*}>B_4$.
+\end{corollary}
+
+\begin{corollary}[Simple Tightness Cases]\label{cor:simple-tightness}
+If $P=1$ or the task-DAG is a single precedence chain containing all tasks,
+then $T^*=B_4=W_4$.
+\end{corollary}
+
+\begin{proof}
+When $P=1$, we have $C(1)=\gamma(1)=1$, and all tasks sequentially occupy
+the sole slot. They can be executed in any topological order without idle
+time, so the makespan equals the sum $W_4$ of their effective phase durations;
+the other terms defining $B_4$ do not exceed this sum. In a single precedence
+chain, no two tasks can overlap for any $P$, its length equals the sum of the
+weights, $L_4=W_4$, and a sequential schedule attains this bound.
+\end{proof}
+
+Attainability of the horizon $B_4$ can be checked as a schedule-feasibility
+problem, whereas $T^{*}$ can be obtained by directly minimizing the makespan.
+The specific computational formulation and verification protocol are presented
+in Section~\ref{sec:computational-method}.

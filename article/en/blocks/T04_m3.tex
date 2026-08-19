@@ -1,0 +1,41 @@
+% T04 source: Базовая модель.tex lines 283--323
+\subsection{Level M3: Coordination Overhead}
+
+\begin{remark}[Effective Weights and Lower Bound $B_3$]\label{rem:coordination}
+To account for cross-stream integration and rework arising when shared artifacts are modified in parallel, we introduce a function $C(P) \ge 1$. We assume that $C(1)=1$ and that $C(P)$ is nondecreasing in $P$; for any particular process, this assumption requires empirical verification. The function applies only to autonomous agent work, not to human-attention phases. For a fixed configuration, $C(P)$ is treated as an exogenous constant: it does not depend on the task assignment, resource ordering, or realized queues. Define
+\[
+  A := X\sum_{i=1}^{N}Z_i a_i, \qquad
+  H := X\sum_{i=1}^{N}Z_i h_i, \qquad W=A+H.
+\]
+Under a mixed assignment of modes, here and below $a_i$ and $h_i$ denote
+$a_i^{(\rho(i))}$ and $h_i^{(\rho(i))}$, respectively.
+The effective task duration and total agent-stream workload at level M3 are
+\[
+  w_i^{(3)}(P):=Z_iX\bigl(C(P)a_i+h_i\bigr), \qquad
+  W_3(P):=\sum_i w_i^{(3)}(P)=C(P)A+H.
+\]
+Let $L_3(P)$ be the length of the critical path in $G$ under the weights $w_i^{(3)}(P)$. Then
+\[
+  T_{ai} \ge B_3 := \max\left\{ \frac{W_3(P)}{P},\; L_3(P) \right\}.
+\]
+This definition eliminates the asymmetry of the previous aggregate formulation: the additional integration overhead increases not only the total workload but also the paths on which that overhead actually arises.
+
+The speedup condition for the aggregate-workload term in the model with coordination overhead is
+\[
+  \frac{C(P)A+H}{P} < T_h
+  \;\iff\;
+  C(P)\,\bar a_w+\bar h_w<P,
+\]
+where $\bar a_w:=\sum_iZ_i a_i/\sum_iZ_i$ and $\bar h_w:=\sum_iZ_i h_i/\sum_iZ_i$.
+
+To distinguish $k_i^{(r)}$ from parallelism overhead, we adopt the following accounting rule. The coefficient $k_i^{(r)}$ includes everything that can be measured at $P = 1$ in mode $r$: prompt formulation, waiting for generation, and reviewing and correcting the result within a single stream. Parallelism overhead includes only effects that arise when $P > 1$. Without this rule, the same costs may be counted twice---both in $k$ and in the multipliers used when $P > 1$---or, conversely, may remain unaccounted for if coordination overhead is implicitly included in the measured $k$ while the additional multipliers are set to one.
+
+Given the decomposition $k_i^{(r)} = a_i^{(r)} + h_i^{(r)}$ (Definition~\ref{def:params}) and the star topology ``one developer---$P$ agents,'' the overhead is divided into three groups:
+\begin{enumerate}
+  \item coordination overhead \emph{at the individual-task level}---preparing the specification, transferring context, and reviewing the result---does not depend on $P$ and is already included in $k_i^{(r)}$; it therefore increases task weights, including those on the critical path;
+  \item \emph{developer} overhead that grows with $P$---switching between streams and restoring context when handling requests---is attributed to the human resource and is accounted for by applying the multiplier $\gamma(P)$ to $H$ at level M4 (Remark~\ref{rem:human});
+  \item the function $C(P)$ represents \emph{cross-stream integration overhead} that increases with the number of parallel streams: merge conflicts, interface inconsistencies, and rework caused by concurrent changes.
+\end{enumerate}
+As a working parametric form, one may use the denominator of Gunther's Universal Scalability Law:
+$C(P) = 1 + \alpha (P - 1) + \beta P (P - 1)$, where $\alpha,\beta\ge0$, $\alpha$ characterizes resource contention, and $\beta$ characterizes coordination costs \cite{gunther2008general}. Applying this relationship to coding agents is a hypothesis of the present model, not an empirical finding of the cited work. Brooks's formulation, with $\sim P(P-1)/2$ pairwise communication channels, pertains to a human team and does not literally describe the star topology. Nevertheless, indirect coupling through shared code, interfaces, and integration persists even in the absence of direct communication among agents \cite{brooks1995mythical}.
+\end{remark}

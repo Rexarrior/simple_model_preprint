@@ -1,0 +1,99 @@
+% T03 source: Базовая модель.tex lines 184--282
+\subsection{Level M1: Task Indivisibility}
+
+\begin{remark}[Workload Lower Bound $B_1$]\label{rem:indivisible}
+The level-M0 formula assumes a perfectly even distribution of the workload. In practice, when tasks are indivisible, the completion time cannot be shorter than the duration of the longest task, however large $P$ may be. Define
+\[
+  M_N := X \max_{i \in \overline{1,N}} (Z_i k_i).
+\]
+The tighter bound is given by the inequality
+\[
+  T_{ai} \ge B_1 := \max\left\{ \frac{W}{P},\; M_N \right\}.
+\]
+Here, $B_1$ is a lower bound on the makespan; the exact value depends on the assignment of tasks to an integer number of processors and may strictly exceed $B_1$ even under an optimal schedule.
+\end{remark}
+
+\subsection{Level M2: Dependencies and the Critical Path}
+
+\begin{remark}[Critical-Path Lower Bound $B_2$]\label{rem:graph}
+When logical or resource dependencies are present, a graph-based model is used in place of the additive model. Let $G = (V, E)$ be a directed acyclic graph whose vertices $V$ correspond to tasks and whose arcs $E$ encode precedence relations. The total completion time with AI then satisfies
+\[
+  T_{ai} \ge B_2 := \max\left\{ \frac{W}{P},\; L \right\},
+\]
+where $L$ is the length of the critical path in $G$ under the weights $Z_i k_i X$. Every individual task constitutes a path in $G$; hence, $L \ge M_N$, and level M2 generalizes M1: when the arc set is empty ($E = \varnothing$), $L = M_N$ and $B_2 = B_1$. Equality $T_{ai} = B_2$ is not guaranteed in general because scheduling on a limited number of processors is NP-hard.
+\end{remark}
+
+\subsubsection{Attainability and Speedup Guarantees for M1--M2}
+
+\begin{remark}[Attainability Guarantee: Graham's Bound]\label{rem:graham}
+At levels M1--M2, with an integer number $P$ of identical processors and $C(P) \equiv 1$, the lower bounds $B_1$ and $B_2$ can be supplemented with an attainability guarantee. The classical result of Graham for fixed-priority list scheduling, under which a processor does not remain idle whenever a ready task is available, yields the inequality \cite{graham1966bounds}
+\[
+  T_{ai} \;\le\; \frac{W}{P} + \left(1 - \frac{1}{P}\right) L \;\le\; \left(2 - \frac{1}{P}\right) B_2.
+\]
+For independent tasks (level M1), the same relations hold with $L$ replaced by $M_N$ and $B_2$ by $B_1$. Thus, the optimal makespan $T^{*}$ lies in the interval
+\[
+  B_j \;\le\; T^{*} \;\le\; \left(2 - \frac{1}{P}\right) B_j, \qquad j \in \{1, 2\}.
+\]
+Consequently, the achievable speedup differs from the upper bound $\bar S^{(j)} = T_h/B_j$ by at most a factor of $2 - 1/P$:
+\[
+  \frac{\bar S^{(j)}}{2 - 1/P} \;\le\; S_E^{\text{ach}} \;\le\; \bar S^{(j)}.
+\]
+For independent tasks ordered by nonincreasing duration (the LPT rule), the stronger guarantee $T_{\mathrm{LPT}} \le \left(4/3 - 1/(3P)\right) T^{*}$ is known \cite{graham1969bounds}. This constant, however, is relative to the optimum $T^{*}$ rather than to the lower bound $B_j$ and therefore does not carry over to the interval above. The ratio $T^{*}/B_1$ may exceed $4/3 - 1/(3P)$: for example, with three equal-duration tasks and $P = 2$, $T^{*}/B_1 = 4/3 > 4/3 - 1/6$. These guarantees do not extend directly to levels M3--M4 because Graham's formulation does not include coordination overhead or a shared human resource. Such resources are considered in more general scheduling models, including the RCPSP and parallel-machine problems with a single shared server \cite{brucker1999resource,hall2000parallel,kravchenko1997parallel}.
+\end{remark}
+
+\begin{theorem}[Sufficient Speedup Criterion at Levels M1--M2]\label{thm:sufficient}
+Suppose that $C(P) \equiv 1$ and that $P$ is an integer number of identical processors. Define the relative bottleneck length as
+\[
+  \mu := \frac{M_N}{T_h} \quad \text{(level M1)}, \qquad \mu := \frac{L}{T_h} \quad \text{(level M2)}.
+\]
+If
+\begin{equation}\label{eq:sufficient}
+  \bar{k}_w < P - (P - 1)\, \mu,
+\end{equation}
+then speedup is guaranteed: every greedy schedule satisfies $T_{ai} < T_h$. More generally, a target speedup of $S_E^{\text{ach}} \ge S_{\text{target}} \ge 1$ is guaranteed if
+\begin{equation}\label{eq:sufficient-target}
+  \bar{k}_w \;\le\; \frac{P}{S_{\text{target}}} - (P - 1)\, \mu.
+\end{equation}
+When $S_{\text{target}} = 1$, the non-strict version of condition~\eqref{eq:sufficient-target}
+guarantees no slowdown, $S_E^{\mathrm{ach}}\ge1$, whereas its
+strict version coincides with~\eqref{eq:sufficient} and guarantees a genuine
+speedup, $S_E^{\mathrm{ach}}>1$. As $\mu \to 0$ (in the absence of a dominant
+bottleneck), the strict sufficient criterion converges to the necessary
+condition $\bar{k}_w < P$ from Remark~\ref{rem:threshold}. The gap between the
+necessary and sufficient conditions is $(P-1)\,\mu$---the ``cost of
+indivisibility'' at M1 or the ``cost of dependencies'' at M2.
+\end{theorem}
+
+\begin{proof}
+By Remark~\ref{rem:graham}, every greedy schedule satisfies $T_{ai} \le W/P + (1 - 1/P)\,L$ (at level M1, with $M_N$ in place of $L$). Dividing both sides by $T_h$ and using $W = \bar{k}_w\,T_h$ gives
+\[
+  \frac{T_{ai}}{T_h} \;\le\; \frac{\bar{k}_w}{P} + \left(1 - \frac{1}{P}\right) \mu.
+\]
+The right-hand side is at most $1/S_{\text{target}}$ precisely under condition~\eqref{eq:sufficient-target} (after multiplication by $P$ and rearrangement), which yields $S_E^{\text{ach}} = T_h/T_{ai} \ge S_{\text{target}}$; condition~\eqref{eq:sufficient} is obtained by setting $S_{\text{target}} = 1$ and imposing a strict inequality.
+\end{proof}
+
+\begin{remark}[Equivalent Form via Bottleneck Dominance]\label{rem:dominance}
+Define relative bottleneck dominance as the ratio of the longest task (or, at M2, the critical path) to the mean workload per processor:
+\[
+  b := \frac{M_N}{W/P} \quad \text{(M1)}, \qquad b := \frac{L}{W/P} \quad \text{(M2)}.
+\]
+The parameters satisfy the exact relation $\mu = b\,\bar{k}_w/P$; hence, criterion~\eqref{eq:sufficient} can equivalently be written as
+\[
+  \bar{k}_w \left(1 + \left(1 - \frac{1}{P}\right)b\right) < P.
+\]
+One inequality holds if and only if the other does: this is the same criterion expressed in coordinates $(\bar{k}_w, b)$ rather than $(\bar{k}_w, \mu)$.
+
+The form involving $b$ yields two simplified practical conditions. They are \emph{not equivalent} to the original criterion but provide a more conservative bound: each condition is strictly stronger than~\eqref{eq:sufficient}, so satisfying it still guarantees speedup.
+\begin{enumerate}
+  \item \textbf{Coefficient simplification.} Replacing the factor $1 - 1/P < 1$ by one gives the condition
+  \[
+    \bar{k}_w\,(1 + b) < P,
+  \]
+  whose correction term is independent of $P$ for fixed $b$. It implies~\eqref{eq:sufficient}, but not conversely: criterion~\eqref{eq:sufficient} may hold even when $\bar{k}_w(1+b) \ge P$. When configurations with different values of $P$ are compared, $b=b(P)$ must be recomputed together with $W/P$.
+  \item \textbf{Fixing $b$ as a decomposition rule.} If the decomposition guarantees $b \le b_0$, meaning that no task and no dependency path exceeds $b_0$ times the mean workload per processor, then the condition
+  \[
+    \bar{k}_w\,(1 + b_0) < P
+  \]
+  is sufficient for speedup regardless of the details of the particular task set. It is not necessary: the actual bottleneck dominance may be lower than $b_0$, and speedup may be possible even when the condition is violated. This yields a practical recommendation: decompose the work until $b \le b_0$ and maintain a parallelism margin such that $P > \bar{k}_w(1 + b_0)$.
+\end{enumerate}
+\end{remark}

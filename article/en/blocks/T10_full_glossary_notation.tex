@@ -1,0 +1,115 @@
+% T10 source: Термины и обозначения.tex lines 173--284
+\subsection{Notation}
+
+\begin{description}[style=nextline]
+  \item[$X$] Baseline effort per unit of work without AI.
+
+  \item[$N$] Number of tasks in the project; $i\in\{1,\dots,N\}$ is the task
+  index.
+
+  \item[$Z_i$] Size of task $i$ in units of $X$.
+
+  \item[$R$, $r$] Set of admissible operating modes and the selected mode.
+
+  \item[$\rho$] Mapping that assigns a mode to each task:
+  $\rho\colon\{1,\dots,N\}\to R$.
+
+  \item[$T_i^{ai}(r)$] Observed time required to complete task $i$ with AI in a
+  single stream operating in mode $r$ when the developer is fully available.
+
+  \item[$k_i^{(r)}$] Normalized AI-assisted duration of task $i$ in mode $r$:
+  $k_i^{(r)}=T_i^{ai}(r)/(Z_iX)$. Values less than, equal to, and greater than
+  one correspond to durations shorter than, equal to, and longer than the
+  baseline, respectively.
+
+  \item[$\hat{k}_i^{(r)}$] Prospective estimate of $k_i^{(r)}$ obtained before
+  the project begins from comparable tasks and operating modes.
+
+  \item[$a_i^{(r)}$, $h_i^{(r)}$] Agent and human components of the coefficient
+  $k_i^{(r)}$, where $k_i^{(r)}=a_i^{(r)}+h_i^{(r)}$.
+
+  \item[$P$, $P_h$] Configured parallelism of the AI-assisted process and
+  parallelism of the no-AI baseline, respectively. This article assumes
+  $P_h=1$.
+
+  \item[$\sigma$] Shorthand for the process configuration when the tool and
+  acceptance protocol are fixed: $\sigma=(P,r)$ or $\sigma=(P,\rho)$.
+
+  \item[$T_h$] Time required for a single developer to complete the entire
+  project sequentially without AI.
+
+  \item[$T_{ai}$, $T_{ai}^{(0)}$] AI-assisted project completion time and its
+  idealized value at level M0.
+
+  \item[$W$] Total AI-assisted work:
+  $W=X\sum_{i=1}^{N}Z_i k_i$.
+
+  \item[$w_i$] Weight, or duration, of an individual AI-assisted task:
+  $w_i=Z_i k_i X$.
+
+  \item[$A$] Total autonomous agent work:
+  $A=X\sum_i Z_i a_i$.
+
+  \item[$M_N$] Duration of the longest task:
+  $M_N=X\max_i(Z_i k_i)$.
+
+  \item[$G=(V,E)$] Directed acyclic graph of task dependencies.
+
+  \item[$L$] Length of the critical path in $G$ under the weights $w_i$.
+
+  \item[$W_3(P)$, $L_3(P)$] Total agent-stream workload and critical-path
+  length at level M3 after applying $C(P)$ only to autonomous agent phases.
+
+  \item[$W_4(P)$, $L_4(P)$] The analogous level-M4 quantities after additionally
+  accounting for the multiplier $\gamma(P)$ in the durations of human-attention
+  phases.
+
+  \item[$C(P)$] Multiplier for cross-stream coordination and integration
+  overhead; $C(1)=1$.
+
+  \item[$H$] Total human time:
+  $H=X\sum_{i=1}^{N}Z_i h_i^{(r)}$.
+
+  \item[$\gamma(P)$] Multiplier for the developer's attention-switching
+  overhead across parallel streams; $\gamma(1)=1$.
+
+  \item[$Q(\pi)$] Total time for which assigned agents are blocked in the queue
+  for developer attention under a particular schedule $\pi$. It is an
+  endogenous property of the schedule and is included in neither $k_i$ nor
+  $H$.
+
+  \item[$T(\pi)$, $T^{*}$] Makespan of a particular feasible schedule $\pi$ and
+  the minimum makespan over all feasible schedules, respectively.
+
+  \item[$\bar{k}_w$] Weighted-average normalized duration:
+  $\bar{k}_w=\sum_i Z_i k_i/\sum_i Z_i$.
+
+  \item[$\bar{a}_w$] Weighted-average normalized agent work:
+  $\bar{a}_w=\sum_i Z_i a_i^{(r)}/\sum_i Z_i$.
+
+  \item[$\bar{h}_w$] Weighted-average normalized human work:
+  $\bar{h}_w=\sum_i Z_i h_i^{(r)}/\sum_i Z_i$.
+
+  \item[$B_0,\dots,B_4$] Lower bounds on the makespan under the successive
+  refinements M0--M4. A transition between levels may add a resource constraint
+  and redefine the effective durations.
+
+  \item[$S_E$, $S_E^{\mathrm{ach}}$] Idealized and achievable speedup factors.
+
+  \item[$S_{\mathrm{target}}$] Target speedup factor.
+
+  \item[$\mu$] Ratio of the bottleneck duration to the no-AI baseline time
+  $T_h$: $\mu=M_N/T_h$ at level M1 and $\mu=L/T_h$ at level M2. The symbol $m$
+  is reserved for the number of decomposition parts in the computational
+  experiments.
+
+  \item[$\nu_i$] Expected value of the random normalized duration:
+  $\nu_i=\mathbb{E}[k_i]$.
+
+  \item[$b$, $b_0$] Ratio of the bottleneck duration to the average workload
+  $W/P$, and a specified upper bound on this ratio used as a decomposition rule.
+
+  \item[$\kappa$] Common positive multiplier applied to the durations of all
+  agent and human-attention phases in the scale-invariance analysis. Scaling
+  only the aggregate $k_i$ values is insufficient for the level-M4 conclusion.
+\end{description}

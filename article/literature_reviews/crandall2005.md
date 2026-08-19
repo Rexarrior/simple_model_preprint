@@ -17,7 +17,7 @@
 - На первой журнальной странице указано: manuscript received 31 July 2004, revised 14 March 2005, recommended by the Guest Editors (PDF 2 / печ. 438).
 - Репозиторная обложка называет документ peer-reviewed article и связывает его с записью BYU Faculty Publications 363 (PDF 1).
 - **Коррекция проектных заметок:** правильный диапазон страниц - **438-449**. Диапазон `528-542`, указанный в `tmp_docs/simple_model_full_source_notes.md`, к этой статье не относится.
-- Локальный файл: `/Users/rexarrior/work/articles/simple_model_full/literature/crandall2005.pdf`.
+- Локальный файл: `crandall2005.pdf`.
 - SHA-256: `5c2c8db0538fa3dee4634992252c5e920af4b513d630f7f3d566c43d10f2f7e2`.
 - Локальная копия содержит 13 PDF-страниц: репозиторную обложку и 12 страниц журнальной статьи. Метаданные PDF дают заголовок статьи и 13 страниц.
 - Дата проверки: 2026-08-04.

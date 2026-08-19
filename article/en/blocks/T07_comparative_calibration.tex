@@ -1,0 +1,58 @@
+% T07 source: Базовая модель.tex lines 494--548
+\begin{remark}[Comparative Statics without Exact Calibration]\label{rem:comparative}
+Proposition~\ref{prop:invariance} clarifies the capabilities of the model. An absolute prediction---the value of $T_{ai}$ in hours or of $S_E$---requires knowledge of the scale of the durations and inherits calibration error on that same scale (Remark~\ref{rem:estimation}). However, the \emph{choice among decomposition and work-organization variants} is independent of the common scale if the complete relative profiles of the agent and human-attention phases are known up to a single common factor.
+
+The model also indicates the direction of beneficial changes without requiring exact calibration. The lower bound $B_2$ is piecewise linear in the vector $k = (k_1, \dots, k_N)$. Its elasticities with respect to the individual coefficients can be computed explicitly; when the branch $L>W/P$ is active, the expression assumes that the critical path $\pi^*$ is unique:
+\[
+  \frac{\partial B_2}{\partial k_i} \cdot \frac{k_i}{B_2} =
+  \begin{cases}
+    \dfrac{Z_i k_i}{\sum_{j} Z_j k_j}, & \text{if } W/P > L, \\[2.5ex]
+    \dfrac{Z_i k_i X}{L}, & \text{if } L > W/P,\ \pi^*\text{ is unique and }i \in \pi^{*}, \\[2.5ex]
+    0, & \text{if } L > W/P,\ \pi^*\text{ is unique and }i \notin \pi^{*}
+  \end{cases}.
+\]
+At points where the active terms switch, and in the presence of multiple critical paths, $B_2$ may be nondifferentiable; in that case, directional derivatives determined by all active paths are used. When the $L$ branch is active, increasing $P$ does not reduce the lower bound $B_2$ itself, although the makespan $T^*$ may decrease until it reaches this bound. Similarly, when the $\gamma(P)H$ branch is active, a task's share of $H$ describes the sensitivity of $B_4$, but this sensitivity may be transferred to $T^*$ only when tightness, $T^*=B_4$, has been established.
+
+The invariance has three limitations. First, it applies only to a
+\emph{common multiplicative} error across all phases. If estimation errors distort
+the relative task durations, the decomposition between $a_i$ and $h_i$, or the
+within-task phase profile, the composition of the critical path and the
+resource-augmented critical path, as well as the ranking of the variants, may
+change. Second, the factor $\kappa$ must be common to all phases and all variants
+being compared. In other words, the systematic bias of the estimation procedure
+(Remark~\ref{rem:estimation}) is assumed to be the same across configurations
+used by a given team under a common measurement protocol. Third, comparing
+different modes requires knowledge of the relative mode-specific profiles
+separately for agent and human-attention phases. This requirement is substantially
+weaker than knowing their absolute durations but stronger than knowing only the
+aggregate coefficients $k_i$.
+\end{remark}
+
+\subsection{Calibration and Uncertainty}
+
+\begin{remark}[Stochastic Nature of the Coefficients $k_i$]\label{rem:stochastic}
+In practice, AI-assisted task execution is nondeterministic. It is therefore useful to treat the coefficient $k_i$ as a random variable whose distribution reflects uncertainty in code generation, the probability of defects, and the time required to correct them. Then $T_{ai}$ also becomes a random variable, and the speedup condition should be evaluated for the expectation, $\mathbb{E}[T_{ai}] < T_h$, or for selected quantiles of the distribution.
+
+By linearity of expectation, note that $\mathbb{E}[T_{ai}^{(0)}] = \frac{X}{P}\sum_{i=1}^{N} Z_i\,\nu_i$, where $\nu_i = \mathbb{E}[k_i]$. Therefore, the equivalent level-M0 criterion for deterministic coefficients (Observation~\ref{obs:ideal}) carries over verbatim to expectations:
+\[
+  \mathbb{E}[T_{ai}^{(0)}] < T_h \;\iff\; P > \frac{\sum_{i=1}^{N} Z_i \nu_i}{\sum_{i=1}^{N} Z_i}.
+\]
+A systematic treatment of the stochastic formulation, including variance and quantile guarantees, is deferred to a separate probabilistic model.
+\end{remark}
+
+\begin{remark}[Estimating $k_i$ before Project Start]\label{rem:estimation}
+The operational definition of $k_i^{(r)}$ (Definition~\ref{def:params}) is retrospective: the coefficient is calculated from the observed duration $T_i^{ai}(r)$ and is not itself a forecast. Applying the speedup criteria (Observation~\ref{obs:ideal}, Remark~\ref{rem:threshold}, Theorem~\ref{thm:sufficient}) \emph{before} the project starts requires an external estimate $\hat{k}_i^{(r)}$. It can be obtained as follows:
+\begin{enumerate}
+  \item tasks are classified by type (CRUD operations, integration with an external API, tests, infrastructure, etc.); let $c(i)$ denote the type of task $i$;
+  \item a sample of $k$ values is accumulated from the team's tasks for ``type $\times$ mode'' pairs; separate time tracking also makes it possible to record the human component $h$ (Definition~\ref{def:params}). Failed runs, timeouts, and unaccepted results must be explicitly included either as observations or as censored cases: a sample containing only completed tasks estimates a conditional duration and is subject to survivorship bias;
+  \item the estimate $\hat{k}_i^{(r)}$ is taken to be the empirical mean for the pair $(c(i), r)$---for the expectation-based criterion (Remark~\ref{rem:stochastic})---or an upper sample quantile for a conservative decision.
+\end{enumerate}
+At level M0, the sensitivity of the result to estimation error follows directly from $S_E = P/\bar{k}_w$: a relative error in $\bar{k}_w$ is transferred to $S_E$ on the same multiplicative scale (overestimating $\bar{k}_w$ by a factor of $(1+\varepsilon)$ underestimates $S_E$ by the same factor). For comparing configurations at M0, the absolute level of $k$ is less important: a common multiplicative error does not change their ranking. At M4, the same conclusion requires the stronger premise of Proposition~\ref{prop:invariance}: a single factor must scale all agent and human-attention phases while preserving their types and order. Thus, the model has a dual status. In retrospective applications, it specifies an exact identity; when it is used for decision-making, the accuracy of the absolute predictions $T_{ai}$ and $S_E^{\mathrm{ach}}$ is determined by the quality of the estimate $\hat{k}$ and of the phase profile. Comparative conclusions are robust only to a common systematic error in the sense of Remark~\ref{rem:comparative}.
+\end{remark}
+
+\ifdefined\FULLARTICLE
+  \let\finishdocument\relax
+\else
+  \def\finishdocument{\end{document}}
+\fi
+\finishdocument

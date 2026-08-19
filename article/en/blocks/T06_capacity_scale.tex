@@ -1,0 +1,84 @@
+% T06 source: Базовая модель.tex lines 410--493
+\begin{proposition}[Monotonicity of Available Capacity]\label{prop:capacity-monotonicity}
+If phase durations and the parameters $C$ and $\gamma$ are fixed and do not change when an agent stream is added, then
+\[
+  T^{*}(P+1)\le T^{*}(P).
+\]
+\end{proposition}
+
+\begin{proof}
+Any schedule for $P$ agent streams remains feasible with $P+1$ streams: the additional stream may be left unused. Therefore, the set of feasible schedules can only expand.
+\end{proof}
+
+\begin{proposition}[Existence of a Finite Optimal Configuration]\label{prop:finite-optimum}
+Consider configurations with
+\[
+ C(P)=1+\alpha(P-1)+\beta P(P-1),\qquad
+ \gamma(P)=1+\delta(P-1),
+\]
+where $P\in\mathbb N$. If either $A>0$ and $\beta>0$, or $H>0$ and $\delta>0$, then $T^{*}(P)\to\infty$ as $P\to\infty$; hence, the minimum of $T^{*}(P)$ is attained at a finite value of $P$.
+\end{proposition}
+
+\begin{proof}
+In the first case, $W_4(P)/P\ge C(P)A/P\sim\beta AP$; in the second, $B_4\ge\gamma(P)H\sim\delta HP$. In both cases, $T^{*}(P)\ge B_4(P)\to\infty$. A sequence indexed by the natural numbers that tends to infinity attains its global minimum on a finite initial segment.
+\end{proof}
+
+Propositions~\ref{prop:capacity-monotonicity} and~\ref{prop:finite-optimum} address different questions. The former rules out deterioration due to unused available capacity when durations remain unchanged. The latter compares distinct organizational configurations in which an increase in configured parallelism itself changes the overhead factors $C(P)$ and $\gamma(P)$. Thus, an interior minimum over $P$ does not follow from the discreteness of schedules or queues alone, but is guaranteed by the specified increasing penalties.
+
+\begin{proposition}[Human-Resource Speedup Ceiling]\label{prop:amdahl}
+For a fixed set of tasks and mode assignment $\rho$, if $H>0$, then for every $P \ge 1$ and any $C(P) \ge 1$, $\gamma(P) \ge 1$:
+\[
+  S_E^{\mathrm{ach}}:=\frac{T_h}{T_{ai}}
+  \;\le\; \frac{T_h}{\gamma(P)\,H} \;\le\; \frac{T_h}{H} \;=\; \frac{1}{\bar{h}_w},
+  \qquad
+  \bar{h}_w := \frac{\sum_{i=1}^{N} Z_i h_i^{(\rho(i))}}{\sum_{i=1}^{N} Z_i}.
+\]
+\end{proposition}
+
+\begin{proof}
+The human-attention intervals of all tasks are handled by a single developer and therefore do not overlap pairwise; their total duration is at least $H$ (and at least $\gamma(P) H$ after accounting for attention switching). Consequently, $T_{ai} \ge \gamma(P) H \ge H$, which implies $S_E^{\mathrm{ach}} = T_h / T_{ai} \le T_h / H = 1/\bar{h}_w$.
+\end{proof}
+
+When $H=0$, there are no mandatory human-attention phases, so the constraint is
+trivial and the human-resource ceiling is conventionally taken to be infinite.
+The other branches of $B_4$ and the scheduling constraints remain in force.
+
+\begin{remark}[Analogy with Amdahl's Law]\label{rem:amdahl-analogy}
+Proposition~\ref{prop:amdahl} is a structural analogue of Amdahl's law: the weighted-average normalized human component $\bar{h}_w$ plays the role of the sequential component \cite{amdahl1967validity}. The ceiling $1/\bar{h}_w$ is independent of $P$. If the target speedup exceeds this value, it cannot be achieved by adding agents; instead, the human component $h$ must be reduced through more autonomous modes, automated verification, or formalized acceptance criteria. At level M4, the upper bound on speedup based on aggregate stream occupancy is $P/[C(P)\bar a_w+\gamma(P)\bar h_w]$, whereas the human-resource bound is $1/[\gamma(P)\bar h_w]$. These two aggregates are useful for rapid diagnosis, but they do not account for the critical path or the queue for developer attention.
+\end{remark}
+
+\subsection{Cross-Level Properties}
+
+Under a consistent parameterization, successive refinements preserve the
+constraints imposed at the preceding levels. Because $M_N\le L$, $C(P)\ge1$, and
+$\gamma(P)\ge1$, we have $W_3(P)\ge W$, $L_3(P)\ge L$,
+$W_4(P)\ge W_3(P)$, and $L_4(P)\ge L_3(P)$. The lower bounds are therefore
+ordered as follows:
+\[
+  B_0 \le B_1 \le B_2 \le B_3 \le B_4.
+\]
+Consequently, the upper bounds on achievable speedup, $\bar S^{(j)} := T_h / B_j$, decrease monotonically as $j$ increases. At level M0, the completion time is exactly equal to the bound ($T_{ai}^{(0)} = B_0$), and Observation~\ref{obs:ideal} gives an algebraically equivalent speedup criterion in the form of a necessary and sufficient condition. Starting at level M1, $B_j$ serves only as a lower bound. The actual completion time is determined by the assignment of tasks to processors and may strictly exceed $B_j$ even under an optimal schedule; an example of such a gap for $B_1$ is given in the calculation section. The speedup condition based on the linear component remains necessary but is no longer sufficient (Remark~\ref{rem:threshold}).
+
+The correspondence with the notation of the probabilistic extension of the model is as follows: the linear component at level M3 corresponds to $T_{ai}^{\mathrm{lin}}:=W_3(P)/P$, while the correction for indivisibility requires the maximum weight $\max_i w_i^{(3)}(P)$. The dependency graph, phase queue, and shared human resource are not yet considered in the probabilistic extension.
+
+\subsection{Scale Invariance and Comparative Statics}
+
+\begin{proposition}[Scale Invariance of Rankings]\label{prop:invariance}
+Fix a project decomposition---a set of tasks with task sizes $Z_i$ and a
+dependency graph $G$---and a configuration $\sigma$ with an integer number $P$ of
+agent streams. At level M4, also fix, for each task, the number, types, and order
+of phases, the precedence relations, the local-blocking rule, $C(P)$, and
+$\gamma(P)$. A scale transformation multiplies the duration of \emph{every}
+agent and human-attention phase by the same common factor $\kappa>0$; accordingly,
+both $a_i$ and $h_i$ are scaled, while their decomposition and phase profile are
+preserved. Let $T^{*}(\kappa)$ denote the optimal makespan after this
+transformation. Then:
+\begin{enumerate}
+  \item $T^{*}(\kappa) = \kappa\, T^{*}(1)$ (homogeneity of degree one); the lower bounds $B_0$--$B_4$ have the same property if $C(P)$ and $\gamma(P)$ do not depend on $\kappa$. The optimal assignment of tasks to agent streams, the queue service order, the active term in $\max\{W_4(P)/P,\,L_4(P),\,\gamma(P)H\}$, and the composition of the critical path are independent of $\kappa$;
+  \item if, for two work-organization variants $A$ and $B$, the complete duration vectors of the corresponding agent and human-attention phases are known up to the same common factor $\kappa>0$, that is, $\mathbf d^{A}=\kappa\,\hat{\mathbf d}^{A}$ and $\mathbf d^{B}=\kappa\,\hat{\mathbf d}^{B}$, then the ratio $T^{*}_A/T^{*}_B$ and hence the ranking of the variants are independent of $\kappa$. In particular, $a_i$, $h_i$, and $k_i=a_i+h_i$ must scale consistently; proportionality of the aggregate $k_i$ values alone is insufficient when the phase decomposition changes.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+When the durations of all phases are multiplied by $\kappa$, task durations, human service times, and the waiting intervals induced by the same event order are all multiplied by $\kappa$. Any feasible schedule is transformed into a feasible schedule for the scaled instance by multiplying all start and completion times by $\kappa$. The phase order, precedence relations, local slot retention, and resource constraints are preserved. The transformation is invertible and establishes a bijection between the sets of feasible schedules. Therefore, $T^{*}(\kappa)=\kappa T^{*}(1)$, and an optimal schedule is mapped to an optimal schedule. The homogeneity of $B_j$ follows from the linearity of $W$, $M_N$, $L$, $W_3$, $L_3$, $W_4$, $L_4$, and $H$ in $\kappa$. Claim (ii) follows from (i): $T^{*}_A(\kappa)/T^{*}_B(\kappa)=T^{*}_A(1)/T^{*}_B(1)$.
+\end{proof}

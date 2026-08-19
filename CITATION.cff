@@ -4,6 +4,16 @@ message: >-
   release of this repository.
 title: Phase-Based Planning Model for Software Work in a Human--Agent Cell
 type: software
+abstract: >-
+  Reproducibility package and companion software for a deterministic
+  phase-based model of software work performed by one developer with multiple
+  AI agents.
+keywords:
+  - AI coding agents
+  - human-agent collaboration
+  - software engineering
+  - scheduling
+  - reproducibility
 authors:
   - family-names: Rodionov
     given-names: Aleksandr

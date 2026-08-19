@@ -1,0 +1,57 @@
+% T01 source: Базовая модель.tex lines 33--89
+\subsection{Formal Definitions and Deterministic Assumptions}
+
+\begin{definition}\label{def:params}
+Let the following parameters be given:
+\begin{itemize}
+  \item $X > 0$ --- the baseline effort required for one unit of work (the time required to implement an elementary unit of functionality);
+  \item $Z_i \in \mathbb{R}^{+}$ --- the size of task $i$, measured in units of $X$. Fractional values are permitted: when a project is decomposed, a subtask may account for a fraction of the baseline unit of work (e.g., $Z_i = 0.5$). In applied calculations, values are typically selected from a finite discrete scale $D\subset\mathbb{Q}^{+}$;
+  \item $r \in R$ --- the \textbf{operating mode} used to organize AI-assisted work, that is, the way in which the developer interacts with the tool (e.g., interactive work within a single dialogue; delegated execution with an autonomous agent phase followed by review; or fully autonomous execution without a mandatory human-attention phase). The main M4 analysis concerns the interactive and delegated modes; the fully autonomous mode serves as a limiting case. The finite set of modes $R$ is specified when the model is applied;
+  \item $k_i^{(r)} \in \mathbb{R}^+$ --- the normalized duration of task $i$ when AI is used in mode $r$. This quantity is a property of the ``task $\times$ tool $\times$ mode'' triplet and is defined operationally as
+  \[
+    k_i^{(r)} = \frac{T_i^{ai}(r)}{Z_i X},
+  \]
+  where $T_i^{ai}(r)$ is the actual time required to complete task $i$ with AI \emph{in a single work stream operating in mode $r$ when the developer is fully available}, that is, without competition from other streams for the developer's attention. It includes formulating prompts, waiting for generation, reviewing the result, and correcting it. A value of $k_i^{(r)} < 1$ corresponds to a shorter duration than the baseline estimate $Z_iX$, $k_i^{(r)} = 1$ to the same duration, and $k_i^{(r)} > 1$ to a longer duration. This is a descriptive normalization, not a causal estimate of the effect of AI in the absence of a separate identification design. If the mode is fixed or clear from context, the superscript is omitted: $k_i := k_i^{(r)}$;
+  \item $h_i^{(r)},\, a_i^{(r)}$ --- the \textbf{human} and \textbf{agent} components of the coefficient $k_i^{(r)}$. To define $k_i^{(r)}$, the time $T_i^{ai}(r)$ is measured through two channels. The first comprises intervals during which the developer is engaged with the task: formulating prompts, reading and reviewing results, and directing corrections. The second comprises intervals of autonomous agent work during which the developer is free: generation, self-review, and test execution. These intervals may alternate within a task; their order is determined by the M4-level phases. Normalizing both components by $Z_i X$ yields, by construction,
+  \[
+    k_i^{(r)} = a_i^{(r)} + h_i^{(r)}, \qquad 0 \le h_i^{(r)} \le k_i^{(r)}.
+  \]
+  The present model assigns every interval included in the analysis to exactly one of these two channels; separate constrained resources for CI, APIs, and external infrastructure are outside its scope. When $P = 1$, this decomposition does not affect task duration: in the absence of a queue for developer attention, the duration is $k_i^{(r)} Z_i X$ for any relative magnitudes of the components. The distinction becomes material when $P > 1$: agent phases of different tasks may proceed in parallel, whereas all human-attention phases are handled by a single developer (level M4, Remark~\ref{rem:human});
+  \item $P \ge 1$ --- the configured number of concurrently available agent streams; for the no-AI baseline, $P_h = 1$ is assumed. At levels M1--M4, where tasks and phases are indivisible, $P$ is an integer. Only in the aggregate M0 formulas may $P$ be interpreted as effective parallelism averaged over the period. It is important to distinguish additional \emph{available} capacity from the configuration actually selected: an unused stream does not by itself delay the schedule, whereas switching to a configuration with a larger $P$ may change $C(P)$ and $\gamma(P)$;
+  \item $\sigma$ --- the \textbf{process configuration}: the pair $\sigma = (P, r)$ or, in the general case, the pair $(P, \rho)$, where $\rho\colon \{1, \dots, N\} \to R$ assigns modes to tasks (different work streams may operate in different modes). This notation is shorthand when the AI tool and acceptance rules are fixed: if either the tool or the acceptance criterion for an accepted result changes, the change must be stated explicitly in a comparison, although these elements are not added as dimensions of $\sigma$. The model's derived quantities---total work $W$, the weighted-average coefficient $\bar{k}_w$, time $T_{ai}$, and speedup $S_E$---are functions of the configuration. In the model, comparing ``work-organization variants'' means comparing entire configurations: the parameters $P$ and $\{k_i^{(r)}\}$ are not varied independently (see Remark~\ref{rem:factorization});
+  \item $N \in \mathbb{N}$, $N\ge1$ --- the total number of tasks in the project;
+  \item $T_h,\; T_{ai}$ --- the total time required to complete all tasks without and with AI, respectively.
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Task Independence]\label{rem:independent}
+Initially, all tasks $i = \overline{1,N}$ are assumed to be \textbf{disjoint}: they do not share resources, do not block one another, and may be executed in parallel without additional synchronization costs. This assumption permits an additive time model. Task dependencies and the critical path are introduced subsequently at level M2.
+\end{remark}
+
+\subsection{Model Hierarchy Overview}
+
+\begin{remark}[Model Hierarchy M0--M4]\label{rem:hierarchy}
+Levels M0--M4 form a sequence of refinements to the same formulation. Each
+successive level removes some of the relaxations and introduces one or more
+related aspects of the model; this does not imply that the transition between
+every pair of adjacent levels adds exactly one constraint.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}c>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\toprule
+Level & Primary refinement & Lower bound \\
+\midrule
+M0 & ideally divisible aggregate work & $B_0 = W/P$ \\
+M1 & task indivisibility & $B_1 = \max\{W/P,\; M_N\}$ \\
+M2 & task-dependency DAG & $B_2 = \max\{W/P,\; L\}$ \\
+M3 & effective weights and integration overhead & $B_3 = \max\{W_3/P,\; L_3\}$ \\
+M4 & phases, local slot retention, queueing, and a single shared developer & $B_4 = \max\{W_4/P,\; L_4,\; \gamma H\}$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The formal refinements are introduced, respectively, in
+Assumption~\ref{assum:ideal} and
+Remarks~\ref{rem:indivisible}--\ref{rem:human}.
+\end{remark}

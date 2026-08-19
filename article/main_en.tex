@@ -1,0 +1,117 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{
+  pdftitle={Phase-Based Planning Model for Software Work in a Human--Agent Cell},
+  pdfauthor={Aleksandr Rodionov},
+  pdfsubject={Phase-based planning of software work in a human--agent cell},
+  pdfkeywords={AI agents, software engineering, scheduling, human--agent collaboration}
+}
+
+\geometry{margin=2.5cm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{observation}{Observation}
+\newtheorem{remark}{Remark}
+
+\newcommand{\FULLARTICLE}{}
+\graphicspath{{experiments/figures/}}
+
+\title{Phase-Based Planning Model for Software Work in a Human--Agent Cell}
+\author{Aleksandr Rodionov\\
+Yandex, Saint Petersburg, Russia\\
+\texttt{rexarrior@yandex.ru}\\
+\href{https://orcid.org/0009-0006-6710-923X}{ORCID: 0009-0006-6710-923X}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{en/blocks/T35_abstract.tex}
+\end{abstract}
+
+\section{Introduction}
+\input{en/blocks/T33_introduction.tex}
+
+\section{Problem Setting and Compact Notation}
+\input{en/blocks/T08_compact_notation.tex}
+
+\section{Related Work}
+\input{en/related_work.tex}
+
+\section{Formal Model}
+\label{sec:formal-model}
+\input{en/formal_model.tex}
+
+\clearpage
+\section{Computational Verification Method}
+\input{en/computational_method.tex}
+
+\section{Computational Results}
+\label{sec:computational-results}
+\input{en/computational_results.tex}
+
+\section{Discussion}
+\input{en/discussion.tex}
+
+\section{Limitations and Threats to Validity}
+\input{en/blocks/T21_limitations_validity.tex}
+
+\section{Future Work}
+\input{en/blocks/T25_future_work.tex}
+
+\section{Conclusion}
+\input{en/blocks/T34_conclusion.tex}
+
+\section{Code and Data Availability}
+\label{sec:availability}
+\input{en/artifact_availability.tex}
+
+\section*{Declarations}
+The author is employed by Yandex. This research was conducted independently in
+the author's personal time and received no dedicated funding from Yandex. Some
+computational work used Yandex equipment and computing infrastructure. The
+views expressed are solely those of the author and do not necessarily represent
+those of Yandex. The author declares no other competing interests.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\appendix
+
+\section{Full Glossary of Terms and Notation}
+\label{app:glossary}
+\input{en/glossary.tex}
+
+\section{Detailed Calculation Examples}
+\label{app:examples}
+\input{en/detailed_examples.tex}
+
+\section{Additional Computational Results}
+\label{app:experiments}
+\input{en/experiment_appendix.tex}
+
+\end{document}

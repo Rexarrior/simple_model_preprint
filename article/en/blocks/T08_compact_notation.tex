@@ -1,0 +1,64 @@
+% T08 source: Краткие термины и обозначения.tex
+This section provides a concise conceptual overview of the formulation and its
+key notation; formal definitions and deterministic assumptions are introduced
+in the \emph{Formal Model} section. The model describes a fixed software-development workload that is completed to
+a predefined acceptance criterion. The no-AI baseline consists of sequential
+completion of the same workload by a single developer. A complete glossary of
+terms and the full notation system are provided in
+Appendix~\ref{app:glossary}.
+
+\begin{description}[style=nextline]
+  \item[Task and mode.] Task $i$ has size $Z_i$ and is performed in operating
+  mode $r$: interactive, delegated, or fully autonomous. The mode determines
+  the sequence of task specification, agent execution, review, and correction
+  of the result. The main M4 analysis concerns the interactive and delegated
+  modes; the fully autonomous mode, which has no mandatory human-attention
+  phase, serves as a limiting case.
+
+  \item[Normalized AI-assisted duration.] The quantity
+  $k_i^{(r)}=T_i^{ai}(r)/(Z_iX)$ relates the duration required to obtain an
+  accepted result to the baseline time for the same task. It is specific to
+  the ``task--tool--mode'' triplet, not to the AI tool in general. This is a
+  descriptive normalization; a causal interpretation requires a separate
+  identification design.
+
+  \item[Phases.] The normalized duration is decomposed as
+  $k_i^{(r)}=a_i^{(r)}+h_i^{(r)}$. Autonomous agent phases require an agent
+  slot; human-attention phases simultaneously require the developer's
+  attention and retention of the assigned slot.
+
+  \item[Configured parallelism.] The parameter $P$ denotes the number of agent
+  streams configured in the given configuration and available to the schedule;
+  coordination overhead is evaluated at this value. Additional unused capacity
+  under an unchanged configuration does not itself generate overhead.
+
+  \item[Configuration.] The notation $\sigma=(P,r)$ or $\sigma=(P,\rho)$ is
+  shorthand when the AI tool and acceptance rules are fixed. If the tool or the
+  acceptance criterion for an accepted result changes, the change must be
+  stated explicitly in the comparison, although these elements are not added
+  as dimensions of $\sigma$.
+
+  \item[Schedule and makespan.] A feasible schedule respects the task-DAG
+  dependencies, phase order, the unit capacity of the human resource, and local
+  slot retention. Its makespan is denoted by $T(\pi)$, and the minimum makespan
+  over feasible schedules by $T^*$.
+\end{description}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{$}l<{$}>{\raggedright\arraybackslash}X@{}}
+\toprule
+\text{Notation} & \text{Meaning} \\
+\midrule
+X & baseline effort per unit of work without AI \\
+Z_i & size of task $i$ in units of $X$ \\
+k_i=a_i+h_i & normalized duration and its agent and human components \\
+P & configured number of agent streams in the configuration \\
+G=(V,E) & task-dependency DAG \\
+W=X\sum_iZ_ik_i & total work when $C=\gamma=1$ \\
+A,\ H & total autonomous agent work and human work \\
+C(P),\ \gamma(P) & multipliers for cross-stream integration overhead and human attention-switching overhead \\
+T(\pi),\ T^* & makespan of a particular schedule and the optimal makespan \\
+\bottomrule
+\end{tabularx}
+\end{center}

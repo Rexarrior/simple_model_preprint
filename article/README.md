@@ -1,124 +1,50 @@
-# Phase-Based Planning Model for Software Work in a Human--Agent Cell
+# Manuscript sources
 
-В этой папке ведётся работа над статьёй о планировании фиксированного объёма
-программной работы одним разработчиком и несколькими ИИ-агентами. Модель
-связывает трудоёмкость, фазовые профили режимов, DAG, управляемый параллелизм,
-координационные издержки и последовательный ресурс человеческого внимания.
+`main_en.tex` is the canonical English manuscript for the preprint.
+`main.tex` is the Russian source baseline. Both versions use the same
+bibliography and computational figures.
 
-Цель статьи — построить теоретическую базу для повышения эффективности использования ИИ в двух взаимосвязанных направлениях:
+The English translation is assembled from semantic blocks under `en/blocks/`.
+The translation termbase, source hashes, and resolved editorial queries are
+documented in `en/README.md`, `en/termbase.md`, `en/block_manifest.md`, and
+`en/translation_queries.md`.
 
-- планирование человеческих ресурсов и выбор способов работы человека с ИИ;
-- повышение производительности многоагентных систем и архитектур вида «рой агентов».
+## Build
 
-## Структура
-
-- `main.tex` — единый каркас статьи и приложений;
-- `Введение.tex` — введение, мотивация, исследовательский вопрос и вклад работы;
-- `Краткие термины и обозначения.tex` — компактные обозначения основной части;
-- `Термины и обозначения.tex` — полный словарь для приложения;
-- `Базовая модель.tex` — основной теоретический блок, который можно собирать отдельно;
-- `Практический пример.tex` — синтетический иллюстративный сценарий, открывающий
-  вычислительные результаты и связывающий модель с серией EXP-00;
-- `Примеры базовой модели.tex` — развёрнутые расчёты для приложения;
-- `computational_method.tex`, `computational_results.tex` — методика и результаты экспериментов;
-- `discussion.tex`, `threats_to_validity.tex` — интерпретация и ограничения;
-- `artifact_availability.tex` — заявление о составе и текущей доступности
-  воспроизводимых артефактов;
-- `experiment_appendix.tex` — дополнительные графики и команды воспроизведения;
-- `simple_litreview.tex` — раздел Related Work, подключаемый из `main.tex`;
-- `references.bib` — проверенные библиографические записи, используемые в статье;
-- `../tmp_docs/simple_model_full_literature_search_protocol.md` и
-  `../tmp_docs/simple_model_full_evidence_matrix.md` — протокол поиска и матрица
-  доказательств для Related Work;
-- `experiments/` — воспроизводимое расчётное ядро M4, тесты, результаты
-  EXP-00--EXP-08 и генерация рисунков;
-- `calculator/` — интерактивный артефакт M4 Human--Agent Workbench: браузерный
-  калькулятор, JSON-импорт AI-декомпозиции и VPS-конфигурация опубликованной
-  версии;
-- `области_роста.md` — направления дальнейшего расширения модели;
-- `bad_litreview/` — архивный материал литературного обзора;
-- `output/pdf/` — актуальная полная PDF-сборка статьи;
-- `build/` — локальные и standalone-сборки, не являющиеся источником истины.
-
-## Сборка
-
-Команды выполняются из папки `simple_model_full`:
+Run from this directory:
 
 ```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=output/pdf main.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  -outdir=output/pdf main_en.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  -outdir=output/pdf main.tex
 ```
 
-Актуальный результат полной сборки: `output/pdf/main.pdf`. PDF в корне каталога
-и `build/main.pdf` могут быть локальными сборками предыдущих редакций и не
-считаются источником истины.
+The authoritative build outputs are `output/pdf/main_en.pdf` and
+`output/pdf/main.pdf`. Generated LaTeX files and local build directories are
+ignored by Git.
 
-Отдельные блоки собираются так:
-
-```bash
-latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build 'Базовая модель.tex'
-latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build 'Примеры базовой модели.tex'
-```
-
-Очистить служебные файлы полной сборки:
+## Computational package
 
 ```bash
-latexmk -c -outdir=output/pdf main.tex
-```
-
-## Вычислительные эксперименты
-
-Воспроизводимый пакет запускается из `simple_model_full/experiments`:
-
-```bash
+cd experiments
 uv sync --python 3.13
-uv run python -m experiments run --experiment EXP-00
 uv run pytest -q
 ```
 
-EXP-00 проверяет иллюстративные варианты 2--4. Остальные серии исследуют
-достижимость $B_4$, масштабирование, фазовые профили, декомпозицию,
-робастность и синтетические DAG. Полный контракт и состав выходных файлов
-описаны в `experiments/README.md`, сводка --- в
-`experiments/results/full_experiments_report.md`.
+EXP-00--EXP-08, their frozen scenario matrices, exact and heuristic results,
+and figure-generation commands are described in `experiments/README.md`.
 
-## Интерактивный артефакт
+## Interactive artifact
 
-Для статьи создан одностраничный калькулятор **M4 Human–Agent Workbench**. Он
-опубликован независимо от ChatGPT по адресу
-[m4.articles.rexarrior.fun](https://m4.articles.rexarrior.fun/); исходники и
-инфраструктурная конфигурация находятся в `calculator/`.
+The M4 Human--Agent Workbench source is in `calculator/`; the live deployment
+is available at <https://m4.articles.rexarrior.fun/>. It is a companion
+interface to the model, not a substitute for the reproducibility package.
 
-Калькулятор принимает DAG задач и параметры M4 вручную либо импортирует JSON,
-подготовленный внешней AI-моделью по встроенному промпту. Расчёт расписания,
-нижней границы и потенциального ускорения выполняется локально в браузере.
-Передача конфигурации на сервер возможна только после отдельного явного
-согласия, выключенного по умолчанию. Опубликованная версия поддерживает русский
-и английский языки, а также автоматическую, светлую и тёмную темы.
+## Publication packaging
 
-Это демонстрационный и прикладной companion artifact статьи, а не замена
-пакета воспроизводимости `experiments/`: стартовые коэффициенты калькулятора
-служат калибровочными ориентирами, а выводы остаются условными относительно
-введённых пользователем параметров и критерия приёмки.
-
-## Публикационный репозиторий
-
-Этот каталог входит в отдельный репозиторий работы вместе с `experiments/`,
-`calculator/` и материалами проверки литературного поиска. Калькулятор включён
-как обычный снимок исходников без вложенного `.git`, локальных зависимостей и
-каталогов сборки.
-
-Локальные PDF использованных публикаций из `literature/` не входят в публичный
-релиз: права на них принадлежат их издателям и авторам. Для проверки обзора
-публикуются библиографические записи, поисковый протокол, матрица доказательств
-и авторские постраничные обзоры.
-
-## Лицензии
-
-- программный код, тесты и конфигурация распространяются по MIT;
-- рукопись, документация, созданные автором рисунки, сценарии и результаты —
-  по CC BY 4.0;
-- сторонние публикации, цитируемые материалы и товарные знаки исключены.
-
-Точные области действия описаны в [`LICENSE.md`](LICENSE.md), полный текст MIT
-находится в [`LICENSE-CODE`](LICENSE-CODE), условия CC BY 4.0 — в
-[`LICENSE-CONTENT.md`](LICENSE-CONTENT.md).
+Do not upload this entire directory to arXiv. The repository-level command
+`make arxiv-source` builds an isolated archive containing only the English
+LaTeX inputs, bibliography, generated `.bbl`, and figures required to compile
+the paper. The experiments, calculator, audit records, and complete results
+belong in the versioned repository/archival release instead.

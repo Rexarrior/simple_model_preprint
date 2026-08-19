@@ -1,0 +1,103 @@
+% T12 source: computational_method.tex lines 92--190
+Let $E_0$ be the original total duration of the selected task, $r_o$ the
+overhead rate per additional boundary, and $\lambda_h$ the human share of this
+overhead. Then
+\[
+  O(m,r_o)=(m-1)r_oE_0,\qquad
+  O_h=\lambda_hO,\qquad O_a=(1-\lambda_h)O.
+\]
+Half of $O_h$ and $O_a$ is distributed equally among the inputs to the subtasks,
+and the other half is added to the join. When $r_o=0$, the useful work components
+$A$ and $H$ are preserved exactly. For two levels of parallelism, the complementarity
+of decomposition is measured by the contrast
+\begin{equation}
+  I(P,m)=\bigl[T^*(P,1)-T^*(P,m)\bigr]
+  -\bigl[T^*(1,1)-T^*(1,m)\bigr].
+  \label{eq:interaction-contrast}
+\end{equation}
+A positive $I$ means that the decomposition gain at $P$ is greater than at
+$P=1$; it does not by itself imply that either gain is positive. The contrast is
+computed only when all four solver runs return \texttt{OPTIMAL}. For a
+prespecified fixed policy $\pi$, define separately
+\[
+  I_{\pi}(P,m)=\bigl[T_{\pi}(P,1)-T_{\pi}(P,m)\bigr]
+  -\bigl[T_{\pi}(1,1)-T_{\pi}(1,m)\bigr],
+\]
+where $T_{\pi}$ is the makespan of this policy, not a certified optimum. In the
+frozen EXP-04--EXP-05 matrices, $\mathrm{tolerance}=10^{-4}$ is used: a contrast
+is classified as positive when $I>\mathrm{tolerance}$, negative when
+$I<-\mathrm{tolerance}$, and zero otherwise. On the finite EXP-04 grid, a curve
+is classified as U-shaped if all its points have been certified as optimal, its
+minimum is attained at least at one interior value $m\notin\{1,8\}$, and both
+endpoints $T^*(1)$ and $T^*(8)$ exceed the minimum by more than
+$\mathrm{tolerance}$. This operational definition makes no claim of U-shaped
+behavior outside the integer values of $m$ examined.
+
+Two concentration measures are used for the synthetic DAGs. The quantity
+$\rho_L=L/W_4$ is the fraction of structural work on the longest path when
+$C=\gamma=1$, whereas $\rho_H^{cp}=H_{cp}/H$ is the fraction of all human work
+located on the selected structural path. They are not interchangeable: the
+former characterizes the sequential structure of the DAG, whereas the latter
+characterizes the placement of a fixed or approximately fixed amount of human
+work.
+
+\subsection{Frozen Exact Matrices EXP-00--EXP-05}
+
+EXP-00 solves three fully specified variants of the illustrative scenario
+(variants 2--4). EXP-01 uses the following full factorial design of 90 exact
+grid points:
+\[
+  5\ \text{topologies}\times N{=}4\times
+  P\in\{2,4\}\times r_h\in\{0.10,0.25,0.50\}\times
+  3\ \text{profiles}=90
+\]
+The topologies are chain, independent, fork--join,
+diamond, and two-layer; the task weights cycle through $6,12,18,24$. The
+original frozen matrix also included $N=8,12$ (270 points), but a prespecified
+rule required a global reduction in size if any point failed to receive status
+\texttt{OPTIMAL} within the common 60-second time limit. The first such point at
+$N=8$ received \texttt{FEASIBLE}, after which the complete $N=4$ matrix was run
+without individually adjusting the time limits; the original matrix and the
+decision record were retained.
+
+EXP-02 contains two objects---the DAG of illustrative variant 4 and the
+canonical fork--join with $N=4$---and the grid
+$P\in\{1,2,3,4,6,8,12\}$. Five unique settings are run for each object: three
+values $r_h\in\{0.10,0.25,0.50\}$ with $C=\gamma=1$, and, separately at
+$r_h=0.25$,
+\[
+ C(P)=1+0.05(P-1)+0.005P(P-1)
+ \quad\text{and}\quad
+ \gamma(P)=1+0.10(P-1).
+\]
+The shared setting $r_h=0.25,C=\gamma=1$ is not duplicated, so a total of
+$2\times5\times7=70$ points are solved.
+
+EXP-03 crosses two DAGs (fork--join and two-layer),
+$P\in\{2,4\}$, $r_h\in\{0.25,0.50\}$, and four profiles
+(\texttt{io}, \texttt{front\_loaded}, equal alternation, and staggered
+alternation), for a total of 32 exact problems. For each of the eight
+``DAG--$P$--$r_h$'' sets, three profiles are compared with \texttt{io}, yielding
+24 paired contrasts at identical $A,H,W_4,L_4,B_4,C,\gamma$.
+
+EXP-04A reuses the certified illustrative pair of variants 3--4. EXP-04B applies
+the operator described above to the sink task $E_0=24$ in the canonical
+two-layer DAG with $N=4$, $P=4$, $r_h=0.25$, and the \texttt{io} profile. The grid
+\[
+ m\in\{1,2,3,4,6,8\},\quad
+ r_o\in\{0,0.025,0.05,0.10,0.20\},\quad
+ \lambda_h\in\{0,0.5,1\}
+\]
+contains 90 formal combinations and 66 semantically distinct scenarios: when
+$m=1$, overhead is zero for all $r_o,\lambda_h$, and when $r_o=0$, the values of
+$\lambda_h$ coincide. After the shared points are restored, 13 substantively
+distinct curves are analyzed.
+
+EXP-05 uses the same object and operator but crosses
+$P,m\in\{1,2,3,4,6,8\}$, $r_o\in\{0,0.05,0.10\}$, and
+$\lambda_h\in\{0,0.5\}$. The 216 formal positions yield 156 unique problems;
+their solutions restore 180 analytical positions after identical zero-overhead
+slices are merged. The first common pass with a 120-second limit produced 155
+\texttt{OPTIMAL} results and one \texttt{FEASIBLE} result; the single increase
+in the limit to 300 seconds allowed by the matrix specification was then applied
+uniformly to all 156 points, rather than only to the difficult one.

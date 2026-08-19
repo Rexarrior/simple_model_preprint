@@ -1,0 +1,62 @@
+% T19 source: discussion.tex lines 1--56
+The results support interpreting the model not as a formula in which ``the
+number of agents divides the completion time,'' but as a planning model for a
+capacity-constrained human--agent cell.
+
+\subsection{Bound, Optimum, and a Concrete Schedule}
+
+$B_4$ identifies a time below which completion is impossible because of the
+aggregate workload of the streams, the critical path induced by the original
+precedence constraints, or the single human resource. $T^*$ answers a
+different question: the best makespan after accounting for all resource
+orderings. Finally, $T(\pi)$ characterizes a selected policy or an actual
+schedule. The equality $T^*=B_4$ requires a certificate; otherwise, an equal
+lower bound does not imply an equal makespan.
+
+\subsection{Resource Chains as a Gap Mechanism}
+
+Repeated requests from multiple tasks to a single developer link phases that
+do not lie on the same path in the original task-DAG\@. Retention of an agent slot
+while waiting propagates this competition further through the schedule. The
+resource-augmented phase graph makes the mechanism visible: its maximum-weight
+path contains not only technological arcs but also resource-order arcs. This
+explains why $A,H,W_4,L_4,B_4$ alone do not identify $T^*$.
+
+\subsection{Parallelism as a Configuration Choice}
+
+Available capacity must be distinguished from configured parallelism. With
+durations held constant, an additional stream may be left idle, so the optimum
+cannot worsen. An organizational transition to a larger $P$, however, may
+increase the integration cost $C(P)$ and the switching cost $\gamma(P)$. The
+comparison then concerns different processes, and a finite optimum is possible.
+In practical terms, $P$ cannot be selected independently of the mode assignment
+and the overhead functions. The formal configuration $\sigma=(P,\rho)$ fixes
+the number of streams and the task modes; decomposition, the DAG, the phase
+profiles, and the acceptance criterion constitute the remaining conditions of
+a fully specified scenario. If at least one of them changes together with $P$,
+the observed difference pertains to a comparison of the scenarios as a whole,
+not to the isolated effect of an additional stream.
+
+\subsection{Decomposition and Parallelism}
+
+Decomposition is beneficial while it shortens long sequential segments and
+creates ready work for available streams. Beyond that point, additional
+boundaries increase task-specification and integration overhead and the number
+of human interventions. Under the decomposition operator studied here, the
+optimal granularity therefore depends on $P$: without exploitable parallelism,
+small independent tasks provide little benefit, whereas at large $P$,
+granularity itself may constrain capacity utilization. The experiments support
+this complementarity on the selected grids but do not establish it for an
+arbitrary DAG or splitting rule; its direction and magnitude require
+calibration on real processes.
+
+\subsection{Volume and Placement of Human Work}
+
+Total $H$ imposes an unconditional sequential workload and a ceiling on
+speedup. Its placement is a separate characteristic. When agent and
+human-attention phases are scaled equally, moving $H$ among tasks need not
+change the aggregate lower bound; when $\gamma>C$, human work on the critical
+path is more costly than agent work and lengthens that path. Even when $L_4$
+remains unchanged, phase order may change the queue and $T^*$. Thus, process
+design requires more than reducing the hours spent on review: it also requires
+deciding when and in which tasks those hours are needed.

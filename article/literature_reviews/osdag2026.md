@@ -28,7 +28,7 @@ PDF отмечает Thanh Nguyen Canh и Thang Tran Viet как equal contribut
 
 **Статус:** arXiv preprint. В PDF нет названия принятой конференции или журнала, publisher DOI либо утверждения о прохождении peer review. Поэтому источник нельзя обозначать как accepted или peer-reviewed. arXiv указывает лицензию CC BY 4.0, но это лицензионный, а не публикационный статус.
 
-**Локальная копия:** `/Users/rexarrior/work/articles/simple_model_full/literature/osdag2026.pdf`.
+**Локальная копия:** `osdag2026.pdf`.
 
 **SHA-256:** `6c2d3b464d58e15b82473324e92baa559d4521d579a0b9e5f58cef77c46427c5`.
 

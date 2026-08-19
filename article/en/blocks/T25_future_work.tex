@@ -1,0 +1,108 @@
+% T25 source: future_work.tex
+For a fixed graph, the proposed model solves the forward problem: given the
+work structure and the parameters of the human--agent cell, it estimates the
+achievable speedup and constructs a schedule. The inverse problem is a natural
+extension. If only part of the graph $G_t$ is known at time $t$, further
+decomposition can be selected in light of the critical path, the required
+parallelism, and the limited human-attention resource. The model would thereby
+serve not only to evaluate a completed plan but also as a criterion for
+constructing the as-yet unrevealed part of the project.
+
+Such a policy can follow a rolling-horizon approach. After a result reveals
+new work or dependencies, $G_t$, the set of ready tasks, and the phase
+estimates are updated, and the unfinished part is rescheduled. Research tasks
+can then be represented as exploratory vertices whose results reveal a set of
+feasible continuations $\mathcal D_t$. For each $d\in\mathcal D_t$, the
+following surrogate estimate can be used:
+
+\[
+\Phi_t(d)=
+\max\left\{
+\frac{W_{4,t}(d)+\widehat Q_t(d)}{P},
+L_{4,t}(d),
+\gamma(P)H_t(d)
+\right\},
+\qquad
+d_t^*\in\operatorname*{arg\,min}_{d\in\mathcal D_t}\Phi_t(d),
+\]
+
+where $\widehat Q_t(d)$ estimates future waiting that is not captured by the
+structural bounds already known. A decomposition variant must preserve the
+original workload and acceptance criterion, while its additional task
+specification, verification, and integration overhead must be included in
+$W_{4,t}(d)$ and $H_t(d)$. If an empirically established manageable limit
+$P_{\max}^{\mathrm{attn}}$ on the number of streams that can be supervised
+concurrently is available, exceeding that limit should be prohibited,
+and the proximity of useful parallelism to $P_{\max}^{\mathrm{attn}}$ should
+be used as a secondary criterion after minimizing $\Phi_t$. Constructing
+feasible graph transformations, estimating $\widehat Q_t(d)$, and deriving
+guarantees for such an adaptive policy constitute a separate joint
+decomposition-and-scheduling problem; in this article, the criterion is
+presented only as a sketch of a future theory.
+
+A separate direction is to extend the model to other multi-agent and swarm
+architectures. The closest extension of the current formulation is a
+hierarchical variant in which an orchestrator agent replaces the developer in
+the inner loop: it decomposes the objective, assigns tasks to worker agents,
+services their requests, and accepts their results. The structural analogy is
+direct: the orchestrator is likewise a shared resource of finite capacity, and
+requests from worker agents form a queue and may locally block their streams.
+Human attention may then remain only at the boundaries of the overall
+process---when setting the overall objective and performing final acceptance.
+
+A different formulation arises under algorithmic orchestration with auditing
+and self-checking. The macro-level task graph may remain deterministic, but
+each vertex expands into a local loop of ``execution---audit---conditional
+rework---repeated audit.'' If such loops are self-contained and do not use a
+shared orchestrator, they do not block one another, and the internal human
+resource of capacity 1 disappears. In the terms of the present model, audit
+and rework become agent phases: $h_i$ decreases for the internal vertices,
+while $a_i$ increases; the sign of the change in $k_i=a_i+h_i$ depends on the
+balance between the human effort saved and the additional agent work. With a
+fixed number of passes, such a loop can be unfolded into an ordinary phase
+DAG; conditional termination and an unknown number of rework passes require a
+stochastic model of rework.
+
+A more general extension should describe an architecture by a graph of
+resources and interactions rather than by the number of agents. Hierarchical
+orchestrators, decentralized swarms, mutual auditing, specialized planners and
+verifiers, shared memory, and heterogeneous resources create different
+bottlenecks and different forms of coordination overhead. Comparing such
+systems requires replacing the star-shaped ``one developer---$P$ agents''
+scheme with a heterogeneous multilevel scheduling model and evaluating the
+configuration as a whole: its topology, routing rules, audit resources, result
+quality, and the cost of additional self-checking cycles. Multiple
+human--agent cells require additional cross-cell resources and therefore
+cannot be reduced to an increase in $P$ at M4.
+
+Another direction is relative and interval calibration for organizations that
+lack a history of precise measurements. Under cold-start conditions, the unit
+$X$ can be interpreted not as an hour but as a notional baseline task, after
+which $Z_i$, $k_i$, and $h_i$ can be elicited from experts relative to that
+unit. If two configurations $A$ and $B$ are described on the same scale and all
+of their agent and human-attention phases contain the same unknown common
+factor $\kappa>0$, Proposition~\ref{prop:invariance} implies
+
+\[
+\frac{T_A^*(\kappa)}{T_B^*(\kappa)}=
+\frac{T_A^*(1)}{T_B^*(1)}.
+\]
+
+Thus, even coarse quantitative relative estimates can be useful for selecting
+a faster work-organization scheme without promising an exact completion time
+in hours. Further research should replace point estimates with intervals for
+$k_i$ and $h_i$, identify conditions under which one variant robustly
+dominates another, and characterize cases in which uncertainty in the relative
+profile can alter the ranking.
+
+Another direction is a stochastic and robust formulation with rework,
+failures, learning, and interval estimates of $k$, $h$, $C$, and $\gamma$. It
+should provide not only the expected completion time but also quantiles, the
+probability of missing a deadline, and conditions under which one
+configuration robustly dominates another.
+
+Finally, empirical calibration on traces of real software work is necessary.
+It should measure autonomous intervals, human-attention intervals, waiting,
+rework, and result quality separately in order to test the forms of $C(P)$ and
+$\gamma(P)$ and distinguish effective parallelism from the nominal number of
+running agents.

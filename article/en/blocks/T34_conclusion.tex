@@ -1,0 +1,115 @@
+% T34 source: conclusion.tex
+This article examined the transition from the local duration of an
+AI-assisted task to the makespan of a fixed set of interdependent
+software-development tasks. For a single human--agent cell, the answer to the
+question posed in the Introduction is as follows: a configuration reduces the
+makespan relative to sequential no-AI work not merely because multiple agents
+are present, but only when a feasible schedule completes the same workload to
+an accepted result faster than the baseline. Achievable speedup is jointly
+determined by normalized task durations, task dependencies and phase profiles,
+the number of agent streams and the rules governing their use, integration
+overhead, and the sequential resource of human attention. This supports the
+central proposition: speedup is a property of a fully specified process, not
+an isolated characteristic of the AI tool or the nominal number of agents.
+
+The first result---an operational comparison framework---delineates the scope
+of this conclusion. The coefficient $k_i^{(r)}$ describes the duration until
+an accepted result is obtained for a particular ``task---tool---mode'' triple
+and has no causal interpretation without a separate identification design. The
+configuration $\sigma=(P,\rho)$ fixes the number of streams and the mode
+assignment, but a valid comparison of scenarios also requires the
+decomposition, DAG, phase profiles, acceptance criterion, and overhead
+functions either to be held fixed or to be varied explicitly. This distinction
+precludes transferring a measured $k$ from interactive mode to a delegated
+configuration with a different $P$, and distinguishes an autonomous agent
+phase, during which the human is free, from fully autonomous mode.
+
+The second result---the M0--M4 hierarchy---shows how the strength of the answer
+changes as idealizations are relaxed. At M0, speedup is achieved if and only if
+$P>\bar{k}_w$. At M1--M2, this condition remains necessary, but indivisibility
+and dependencies introduce an additional gap; for an integer number of
+identical streams and $C(P)=1$, a sufficient guarantee for a greedy schedule is
+$\bar{k}_w<P-(P-1)\mu$, where $\mu=M_N/T_h$ for M1 and $\mu=L/T_h$ for M2. At
+M3, the effective weights include cross-stream integration overhead. At M4, a
+fully specified scenario accelerates the work if and only if its optimal
+makespan satisfies $T^*<T_h$. If the structural lower bound $B_4\ge T_h$,
+speedup is impossible; if $B_4<T_h$, this condition is not yet sufficient. A
+feasible schedule with $T(\pi)<T_h$ is a sufficient certificate of speedup. If
+the optimization problem is solved to certified optimality, the exact solver
+establishes $T^*$ and therefore whether speedup is attainable.
+
+The third result further characterizes the structure of M4. The lower bound
+
+\[
+  B_4=\max\left\{\frac{W_4(P)}{P},\;L_4(P),\;\gamma(P)H\right\}
+\]
+
+combines the aggregate load on the agent streams, the critical path in the
+original task-DAG, and the single human resource. Repeated visits by tasks to
+the developer and the retention of agent slots by waiting tasks, however,
+create mixed resource chains that are absent from all three branches. The
+resource-augmented phase graph represents the exact optimum as the minimum,
+over feasible assignments and resource orders, of the maximum-weight path
+length. This
+strictly distinguishes the structural lower bound $B_4$, the certified optimum
+$T^*$, and the makespan $T(\pi)$ of a selected policy. Sequential human work
+also imposes an independent ceiling,
+$S_E^{\mathrm{ach}}\le1/[\gamma(P)\bar h_w]\le1/\bar h_w$: once this ceiling is
+reached, adding agents cannot substitute for shortening human-attention phases,
+automating review, or formalizing the acceptance procedure.
+
+The fourth result---the EXP-00--EXP-08 series---checks these distinctions on
+reproducible scenarios. Illustrative Variants 2--4 yielded certified optima,
+but the equality $T^*=B_4$ proved to be specific to those scenarios: in EXP-01,
+a strict gap was found in 30 of 90 exact scenarios. In EXP-03, different phase
+profiles with identical $A,H,W_4,L_4$, and $B_4$ yielded different values of
+$T^*$ in 14 of 24 pairs. With durations held constant, additional available
+capacity did not worsen the optimum, whereas increasing $C(P)$ or $\gamma(P)$
+produced an interior minimum over configured $P$ on the EXP-02 curves examined.
+Positive decomposition overhead produced a finite optimal granularity in 12 of
+the 13 EXP-04 curves examined. In EXP-05, among the 100 interior comparisons
+with positive overhead, the interaction contrast between parallelism and decomposition was positive in 96
+and zero in four,
+but the absolute effect of decomposition remained negative at 26 points.
+Complementarity between parallelism and granularity therefore does not imply
+that decomposition is unconditionally beneficial.
+
+The robustness checks delimit the strength of these conclusions. Scale
+invariance was reproduced at every EXP-06A point, and the advantage of
+illustrative Variant 4 over Variant 3 was preserved within the specified random
+and adverse error families of EXP-06B--C. The synthetic EXP-07 pilot supported
+aggregate directions for a fixed policy, but not universal signs for every DAG
+or claims about $T^*$. The corrected paired design of EXP-08 showed that total
+human work determines the resource ceiling, whereas its placement affects path
+lengths only when agent and human-attention phases have different effective
+scaling multipliers; phase order can nevertheless change the queue and the
+fixed-policy makespan even when the aggregates remain unchanged. All reported frequencies
+refer to frozen synthetic matrices and are not estimates of the prevalence of
+these effects in real projects.
+
+Practical application of the model therefore does not begin by selecting the
+maximum number of agents. For the scenarios being compared, tasks and operating
+modes must be estimated on a common scale, the acceptance criterion must be
+fixed, the DAG and phase profiles must be constructed, and $B_4$ must be
+computed as a diagnostic of necessary constraints. An exact or heuristic
+resource-feasible schedule must then be constructed, and sensitivity to $k$,
+$h$, $C$, and $\gamma$ must be evaluated. The active branch of $B_4$ identifies
+the constraint governing the lower bound, but extending this conclusion to the
+actual optimum requires either a certificate that $B_4$ is attainable or an
+exact analysis of the resource-augmented schedule. In this sense, the model is intended primarily
+to compare ways of organizing work and to identify levers for changing the
+makespan, not to promise an absolute prediction without local calibration.
+
+The answer obtained is limited to the assumed architecture: a fixed, known
+DAG; one developer; homogeneous agent streams; nonpreemptive phases; and local
+slot retention. The model does not evaluate code quality and cost as separate
+objectives and does not replace a causal study of AI effectiveness. The next
+steps are to measure agent and human-attention intervals, queues, rework,
+$C(P)$, and $\gamma(P)$ empirically using real traces; to proceed to interval
+and stochastic calibration; and then to extend the formulation to dynamic DAG
+revelation, adaptive decomposition, and other orchestration architectures.
+Until such validation is performed, the central conclusion remains structural
+but already operational: useful parallelism arises not from the number of
+agents launched, but from the coordinated design of tasks, dependencies,
+phases, resources, and acceptance rules for the human--agent process as a
+whole.

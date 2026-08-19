@@ -52,7 +52,7 @@ venue, принятие или peer review. Поэтому источник не
 DOI с pending registration.
 
 **Локальная копия:**
-`simple_model_full/literature/scaling_llm_multiagent2026.pdf`, SHA-256
+`scaling_llm_multiagent2026.pdf`, SHA-256
 `d67a50ab014245c05b78c09d90c17aec55a8988111c8fc76b633d63a3a11c157`.
 
 Предлагаемая будущая запись для `references.bib`:

@@ -1,0 +1,62 @@
+% T17 source: computational_results.tex lines 1--59
+The series below are organized by substantive question rather than by numerical
+identifier: attainability of the bound and the role of phase ordering are
+examined first, followed by parallelism and decomposition, and then by scale
+robustness, extension to synthetic DAGs, and controlled placement of human
+work. A numerical identifier denotes a frozen protocol, not the position of a
+series in the logic of the exposition.
+
+\subsection{Attainability of \texorpdfstring{$B_4$}{B4}}
+
+The equality obtained for the illustrative scenario in EXP-00 is not a general
+property of the model. In EXP-01, all 90 scenarios were solved to optimality,
+and in 30 of them a strict gap $T^*>B_4$ was found; the maximum relative gap on
+this grid was 18.333\%. The selected four-task counterexample on the EXP-01
+grid is the diamond at $P=2$: $B_4=48.00$, whereas $T^*=49.25$ hours. The
+additional 1.25 hours arise from a resource chain of repeated human-attention
+phases that is absent from the three aggregate terms defining $B_4$.
+
+EXP-03 directly tests the sufficiency of the aggregates. In 14 of the 24 pairs,
+identical DAGs and identical values of $A$, $H$, $W_4$, $L_4$, $B_4$, $C$, and
+$\gamma$ yielded different values of $T^*$. In the most pronounced selected
+pair, with a common $B_4=36.0$, the two phase profiles yielded 40.5 and 37.75
+hours. Thus, $B_4$ correctly provides a structural lower bound, whereas the
+exact value is determined by the resource-augmented phase graph.
+
+Figure~\ref{fig:resource-augmented-path} shows such a chain explicitly at one
+EXP-05 point with $P=2$, $m=4$, and an agent share of overhead equal to $0.05$.
+In this chain, the ordinary phase sequence and DAG dependencies are interleaved
+with the service order of the single human resource and the task order on an
+agent slot. Its length of $36.45$ hours therefore equals the certified $T^*$ and
+exceeds the aggregate lower bound $B_4=31.80$ hours.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\textwidth]{candidate_resource_augmented_path.png}
+  \caption{Resource-augmented critical path: task sequence --- the phase order
+  within a task, precedence --- a DAG edge, human order --- the order on the
+  human resource, and slot order --- the task order on one agent slot. The
+  labels $d1,d2$ refer to the two decomposed subtasks.}
+  \label{fig:resource-augmented-path}
+\end{figure}
+
+\subsection{Configured Parallelism}
+
+Across the 70 exact EXP-02 scenarios with $C=\gamma=1$ held constant,
+increasing $P$ solely as available capacity did not worsen the optimum and
+quickly produced a plateau determined by either the critical-path term or the
+human-resource term. When instead an increase in $P$ was accompanied by an
+increase in $C(P)$ or $\gamma(P)$, an interior minimum occurred at $P=2$ in all
+four corresponding curves examined.
+This is consistent with Propositions~\ref{prop:capacity-monotonicity}
+and~\ref{prop:finite-optimum}: the deterioration is caused not by an additional
+unused stream but by a change in the process configuration.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\textwidth]{exp02_scaling_curve.png}
+  \caption{Exact makespan as the number of agent streams varies. Constant
+  overhead produces saturation, whereas increasing $C(P)$ or $\gamma(P)$
+  produces an interior minimum on the grid examined.}
+  \label{fig:exp02-scaling}
+\end{figure}

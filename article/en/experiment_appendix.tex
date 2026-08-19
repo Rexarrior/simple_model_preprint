@@ -1,0 +1,130 @@
+% English translation of experiment_appendix.tex, extracted from T26.
+\subsection{Additional Visual Results}
+
+Figure~\ref{fig:app-exp01} shows the distribution of the gaps between the
+structural lower bound, the optimum, and the baseline policy. A zero gap means
+that $B_4$ is attainable, not that no queue is present.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp01_gaps.png}
+  \caption{EXP-01: the $T^*/B_4-1$ gaps and the baseline-policy gaps.}
+  \label{fig:app-exp01}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp03_profile_effects.png}
+  \caption{EXP-03: change in $T^*$ for identical aggregates and different
+  phase profiles. The historical label sync does not denote synchronization of
+  wall-clock intervals here.}
+  \label{fig:app-exp03}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp05_interaction_contrast.png}
+  \caption{EXP-05: interaction between configured parallelism and granularity
+  on the canonical exact grid.}
+  \label{fig:app-exp05}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.90\textwidth]{candidate_task_lever_map.png}
+  \caption{Illustrative local sensitivity analysis for Variant 4. Each cell
+  reports the reduction in certified $T^*$ after a controlled reduction in the
+  phases of one task; asterisks identify tasks on the nominal critical path.
+  Intervention magnitudes are synthetic and are not empirical estimates.}
+  \label{fig:app-task-levers}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp06_ranking_stability.png}
+  \caption{EXP-06: stability of the ranking of the illustrative variants within
+  the frozen error families.}
+  \label{fig:app-exp06}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp07_claim_effects.png}
+  \caption{EXP-07: effects on synthetic DAGs. C1 and C4 are not supported; C2
+  and C3 pertain primarily to the fixed policy.}
+  \label{fig:app-exp07}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{exp08_critical_path_effects.png}
+  \caption{EXP-08: change in the prespecified path when $\gamma>C$ and switches
+  in the global critical path.}
+  \label{fig:app-exp08}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Reproducibility}
+
+The source code, frozen inputs, and saved results are located in the
+\texttt{experiments} directory. From the project root, the complete set of
+commands is:
+\begin{verbatim}
+cd article/experiments
+uv sync --python 3.13
+uv run pytest -q
+uv run python -m experiments validate scenarios/article
+uv run python -m experiments run --experiment EXP-00
+uv run python -m experiments run --experiment EXP-01
+uv run python -m experiments run --experiment EXP-02
+uv run python -m experiments run --experiment EXP-03
+uv run python -m experiments run --experiment EXP-04
+uv run python -m experiments run --experiment EXP-05
+uv run python -m experiments run --experiment EXP-06
+uv run python -m experiments run --experiment EXP-07
+uv run python -m experiments run --experiment EXP-08 --stage development
+uv run python -m experiments run --experiment EXP-08 --stage confirmatory
+uv run python -m experiments figures --set candidates
+\end{verbatim}
+EXP-00--EXP-07 are independent and can be reproduced separately. For EXP-08,
+the order is material: the development stage creates
+\texttt{exp08\_freeze.json}, whereas the confirmatory command refuses to run
+without a matching freeze file and frozen matrix. The \texttt{--stage all}
+shortcut executes the same two stages sequentially, but the explicit commands
+above make the data boundary auditable.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.39\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Path & Contents \\
+\midrule
+\path{scenarios/article/} & fully specified EXP-00 illustrative variants \\
+\path{scenarios/canonical/} & frozen EXP-01--EXP-08 matrices, the original EXP-01 pilot, and the record of its global reduction \\
+\path{src/experiments/} & schema, validator, fixed policy, exact solver, series generators, and figure-generation code \\
+\path{tests/} & checks of the schema, series generation, invariants, and regression tests for the values reported in the article \\
+\path{results/exp??_manifest.json} & SHA-256 checksums of inputs, implementation, and outputs; dependency versions; settings; and statuses \\
+\path{results/exp??_report.md} & complete design, result tables, limitations, and links to raw CSV files \\
+\path{results/full_experiments_report.md} & consolidated EXP-00--EXP-08 summary and artifact map \\
+\path{figures/} & PNG/SVG pairs and their generation code \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The principal raw tables contain the scenario parameters, $B_4$, the
+fixed-policy makespan, solver status, objective, best bound, and gap;
+separate phase and event tables permit an independent recheck of resource
+feasibility. The manifests contain the Git commit and checksums of the listed
+inputs, implementation files, and outputs, so a change to any listed file is
+detected before results are compared. The lockfile pins the packages. The
+manifests do not record the operating system or hardware used for the original
+runs, which limits the reproducibility of wall-clock running time but does not
+affect the \texttt{OPTIMAL} criterion or the saved integer objective values.
+
+\enlargethispage{\baselineskip}
+\paragraph{Data and code availability.}
+\looseness=-1
+The code is licensed under the MIT License, and the text and research materials
+under the CC BY 4.0 License. The public repository, versioned release, and DOI
+will be provided after the preprint version has been archived; the contents of
+the supplementary artifact are described in Section~\ref{sec:availability}.

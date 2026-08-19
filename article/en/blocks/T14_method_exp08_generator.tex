@@ -1,0 +1,60 @@
+% T14 source: computational_method.tex lines 267--319
+EXP-08 resolves the conflation of total $H$ with its placement by using
+independent development and confirmatory streams. The common grid contains 24
+cells defined by $N\times\text{topology}\times\text{weight type}$. The
+development namespace provides 10 bases per cell (240), and the confirmatory
+namespace provides 20 (480); the raw seed is the first 64 bits of the SHA-256
+hash of the namespace, cell, observation number, and attempt number.
+Confirmatory graphs are generated only when a freeze file is present, and
+overlaps between their raw seeds and those used for development and EXP-07 are
+checked automatically.
+
+For each base, a reference path is first selected with $C=\gamma=1$; ties among
+longest paths are resolved by a seeded ranking that is independent of task ID,
+and their multiplicity is retained as a separate indicator. The total share of
+human work is fixed exactly at $H/W_4=0.12$, after which exactly 0.30 or 0.70 of
+$H$ is placed on the reference path. Allocation within and outside the path is
+proportional to the structural weights, is subject to task-level share bounds
+$[0.025,0.85]$, and is performed by a bounded largest-remainder allocator on a
+0.001 grid with seeded tie-breaking. The schedule-effect analysis uses the
+profiles \texttt{io} and \texttt{equal\_alternating}, $P\in\{1,4,8\}$, and
+$C=\gamma=1$; the paired ``high minus low'' difference is normalized by the
+common $B_4$. The engineering equivalence margin is 0.01, and the sensitivity
+margins are 0.005 and 0.02; 2000 bootstrap resamples are performed at the
+graph-base level with seed 808071. A separate differentiated-slowdown slice
+uses $C=1$, $\gamma=1.3$, and $P=4$.
+
+The scope of the EXP-08 exact audit was selected solely from the statuses and
+wall-clock times of the development runs, without retaining their objective
+values. After screening under common limits of 5 and 30 seconds, the following
+scope was frozen before confirmatory generation: $N=8$, homogeneous weights,
+the mixed and chain-like families, observation indices 0--1,
+$P\in\{4,8\}$, and both allocations. This yields 16 confirmatory scenarios with
+a 30-second limit; wide-layered and $N=16$ were excluded uniformly under the
+timing rule, not on the basis of the effect value.
+
+\subsection{Synthetic DAG Generator}
+
+EXP-07 and EXP-08 use the same type of layered generator. The number of layers
+is the rounded value of $Nf$, clipped to $[2,N]$. With two layers, the source
+forms the first layer and all other vertices form the second; with three or
+more layers, the first and last layers each contain one vertex, and the
+remaining vertices are distributed among the intermediate layers.
+Every vertex outside the first layer has at least one predecessor in the
+immediately preceding layer, and every vertex outside the last layer has at
+least one successor in the immediately following layer. The parameters
+$(f,p_{adj},p_{skip})$ are $(0.20,0.30,0)$ for wide-layered,
+$(0.45,0.25,0.04)$ for mixed, and $(0.75,0.15,0)$ for chain-like. Only acyclic,
+weakly connected graphs in which every vertex is reachable from the source are
+accepted, with $\rho_L\in[0.10,0.30)$, $[0.30,0.60)$, or $[0.60,0.90]$,
+respectively.
+
+Homogeneous weights are equal to 12. For lognormal weights, the procedure first
+generates $Y\sim\operatorname{LogNormal}(0,0.55)$. The multiplier
+$\min\{6,\max\{1,\operatorname{round}(2Y)\}\}$ is then multiplied by 12. In
+EXP-07, two task-level human-share values---on and off the structural critical
+path---are selected from the grid $0.025,0.05,\ldots,0.80$: first, the deviation
+of $\rho_H^{cp}$ from the target 0.18, 0.45, or 0.75 in the corresponding bin is
+minimized, followed by the deviation of the overall human share from 0.25. This
+provides approximate, rather than exact, alignment of total $H$; strictly fixed
+$H$ is introduced only in EXP-08.

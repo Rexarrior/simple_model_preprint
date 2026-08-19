@@ -1,0 +1,90 @@
+% T15 source: computational_method.tex lines 320--405
+\subsection{Exact Solver, Time Grid, and Fixed Policy}
+
+The exact instances are formulated as a CP-SAT interval model in OR-Tools
+9.15.6755 \cite{perron2023cpsatlp}. Integer start and end times are specified
+for the phases; the phase order and DAG arcs are imposed through precedence
+constraints, the human resource through a global \texttt{NoOverlap}, and task
+assignment and local blocking through optional intervals spanning the entire
+task span on the selected agent stream. A \texttt{NoOverlap} constraint is also
+specified for each stream; the objective is the maximum of the end times of the
+final phases.
+
+Each scenario specifies a positive \texttt{time\_unit}. The effective duration
+of every phase must be exactly divisible by it; otherwise, the scenario
+validator terminates with an error. Thus, CP-SAT receives an exact integer
+model rather than rounding continuous durations within the solver. The inverse
+transformation multiplies integer ticks by \texttt{time\_unit}. In EXP-06B/C,
+the perturbed phases are quantized in advance using
+\texttt{ROUND\_HALF\_UP}, to a minimum of one tick, after which the final phase
+for each resource is adjusted so that the task total remains exactly
+representable. EXP-08 separately allocates $H$ on a 0.001 allocation grid and
+solves the schedule on a 0.0001 grid.
+
+\begin{table}[ht]
+\centering
+\small
+\caption{Integer grids and limits for the exact solver}
+\label{tab:solver-limits}
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Series & Time unit & Common per-scenario limit \\
+\midrule
+EXP-00 & 0.05 & 300 s \\
+EXP-01 & 0.025 & 60 s \\
+EXP-02 & 0.00005 & 60 s \\
+EXP-03 & 0.025 & 60 s \\
+EXP-04 & 0.00625 & 120 s \\
+EXP-05 & 0.00625 & 120 s, followed by a single frozen increase to 300 s \\
+EXP-06A & original grid of the instance, multiplied by $\kappa$ & 60 s \\
+EXP-06B/C & 0.05 & 10 s \\
+EXP-07 exact audit & 0.001 & 10 s \\
+EXP-08 exact audit & 0.0001 & 30 s \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+All exact runs use one search worker and solver seed 0. The status, objective,
+best bound, relative gap, and wall time are retained. A time limit does not
+constitute a proof of optimality: rows with status \texttt{FEASIBLE} retain an
+incumbent but are not assigned the notation $T^*$.
+
+For the large samples, the prespecified deterministic policy
+\texttt{bottom\_level\_fcfs\_v1} is used. Let $w_i^{(4)}$ be the effective task
+weight and
+\[
+  b_i=w_i^{(4)}+\max_{j\in\operatorname{succ}(i)}b_j
+\]
+its bottom level, where the maximum over the empty set is zero. At each event
+time, ready unassigned tasks are sorted by decreasing $b_i$, then by decreasing
+$w_i^{(4)}$, and finally lexicographically by task ID; available streams are
+taken in increasing numerical order. A task releases its stream only upon
+completion of its final phase. Requests for developer attention are handled in
+order of arrival (FCFS); ties are broken by decreasing $b_i$, task ID, and phase
+index.
+At a common timestamp, the next phases of already assigned tasks are continued
+first, newly ready tasks are then assigned, and the first human request is
+served afterward. The policy is nonpreemptive and uses no future information
+beyond the fixed DAG and durations. Its results pertain to $T(\pi)$, not to
+$T^*$; the small exact subsamples serve as an audit and do not replace the
+primary estimand.
+
+\subsection{Reproducibility Environment and Integrity}
+
+The EXP-01--EXP-08 matrices, the EXP-00 scenarios, the decision rules, and the
+seeds are stored with the code. The manifests record the SHA-256 hashes of the
+input, implementation, and output files; dependency versions; solver settings;
+and statuses. The package requires Python $\ge3.11,<3.14$; the reproduction
+commands request Python 3.13, while \texttt{uv.lock} and
+\texttt{pyproject.toml} pin OR-Tools 9.15.6755, PyYAML 6.0.3, and Matplotlib
+3.11.1. The preserved local environment in which this revision was verified
+reports Python 3.13.14 and macOS 26.5 arm64.
+
+However, the original manifests do not retain the Python patch version, the
+operating system, the processor, or the amount of memory. Consequently, the
+specified Python patch version and platform characterize the available local
+verification but are not established metadata for every original run; wall time
+cannot be reproduced as a platform-invariant quantity. The numerical
+conclusions are based on statuses and objectives, not on comparisons of wall
+time. The commands, EXP-08 order, and complete list of artifacts are provided
+in Appendix~\ref{app:experiments}.

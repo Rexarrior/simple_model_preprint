@@ -11,6 +11,8 @@
 *.synctex.gz
 article/output/
 article/build/
+dist/
+tmp/
 
 # Python
 article/experiments/.venv/
