@@ -1,160 +1,153 @@
-% T33 source: Введение.tex
-The effect of AI tools on software development productivity cannot be
-characterized by a single universal speedup factor. In a controlled experiment
-with GitHub Copilot, participants who completed the scoped task spent, on
-average, 55.8\% less elapsed time on it than participants in the control group
-\cite{peng2023impact}. By contrast, in a randomized study of experienced
-developers working on tasks in familiar, mature open-source projects, access
-to tools available in early 2025 increased adjusted active implementation time
-by 19\% \cite{becker2025measuring}. A follow-up to that study reported likely
-improvements in more recent agentic tools but also identified a deeper
-methodological problem: developers selected tasks with the availability of AI
-in mind and worked with multiple agents concurrently, so the duration of an
-individual task no longer characterized the productivity of the overall
-process \cite{metr2026uplift}. These findings concern different tasks, tools,
-participants, and metrics and therefore do not constitute a direct
-contradiction. Taken together, they show that the effectiveness of AI must be
-assessed for an explicitly specified way of working, rather than for a model
-or product outside its organizational context.
+% English-first editorial revision; the frozen Russian source is not synchronized.
+Coding agents change the unit at which software-development productivity must
+be analyzed. Unlike autocomplete or a single-turn chat assistant, an agent may
+inspect a repository, plan several actions, edit multiple files, run tools and
+tests, and return to the developer only after an autonomous interval. Recent
+human and production evidence makes the resulting distinction between human
+effort and elapsed process time explicit. In a controlled comparison published
+at CHI 2026, an agent increased the correct-completion rate and, among correctly
+completed tasks, roughly halved the study's measured user-effort metric relative
+to a copilot; total agent-workflow time was comparable once autonomous actions
+were included. Many participants also reported understanding copilot outputs
+better, although that contrast was not statistically decisive
+\cite{chen2026codewithme}. Production traces from
+millions of GitHub Copilot sessions likewise show sparse user turns unfolding
+into long chains of model calls and tool execution \cite{liu2026agenticcoding}.
+These observations describe a process that alternates autonomous execution with
+human specification, inspection, and correction, rather than a tool that
+multiplies developer speed by a single constant.
 
-For development planning, this qualification is insufficient. Even a reliable
-estimate of the duration of an individual AI-assisted task does not determine
-the makespan of a set of interdependent tasks. The autonomous intervals of
-multiple agents may overlap, but tasks compete for a limited number of streams,
-follow dependencies, require integration, and periodically require input from
-a single developer for task specification, clarification, review, or
-acceptance.
-Consequently, a local speedup may leave the overall makespan unchanged if it
-does not reduce the active constraint, and an additional agent may fail to
-create useful parallelism. Conversely, even an operating mode in which an
-individual task takes longer than its manual baseline may reduce the makespan
-of the full workload through overlap among autonomous phases. Thus, a distinct
-problem of process organization and scheduling intervenes between an observed
-task-level AI effect and the project's elapsed-time outcome.
+The outcomes of such a process are intrinsically multidimensional. In a
+randomized study, direct agentic editing improved initial task completion
+relative to a constrained chatbot but reduced code comprehension, with no
+statistically distinguishable advantage in accuracy or time on the later
+extension task \cite{balepur2026impaired}.
+Large-scale observational logs also contain recurrent divergences from
+developer instructions and intentions; among the small subset of identified
+misalignment episodes with a visible resolution, correction usually followed
+explicit developer pushback rather than autonomous self-correction
+\cite{tang2026misalignment}. Neither study estimates the effect of several
+concurrent agents, and neither converts directly into a project-duration
+coefficient. Together with evidence that task selection changes when developers
+can use multiple agents in parallel \cite{metr2026uplift}, they show why elapsed
+time, active human time, correctness, comprehension, and acceptance must remain
+separate quantities. Any duration coefficient used for planning must therefore
+refer to a specified task, tool, operating mode, baseline, and acceptance
+criterion.
 
-This article considers one \emph{human--agent cell}: one developer completes a
+Even a reliable task-level coefficient is not yet a project plan. The makespan
+of a fixed set of interdependent tasks depends on which autonomous intervals
+can overlap, how tasks occupy a limited number of agent streams, when
+predecessors release their successors, and how often the same developer must
+specify, clarify, review, or accept work. Existing asynchronous coding-agent
+systems already expose dependency-management, merge, test, and integration
+costs, and increasing the configured agent count need not reduce runtime
+\cite{geng2026caid}. A local task speedup may therefore leave project makespan
+unchanged if it does not relax the active constraint. Conversely, a mode that
+takes longer for one isolated task may still reduce total elapsed time when its
+autonomous phase overlaps other work. A scheduling problem intervenes between
+an observed task-level AI effect and the elapsed time of an accepted workload.
+
+This article studies one \emph{human--agent cell}: one developer completes a
 prespecified AI-assisted set of software tasks using up to $P$ agent streams,
-continuing each task until its result meets a fixed acceptance criterion. The no-AI
-baseline is sequential completion of the same workload by one developer.
-Interactive, delegated, and fully autonomous operating modes are
-distinguished. In interactive mode, the human and the tool work jointly on a
-task in a single stream; in delegated mode, task specification and acceptance
-require the human, while autonomous agent phases may occur between them; in fully
-autonomous mode, there is no mandatory human-attention phase. The article
-focuses primarily on interactive and delegated tasks. Fully autonomous mode is
-admitted as a limiting case with zero mandatory human work, but the discovery
-of new tasks and automatic acceptance of results are not modeled.
+continuing each task until its result meets a fixed acceptance criterion. The
+no-AI baseline is sequential completion of the same workload by one developer.
+Interactive, delegated, and fully autonomous operating modes are distinguished.
+In interactive mode, the human and tool work jointly in one stream. In
+delegated mode, mandatory human-attention phases surround or interrupt
+autonomous agent phases. Fully autonomous mode is admitted as the limiting case
+with no mandatory human phase, but automatic discovery of new work and
+automatic acceptance of results are not modeled.
 
-For delegated tasks, a local retention rule is assumed: once started, a task
-retains its assigned agent slot until its result is accepted. If the agent
-requests the attention of a busy developer, it waits and is not assigned
-another task, while the other agents continue working independently. A new
-task may begin only in an available slot, and a dependent task may begin only
-after all of its predecessors have been accepted. This rule describes a
-specific process architecture rather than agent systems in general. Reuse of
-a blocked slot, preemption, multiple developers, separate constrained CI/API
+For delegated tasks, the model adopts a local retention rule: once started, a
+task retains its assigned agent slot until acceptance. If its agent requests a
+busy developer, that task and slot wait while other agents may continue. A new
+task can start only in an available slot, and a dependent task can start only
+after all predecessors have been accepted. This is one explicit process
+architecture, not a claim about agent systems in general. Slot reuse during a
+human wait, preemption, multiple developers, additional constrained CI or API
 resources, dynamic revelation of the work graph, and interproject scheduling
-are outside the scope of the formulation. The choice between fully manual and
-AI-assisted execution for individual tasks is likewise treated as an external
-decision; the model schedules the already selected AI-assisted task set.
+remain outside the formulation. The choice between manual and AI-assisted
+execution is also external: the model schedules an already selected
+AI-assisted task set.
 
-The research question is: \emph{under what conditions does a fully specified
-configuration in which one developer works with multiple AI agents reduce the
-makespan of a fixed set of interdependent software tasks relative to sequential
-work without AI, and what constraints determine the achievable speedup?} A
-configuration specifies the number of agent streams and the operating mode of
-each task; a substantively complete comparison must also hold fixed or
-explicitly vary the decomposition, dependency graph, phase profiles,
-acceptance criterion, and overhead functions. The objective is the makespan of
-an accepted result. Quality and computational cost are included only through
-their effects on the duration of review, correction, and task completion and
-are not separate optimization objectives.
+The research question is: \emph{when does a fully specified configuration in
+which one developer works with multiple AI agents reduce the makespan of a
+fixed, interdependent workload relative to sequential work without AI, and
+which constraints determine the attainable speedup?} A complete comparison
+must specify not only $P$ and the operating mode of each task, but also the task
+decomposition, dependency graph, phase profiles, acceptance criterion, and
+overhead functions. The optimization objective is the makespan of an accepted
+result. Quality and computational cost enter only insofar as they alter review,
+correction, or completion time; they are not separate objectives in the present
+model.
 
-The central thesis of the article is that \textbf{achievable speedup is a
-property of a fully specified human--agent process, not the product of ``AI
-speed'' and a nominal number of agents}. The makespan may be constrained by the
-aggregate workload of the streams, an indivisible task, a critical path
-induced by technological precedence, the sequential human resource, or a
-mixed resource chain created by phase ordering and the queue for developer
-attention. Thus,
-shortening a task that is not on the current critical path may still be useful
-if it releases a scarce stream; increasing available capacity may reduce the
-makespan until saturation, whereas moving to a configuration with a larger
-configured $P$ may increase it if integration or attention-switching overhead
-rises at the same time. Decomposition is similarly ambiguous: it removes
-artificial serialization and enables parallel work, but adds boundaries for
-task specification, review, and integration.
+The central thesis is that, for the human--agent cell modeled here,
+\textbf{achievable speedup is a property of a fully specified human--agent
+process, not the product of ``AI speed'' and a nominal agent count}. Makespan
+can be constrained by aggregate stream load, an
+indivisible task, technological precedence, the sequential human resource, or
+a mixed resource chain created by phase ordering and the developer-attention
+queue. Additional available capacity cannot worsen the optimum when durations
+and overhead are fixed; increasing configured $P$, however, may raise
+integration or switching overhead and need not improve makespan. Decomposition
+is equally conditional: it can expose useful parallelism while adding new
+boundaries for specification, review, and integration.
 
-To answer the research question, a deterministic phase-based model M0--M4 is
-proposed. The normalized duration $k_i^{(r)}$ pertains to the ``task---tool---mode''
-triplet and compares the full cycle required to obtain an accepted result with
-the baseline duration of the same task. It is a descriptive normalization, not
-a causal estimate in the absence of a separate identification design. At
-level M4, it is decomposed into the autonomous agent and human components
-$a_i^{(r)}$ and $h_i^{(r)}$, and their internal order is specified by a
-sequence of phases. The hierarchy begins with ideally divisible aggregate work
-at M0 and then successively incorporates task indivisibility at M1, the
-dependency graph at M2, cross-stream integration overhead at M3, and an exact
-schedule of phases with a shared human resource and local blocking at M4. This
-construction separates simple necessary constraints from the combinatorial
-losses of a particular schedule.
+To make these constraints explicit, the article develops a deterministic
+phase-based hierarchy M0--M4. The normalized duration $k_i^{(r)}$ belongs to a
+``task---tool---mode'' triplet and compares the complete cycle required for an
+accepted result with the no-AI duration of the same task. It is descriptive,
+not a causal estimate without a separate identification design. At M4 it is
+decomposed into autonomous-agent and human-attention components
+$a_i^{(r)}$ and $h_i^{(r)}$, whose internal order is represented by phases. M0
+starts from ideally divisible aggregate work; M1 adds indivisible tasks; M2
+adds the dependency graph; M3 adds cross-stream integration overhead; and M4
+constructs an exact phase schedule with a shared human resource and local
+blocking.
 
-The article provides four related results.
+The article makes four contributions. First, it defines the operational unit
+of comparison as a complete ``tasks---modes---resources---acceptance
+criterion'' scenario. This separates observed task duration from a forecast,
+available capacity from configured parallelism, and an autonomous phase from a
+fully autonomous task.
 
-First, it defines an operational unit of comparison: not an AI tool in
-isolation, but a complete ``tasks---modes---resources---acceptance criterion''
-scenario. This makes it possible to distinguish an observed task duration from
-a forecast, available capacity from configured parallelism, and an autonomous
-agent phase from fully autonomous mode.
+Second, it derives conditions for speedup in M0--M2. At M0, speedup is
+equivalent to $P>\bar{k}_w$. With indivisible tasks and precedence, this remains
+necessary, while a classical list-scheduling bound yields a sufficient
+criterion involving the relative longest task or critical path. The hierarchy
+therefore distinguishes an idealized estimate, a structural lower bound, and
+an attainable schedule.
 
-Second, for levels M0--M2, conditions are derived that relate normalized
-durations, parallelism, and the work structure. At M0, speedup is equivalent to
-$P>\bar{k}_w$. At M1--M2, this condition remains necessary, while the classical
-list-scheduling bound yields a sufficient criterion in terms of the relative
-length of the longest task or critical path. This explicitly distinguishes the
-idealized speedup estimate, the structural lower bound, and the attainable
-makespan.
-
-Third, for M4, the structural lower bound
+Third, for M4 it introduces the structural lower bound
 \[
   B_4=\max\{W_4/P,L_4,\gamma(P)H\},
 \]
-is introduced, and a speedup ceiling imposed by the sequential human resource
-is proved. The bound combines the workload of the streams, the original
-critical path, and total human work, but in general it is not equal to the
-optimal makespan $T^*$. The resource-augmented phase graph provides an exact
-representation of $T^*$ and shows how the service order of human-attention
-phases and the order of tasks on the agent slots create mixed paths that are
-absent from the original task-DAG\@. This distinguishes a lower bound, a
-certified optimum, and the makespan $T(\pi)$ of a particular policy.
+and a speedup ceiling imposed by sequential human work. The bound combines
+stream workload, the original critical path, and total human attention, but it
+need not equal the optimal makespan $T^*$. Minimizing the maximum-weight path
+length over feasible resource-augmented phase graphs gives $T^*$ exactly and
+shows how the service order of human phases and the task order on agent slots
+create mixed paths absent from the original task DAG.
 
-Fourth, a reproducible computational package with an exact solver and a fixed
-deterministic policy tests the internal logic of the model in series
-EXP-00--EXP-08. It reproduces the illustrative scenarios, provides
-counterexamples to the universal attainability of $B_4$, separates the effect of
-available capacity from that of increasing configuration overhead, examines
-granularity and its interaction with $P$, tests scale robustness, and evaluates
-whether the directions of the effects transfer across synthetic DAGs. These results constitute
-computational verification and sensitivity analysis of the formal model, not
-an empirical estimate for a specific team or AI tool.
+Fourth, a reproducible computational package evaluates the internal logic of
+the model in series EXP-00--EXP-08. An exact solver and a fixed deterministic
+policy are used for different estimands. The exact solver reproduces the
+illustrative scenarios and provides certified counterexamples to universal
+attainability of $B_4$; the fixed policy supports the larger synthetic
+sensitivity studies. Together, they separate available capacity from
+configuration-dependent overhead, test granularity and scale robustness, and
+examine sensitivity to synthetic DAG structure and the placement of human work.
+These are computational verification and sensitivity analyses of the formal
+model, not empirical estimates for a particular team or AI product.
 
-The mathematical elements of this construction are individually well known:
-indivisible jobs, the critical path, constrained resources, a shared service
-resource, and resource-ordering arcs belong to scheduling theory. The claimed
-contribution is not to reintroduce these objects but to map them systematically
-to the complete cycle of a software task with a task- and mode-specific
-coefficient $k$, separate agent and human-attention phases, repeated requests
-for developer attention, agent-slot retention, integration overhead, and an
-acceptance criterion for the result. Empirical calibration of this mapping
-remains an open problem.
-
-The article follows this logic. After the problem setting and compact notation,
-it compares empirical estimates of AI productivity, scaling models, scheduling
-theory, and research on human attention. It then introduces the M0--M4
-hierarchy and the exact resource representation. The computational part first
-specifies the method and rules of evidence and then examines the illustrative
-scenario and series EXP-00--EXP-08. The discussion relates the formal and
-computational results to practical use of the model; separate sections record
-the limitations, threats to validity, and directions for future work. The full
-glossary, detailed calculations, and additional results are provided in the
-appendices.
+The underlying scheduling objects---indivisible jobs, critical paths,
+capacity-constrained resources, and resource-ordering arcs---are established.
+The contribution is their systematic mapping to a software task cycle with a
+task- and mode-specific coefficient, alternating agent and human phases,
+repeated requests for developer attention, slot retention, integration
+overhead, and an explicit acceptance criterion. Empirical calibration of this
+mapping remains open. The remainder of the article positions the model against
+empirical AI-productivity, orchestration, scheduling, and human-attention
+research; defines M0--M4; reports the computational method and results; and
+then discusses practical interpretation, validity threats, and future work.

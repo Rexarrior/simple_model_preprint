@@ -1,16 +1,24 @@
 # English manuscript workspace
 
-This directory contains the English translation of the manuscript. The Russian
-sources in the parent directory remain the source baseline and are not edited
-during translation.
+This directory contains the English manuscript. The Russian sources in the
+parent directory remain the frozen source baseline and are not edited during
+English-first revisions.
 
-Translation is performed in numbered semantic blocks under `blocks/`. Each
-block preserves the source order, mathematics, labels, references, citations,
-numbers, paths, experiment identifiers, and machine-readable names.
+The manuscript is maintained in numbered semantic blocks under `blocks/`.
+Most blocks preserve the source order, mathematics, labels, references,
+citations, numbers, paths, experiment identifiers, and machine-readable names.
+Since 2026-08-22, `blocks/T35_abstract.tex`,
+`blocks/T33_introduction.tex`, and `blocks/T34_conclusion.tex` are intentional
+English-first editorial revisions and are no longer line-by-line translations
+of the frozen Russian abstract, introduction, and conclusion. The Russian
+manuscript will be synchronized only in a later, separate pass.
 
 The Russian baseline was rebuilt on 2026-08-13 from `../main.tex`: 84 pages.
-The English integration was audited again on 2026-08-19 against the baseline
-hashes below.
+The English integration was audited on 2026-08-19 against the baseline hashes
+below. The English Abstract, Introduction, Conclusion, and the empirical opening
+of Related Work were substantively revised on 2026-08-22. The literature-facing
+changes use an updated search. On 2026-08-24, the Abstract, Introduction, and
+Conclusion received a final cross-section claim and contribution audit.
 
 ## Integrated English manuscript
 
@@ -27,10 +35,15 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
   -outdir=output/pdf main_en.tex
 ```
 
-The verified output is `../output/pdf/main_en.pdf` (79 A4 pages). The final
-build has no undefined references or citations, duplicate labels, LaTeX errors,
-or box warnings. Editorial ambiguities found during translation and their
-explicit resolutions are listed in `translation_queries.md`.
+The verified output is `../output/pdf/main_en.pdf` (79 A4 pages), rebuilt on
+2026-08-24. The Abstract contains 247 words, the Introduction contains 1,375
+words, down from 1,520 before the revision, and the Conclusion contains 685
+words, down from 1,100. The final build
+has no undefined references or citations, duplicate labels, LaTeX errors, or
+box warnings. Pages 1--6, the Conclusion transition, and the affected
+bibliography pages were rendered and visually checked. Editorial ambiguities
+found during translation and their explicit resolutions are listed in
+`translation_queries.md`.
 
 ## Baseline hashes
 

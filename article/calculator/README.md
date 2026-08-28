@@ -6,7 +6,7 @@
 ## Опубликованная версия
 
 Рабочая версия артефакта опубликована на собственном VPS по адресу
-[m4.articles.rexarrior.fun](https://m4.articles.rexarrior.fun/). Это
+[m4.articles.rexarrior.online](https://m4.articles.rexarrior.online/). Это
 самостоятельное размещение, а не редирект на ChatGPT-hosted копию. Публикация
 поддерживает русский и английский интерфейсы и темы `auto`, `light` и `dark`.
 Исходный расчёт всегда выполняется на JavaScript в браузере; backend вызывается

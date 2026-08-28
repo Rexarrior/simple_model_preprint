@@ -44,7 +44,11 @@
       // Cookie persistence remains available when local storage is blocked.
     }
     var cookie = COOKIE_NAME + '=' + encodeURIComponent(preference) + '; Path=/; Max-Age=31536000; SameSite=Lax'
-    if (location.hostname === 'rexarrior.fun' || location.hostname.endsWith('.rexarrior.fun')) cookie += '; Domain=rexarrior.fun; Secure'
+    if (location.hostname === 'rexarrior.online' || location.hostname.endsWith('.rexarrior.online')) {
+      cookie += '; Domain=rexarrior.online; Secure'
+    } else if (location.hostname === 'rexarrior.ru' || location.hostname.endsWith('.rexarrior.ru')) {
+      cookie += '; Domain=rexarrior.ru; Secure'
+    }
     document.cookie = cookie
   }
   function emitChange(preference, theme) {

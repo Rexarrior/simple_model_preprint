@@ -1,20 +1,54 @@
 % T22 source: simple_litreview.tex lines 1--23
 \subsection{Empirical Estimates of AI Productivity}
 
-Empirical studies do not support a single coefficient for the effect of AI on
-software development. In the experiment by Peng et al., participants who
-completed a bounded JavaScript task using GitHub Copilot spent, on average,
-55.8\% less elapsed time on it than control-group participants who completed the
-task \cite{peng2023impact}. This result pertains to one task, an early version of
-Copilot, and a sample that included only participants who completed the task;
-parallel use of multiple agents was not studied. By contrast, in the randomized
-field study by Becker et al., access to tools available in early 2025 increased
+Recent agent studies make the measurement problem visible within a single
+workflow. Chen et al. compared GitHub Copilot with OpenHands in a randomized-order,
+within-participant study of 20 regular Copilot users performing data-analysis,
+feature-addition, and bug-fixing tasks \cite{chen2026codewithme}. Mean correct
+completion was 25\% with the copilot and 60\% with the agent. Among correctly
+completed tasks, measured user effort fell from 25.1 to 12.5 minutes, but mean
+total agent-workflow time was 27.9 minutes after autonomous actions were added.
+User effort was operationalized differently by condition: start-to-finish work
+for the copilot, but instruction and evaluation intervals excluding autonomous
+actions for the agent.
+The contrast is therefore evidence that a delegated workflow can reduce active
+human time without an equal reduction in elapsed time, not a twofold task
+speedup. The study had no no-AI arm, used one agent at a time, included only 20
+student participants who were novice agent users, and compared treatment
+packages with different interfaces and model choices.
+
+The distinction extends beyond time. In the randomized study by Balepur et al.,
+an agent accelerated an initial web-development task and improved its accuracy
+relative to a constrained chatbot, but reduced code comprehension; no sustained
+advantage in time or accuracy appeared on a later extension performed without
+the editing agent \cite{balepur2026impaired}. Because the comparator was another
+AI workflow rather than no AI, the study does not identify $k$. Together, the
+two controlled studies show that correctness, active human effort, total elapsed
+time, comprehension, and later task performance are separate outcomes.
+
+Production observations describe still other units of analysis. Telemetry from
+millions of GitHub Copilot agent sessions reveals multi-step chains of model and
+tool calls, retries, long-tailed workloads, and limited internal parallelism,
+but does not link sessions to fixed tasks completed to an accepted result or to
+human actions \cite{liu2026agenticcoding}. Tang et al. extracted 16,118
+evidence-grounded misalignment episodes from 20,574 public or opt-in IDE and CLI
+sessions \cite{tang2026misalignment}. Among the 9.33\% with a visible resolution,
+91.49\% were resolved by the agent after explicit developer pushback. This
+conditional result supports the presence of corrective human work; it is not
+the share of all agent tasks requiring intervention, and the study measures
+neither correction time nor productivity.
+
+Earlier copilot studies remain useful historical causal contrasts. In the
+experiment by Peng et al., participants who completed a bounded JavaScript task
+using GitHub Copilot spent, on average, 55.8\% less elapsed time than
+control-group completers \cite{peng2023impact}. The result pertains to one task,
+an early Copilot version, and a complete-case sample. By contrast, Becker et al.
+found that access to heterogeneous tools available in early 2025 increased
 adjusted active implementation time by 19\% among experienced developers working
-on mature open-source projects \cite{becker2025measuring}. This study measured
-active time, not the elapsed completion time of the entire workload; moreover,
-the experimental condition included heterogeneous tools and usage patterns.
-The estimates therefore concern different participants, tasks, tools, inclusion
-rules, and outcome measures and do not contradict one another.
+on mature open-source projects \cite{becker2025measuring}. The estimates concern
+different participants, tasks, tools, inclusion rules, and outcomes and do not
+contradict one another; neither studies several concurrent agents or complete
+project makespan.
 
 Heterogeneity in effects is also observed outside software development. When a
 generative assistant was introduced in customer support, Brynjolfsson et al.\
@@ -27,7 +61,7 @@ task boundaries, the baseline configuration, and acceptance criteria are the
 same. Elapsed time, active time, throughput, success, quality, and comprehension
 remain distinct outcome measures.
 
-Studies of interaction explain some of this heterogeneity. Vaithilingam et al.\
+Earlier interaction studies explain additional heterogeneity. Vaithilingam et al.\
 found no statistically significant Copilot benefit in either time or the
 task-completion rate across three short tasks, but
 identified costs associated with understanding, reviewing, editing, debugging,
@@ -38,22 +72,11 @@ mode $r$ therefore describes the entire process of task specification,
 execution, review, and correction, while $h_i^{(r)}$ includes deferred review
 and rework.
 
-The transition to coding agents makes the need to distinguish time from quality
-particularly clear. In the study by Balepur et al., an agent accelerated the
-original web-development task and improved its accuracy relative to a
-constrained chatbot, but impaired code comprehension; during a subsequent
-extension performed without the agent, no sustained advantage in time or
-accuracy was found \cite{balepur2026impaired}. The absence of a no-AI condition
-precludes estimation of $k$. Telemetry from millions of GitHub Copilot agent
-sessions likewise reveals long tool-call chains, limited internal parallelism,
-and repeated attempts, but does not link sessions to fixed tasks completed to
-an accepted result or to human actions \cite{liu2026agenticcoding}. Finally,
-METR notes that selecting
-tasks based on AI availability and working with multiple agents in parallel
-biases estimates of the effect at the individual-task level
+Finally, METR notes that selecting tasks based on AI availability and working
+with multiple agents in parallel biases estimates at the individual-task level
 \cite{metr2026uplift}. These findings motivate separate measurement of
 autonomous and human-attention intervals and comparison of complete workflow
-configurations.
+configurations rather than extrapolation from one task or session metric.
 
 \subsection{Effort Estimation as an External Model Layer}
 

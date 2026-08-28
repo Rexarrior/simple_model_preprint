@@ -1,24 +1,30 @@
-% T35 source: main.tex lines 55--77 (abstract contents only)
-This article considers a fixed software-development workload that one developer
-completes with the assistance of multiple AI agents. We propose a deterministic
-phase-based model that links task-level AI-assisted durations, the dependency graph,
-the number of configured agent streams, cross-stream integration overhead, and
-a single sequential human-attention resource. The M0--M4 hierarchy distinguishes ideally
-divisible work from formulations with indivisible tasks, critical-path
-constraints, coordination overhead, and exact schedules of alternating agent
-and human-attention phases with local blocking of a waiting agent.
+% English-first editorial revision; the frozen Russian source is not synchronized.
+Reduced active human effort per task does not by itself determine project
+duration: autonomous intervals may overlap, while dependencies, integration,
+and repeated developer attention constrain elapsed time. We compare one
+developer using up to $P$ agent streams with sequential no-AI completion of the
+same fixed interdependent workload and acceptance criterion.
 
-At M4, we derive a structural lower bound on makespan, $B_4$, that combines
-agent-stream load, the critical path, and the human resource, and introduce an
-exact resource-augmented phase representation of the optimal makespan. A
-CP-SAT-based computational package reproduces the calculations for the
-illustrative scenarios and shows that $B_4$ is not always attainable: on the
-frozen exact grid, a strict certified gap $T^*>B_4$ occurred in 30 of 90
-scenarios. On the finite synthetic grid examined, increasing configuration
-overhead produced an interior optimum over configured parallelism, positive
-decomposition overhead produced U-shaped exact-makespan profiles, and the
-interaction contrast between parallelism and granularity was predominantly
-positive, although decomposition did not always yield an absolute gain. These
-results constitute computational verification and sensitivity analysis of the
-model, not an empirical estimate of the performance of any specific tool or
-team.
+We propose a deterministic phase-based model linking task- and mode-specific
+durations, a task DAG, agent streams, integration overhead, and capacity-one
+human attention. Its M0--M4 hierarchy progresses from divisible work through
+indivisibility, precedence, and overhead to exact phase schedules with local
+slot retention. M0 gives an exact aggregate criterion; under identical-stream,
+zero-overhead assumptions, M1--M2 give sufficient speedup guarantees for
+indivisibility and precedence.
+
+At M4, the structural lower bound $B_4$ combines stream load, critical-path
+length, and total human attention; minimizing the maximum-weight path length
+over feasible resource-augmented phase graphs gives $T^*$ exactly. A
+reproducible package combines CP-SAT optimization on frozen exact grids with
+larger synthetic fixed-policy grids and targeted exact-solver audits. In the
+frozen 90-scenario EXP-01 grid, a strict certified gap $T^*>B_4$ occurred in 30
+cases. On examined finite grids, configuration-dependent overhead produced
+interior minima over $P$, while positive decomposition overhead produced
+U-shaped granularity profiles; more streams or finer decomposition need not
+reduce makespan.
+
+Within the model, achievable speedup is a property of the fully specified
+human--agent process, not of the AI tool or nominal agent count alone. These
+results check internal logic rather than estimate a particular tool or team;
+practical use requires local calibration.

@@ -38,7 +38,7 @@ and figure-generation commands are described in `experiments/README.md`.
 ## Interactive artifact
 
 The M4 Human--Agent Workbench source is in `calculator/`; the live deployment
-is available at <https://m4.articles.rexarrior.fun/>. It is a companion
+is available at <https://m4.articles.rexarrior.online/>. It is a companion
 interface to the model, not a substitute for the reproducibility package.
 
 ## Publication packaging
