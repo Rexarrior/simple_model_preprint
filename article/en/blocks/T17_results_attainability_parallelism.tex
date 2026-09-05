@@ -24,7 +24,8 @@ hours. Thus, $B_4$ correctly provides a structural lower bound, whereas the
 exact value is determined by the resource-augmented phase graph.
 
 Figure~\ref{fig:resource-augmented-path} shows such a chain explicitly at one
-EXP-05 point with $P=2$, $m=4$, and an agent share of overhead equal to $0.05$.
+EXP-05 point with $P=2$, $m=4$, overhead rate $r_o=0.05$, and
+$\lambda_h=0$ (all overhead is assigned to agent work).
 In this chain, the ordinary phase sequence and DAG dependencies are interleaved
 with the service order of the single human resource and the task order on an
 agent slot. Its length of $36.45$ hours therefore equals the certified $T^*$ and
@@ -42,12 +43,16 @@ exceeds the aggregate lower bound $B_4=31.80$ hours.
 
 \subsection{Configured Parallelism}
 
-Across the 70 exact EXP-02 scenarios with $C=\gamma=1$ held constant,
+EXP-02 comprises 70 exact scenarios, including both constant-overhead and
+increasing-overhead regimes. On the curves with $C=\gamma=1$ throughout,
 increasing $P$ solely as available capacity did not worsen the optimum and
-quickly produced a plateau determined by either the critical-path term or the
-human-resource term. When instead an increase in $P$ was accompanied by an
-increase in $C(P)$ or $\gamma(P)$, an interior minimum occurred at $P=2$ in all
-four corresponding curves examined.
+quickly produced a plateau. This plateau need not attain $B_4$: for the
+four-task fork--join with $r_h=0.50$, every tested $P\ge2$ yields
+$T^*=49.5$ hours, whereas $B_4=L_4=48.0$ and $H=30.0$ hours. The residual gap
+is imposed by a mixed resource chain and persists despite unused agent
+capacity. When instead an increase in $P$ was accompanied by an increase in
+$C(P)$ or $\gamma(P)$, an interior minimum occurred at $P=2$ in all four
+corresponding curves examined.
 This is consistent with Propositions~\ref{prop:capacity-monotonicity}
 and~\ref{prop:finite-optimum}: the deterioration is caused not by an additional
 unused stream but by a change in the process configuration.

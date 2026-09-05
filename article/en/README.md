@@ -19,6 +19,9 @@ below. The English Abstract, Introduction, Conclusion, and the empirical opening
 of Related Work were substantively revised on 2026-08-22. The literature-facing
 changes use an updated search. On 2026-08-24, the Abstract, Introduction, and
 Conclusion received a final cross-section claim and contribution audit.
+On 2026-09-05, blocks T06, T11, T13, T17, and T32 received mathematical and
+logical corrections, including clarification of the historical EXP-07 decision
+rule. These English-first corrections preserve the frozen experimental results.
 
 ## Integrated English manuscript
 
@@ -36,7 +39,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error \
 ```
 
 The verified output is `../output/pdf/main_en.pdf` (79 A4 pages), rebuilt on
-2026-08-24. The Abstract contains 247 words, the Introduction contains 1,375
+2026-09-05. The Abstract contains 247 words, the Introduction contains 1,375
 words, down from 1,520 before the revision, and the Conclusion contains 685
 words, down from 1,100. The final build
 has no undefined references or citations, duplicate labels, LaTeX errors, or

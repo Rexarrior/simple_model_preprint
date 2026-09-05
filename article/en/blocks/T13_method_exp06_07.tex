@@ -43,18 +43,23 @@ different values of $\rho_H^{cp}$. When minimum makespans are tied,
 policy-optimal parallelism is defined as
 $P_{\mathrm{opt}}:=\min\operatorname*{arg\,min}_{P}T_\pi(P)$.
 
-The signs and decision rules were fixed before computation. For C1, the median
-equal-minus-permuted difference in policy-tightness is
-expected to be nonnegative; the decision requires both the point estimate and
-the upper bound of the 95\% bootstrap interval to be nonnegative. For C2, the
+The expected directions were fixed before computation. For C1, the median
+equal-minus-permuted difference in policy-tightness is expected to be
+nonnegative. The frozen rule also required a nonnegative upper bootstrap
+limit, but the implemented decision uses only the sign of the point estimate.
+Neither rule establishes a positive population median: that would require a
+lower confidence limit above zero. C1 is therefore reported as a descriptive
+sign check; its full-sample estimate and interval are both negative. For C2, the
 median shift in policy-optimal $P$ is expected to be nonpositive; in addition,
 the proportion of positive shifts must not exceed 0.05. For C3, the medians of
 $I_\pi(4,3)$ and of the attenuation of the gain when moving from $r_o=0$ to
 $r_o=0.10$ are expected to be nonnegative. For C4, both the paired mean of the
 high-minus-low differences between the human-active-branch indicators and the
 high-minus-low difference in their frequencies are expected to be positive.
-Individual exceptions are retained and reported, so confirmation of
-a median direction does not imply a universal sign on every DAG\@. The intervals
+These pilot decisions are descriptive checks of the specified directions,
+not tests controlling a stated type-I error rate. Individual exceptions are
+retained and reported, so a median direction does not imply a universal sign
+on every DAG\@. The intervals
 use 2000 cluster bootstrap resamples with seed 707071; the common structural
 base is the resampling unit, so the three human-work placements are not treated
 as independent.

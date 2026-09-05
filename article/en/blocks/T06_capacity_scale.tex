@@ -23,7 +23,7 @@ where $P\in\mathbb N$. If either $A>0$ and $\beta>0$, or $H>0$ and $\delta>0$, t
 In the first case, $W_4(P)/P\ge C(P)A/P\sim\beta AP$; in the second, $B_4\ge\gamma(P)H\sim\delta HP$. In both cases, $T^{*}(P)\ge B_4(P)\to\infty$. A sequence indexed by the natural numbers that tends to infinity attains its global minimum on a finite initial segment.
 \end{proof}
 
-Propositions~\ref{prop:capacity-monotonicity} and~\ref{prop:finite-optimum} address different questions. The former rules out deterioration due to unused available capacity when durations remain unchanged. The latter compares distinct organizational configurations in which an increase in configured parallelism itself changes the overhead factors $C(P)$ and $\gamma(P)$. Thus, an interior minimum over $P$ does not follow from the discreteness of schedules or queues alone, but is guaranteed by the specified increasing penalties.
+Propositions~\ref{prop:capacity-monotonicity} and~\ref{prop:finite-optimum} address different questions. The former rules out deterioration due to unused available capacity when durations remain unchanged. The latter compares distinct organizational configurations in which an increase in configured parallelism itself changes the overhead factors $C(P)$ and $\gamma(P)$. The specified increasing penalties guarantee a minimum at a finite $P$, but not an interior minimum: the optimum may occur at $P=1$. For example, a single task with $A=H=1$, $C(P)=1$, and $\gamma(P)=P$ has $T^*(P)=1+P$ and is fastest at $P=1$.
 
 \begin{proposition}[Human-Resource Speedup Ceiling]\label{prop:amdahl}
 For a fixed set of tasks and mode assignment $\rho$, if $H>0$, then for every $P \ge 1$ and any $C(P) \ge 1$, $\gamma(P) \ge 1$:

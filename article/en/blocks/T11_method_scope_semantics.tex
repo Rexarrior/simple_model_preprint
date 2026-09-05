@@ -42,10 +42,11 @@ EXP-08 & What changes when a fixed $H$ is placed differently? & Concentration al
 All reports distinguish among four quantities: the structural lower bound $B_4$,
 the certified optimum $T^*$, a feasible solution found without proof of
 optimality, and the makespan $T(\pi)$ of a fixed policy. The notation $T^*$ is
-used only for runs with status \texttt{OPTIMAL}. A feasible schedule of length
-$B_4$ proves that the bound is attainable, but equality between the lower bound
-and the best solution found is insufficient unless the solver gap has been
-closed.
+used only for runs with status \texttt{OPTIMAL} in the computational reports.
+Independently of solver status, a verified feasible schedule with
+$T(\pi)=B_4$ certifies optimality through $B_4\le T^*\le T(\pi)=B_4$.
+Equality must hold at the exact numerical precision of the instance;
+coincidence of rounded displayed values is insufficient.
 
 \subsection{Common Semantics and Experimental Quantities}
 

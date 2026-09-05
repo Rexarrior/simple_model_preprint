@@ -33,9 +33,9 @@ $L$ itself depends on the selected decomposition.
 \begin{enumerate}
   \item \textbf{The $W/P$ lower bound is informative but optimistic as a
   makespan estimate.} It equals $29.9$~h for Variant~2 and $13.4$~h for
-  Variant~3. These values are attainable only with sufficiently independent
-  tasks and appropriately timed requests for human attention; queueing
-  increases agent-stream occupancy beyond $W$.
+  Variant~3. They are unattainable under the stated M4 parameters even if all
+  DAG edges are removed, because $H=38.4$~h and $H=19.0$~h, respectively,
+  already exceed $W/P$. Queueing may further increase stream occupancy.
 
   \item \textbf{The critical path determines the result in Variants 2--4.} In
   Variants 2 and 3, the chain $1 \to 2 \to 3 \to 4 \to 6$ determines
@@ -81,10 +81,13 @@ $L$ itself depends on the selected decomposition.
   \]
   Thus, the ordering $4<3<2$ is preserved, and the human-resource branch
   remains inactive. Under the more conservative assumption $h_i=0.5k_i$ for
-  Variants 3--4, we obtain $H=26.8$~h and $\gamma(4)H\approx34.8$~h; for
-  Variant 4, this value is already close to the critical-path length.
-  Consequently, as $L_4$ decreases, the human resource may become the active
-  constraint.
+  Variants 3--4, holding $k_i$ fixed also changes $a_i=k_i-h_i$ and every
+  effective path weight. With $C=1$ and $\gamma(4)=1.3$, recomputation gives
+  $W_4=61.64$~h and $\gamma H=34.84$~h in both variants, while
+  $L_4=B_4=T^*$ is $49.68$~h in Variant~3 and $42.205$~h in Variant~4.
+  These schedules retain the equal division of human work between input
+  specification and final review. The ranking is preserved; the human-resource
+  branch remains inactive but may become active if $L_4$ is reduced further.
 \end{enumerate}
 
 \paragraph{Implications of the Illustrative Scenario.}
